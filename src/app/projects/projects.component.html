@@ -1,0 +1,76 @@
+<div class="uk-section uk-margin-top">
+  <div class="uk-container">
+    <form class="uk-form-stacked">
+      <div class="uk-width-1-2@s uk-width-2-5@m">
+        <ul class="uk-nav uk-nav-default">
+          <li class="uk-nav-header">Project Types</li>
+
+          <li class="uk-parent">
+            <label><input class="uk-checkbox" type="checkbox" name="musical"> Screen</label>
+
+            <ul class="uk-nav-sub">
+              <li><label><input class="uk-checkbox" type="checkbox" name="musical"> Feature</label></li>
+              <li><label><input class="uk-checkbox" type="checkbox" name="play"> TV</label></li>
+            </ul>
+          </li>
+
+          <li class="uk-parent">
+            <label><input class="uk-checkbox" type="checkbox" name="musical"> Stage</label>
+
+            <ul class="uk-nav-sub">
+              <li><label><input class="uk-checkbox" type="checkbox" name="musical"> Musical</label></li>
+              <li><label><input class="uk-checkbox" type="checkbox" name="play"> Play</label></li>
+            </ul>
+          </li>
+        </ul>
+
+        <ul class="uk-nav uk-nav-default">
+          <li class="uk-nav-header">Roles</li>
+
+          <li><label><input class="uk-checkbox" type="checkbox" name="musical"> Cinematographer</label></li>
+          <li><label><input class="uk-checkbox" type="checkbox" name="musical"> Co-Director</label></li>
+          <li><label><input class="uk-checkbox" type="checkbox" name="musical"> Producer</label></li>
+          <li><label><input class="uk-checkbox" type="checkbox" name="musical"> Writer</label></li>
+        </ul>
+      </div>
+    </form>
+
+    <div class="uk-grid">
+      <div class="uk-card uk-card-default uk-grid-collapse uk-width-1-1 uk-child-width-1-2@s uk-margin-small" uk-grid *ngFor="let project of matchingProjects">
+        <div class="uk-flex-last@s uk-card-media-right uk-cover-container">
+          <img src="{{project.image}}" alt="{{project.title}}" uk-cover>
+          <canvas width="600" height="300"></canvas>
+        </div>
+        <div>
+          <div class="uk-card-body">
+            <h3 class="uk-card-title uk-margin-remove-bottom">{{project.title}}</h3>
+            <p class="uk-text-meta uk-margin-remove-top uk-margin-remove-bottom">
+              <span *ngIf="project.endYear; then endedProject else ongoingProject"></span>
+              <ng-template #ongoingProject>{{project.startYear}} &mdash;</ng-template>
+              <ng-template #endedProject>
+                <span *ngIf="project.startYear == project.endYear; then singleYear else multiYear"></span>
+                <ng-template #singleYear>{{project.startYear}}</ng-template>
+                <ng-template #multiYear>{{project.startYear}} &mdash; {{project.endYear}}</ng-template>
+              </ng-template>
+            </p>
+
+            <ng-container *ngFor="let role of project.roles">
+              <span class="uk-label uk-margin-small-right">{{role}}</span>
+            </ng-container>
+
+            <p class="uk-text">{{project.description}}</p>
+
+            <dl class="uk-description-list">
+              <ng-container *ngFor="let highlight of project.highlights">
+                <dt>{{highlight.description}}</dt>
+                <dd>{{highlight.title}}</dd>
+              </ng-container>
+            </dl>
+            <a class="uk-margin-small-right" target="_blank" href="{{project.website}}" *ngIf="project.website" uk-icon="icon: world"></a>
+            <a class="uk-margin-small-right" target="_blank" href="{{project.youtube}}" *ngIf="project.youtube" uk-icon="icon: youtube"></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

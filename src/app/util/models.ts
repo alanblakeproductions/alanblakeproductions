@@ -16,6 +16,37 @@ export interface Person {
   image: string
 }
 
+export interface Project {
+  title: string,
+  type: ProjectType,
+  subtype: ProjectSubType,
+  description: string,
+  startYear: string,
+  endYear: string | undefined,
+  roles: string[],
+  image: string,
+  youtube: string | undefined,
+  website: string | undefined,
+  highlights: Highlight[],
+}
+
+export interface Highlight {
+  title: string,
+  description: string
+}
+
+export enum ProjectType {
+  Stage,
+  Screen,
+}
+
+export enum ProjectSubType {
+   Play,
+   Musical,
+   TV,
+   Feature,
+}
+
 export interface Showrun {
   address: Address,
   ticketLink: string,
