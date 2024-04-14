@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Address, Highlight, Person, Project, ProjectType, ProjectSubType, Showtime } from './../util/models'
 
@@ -16,6 +16,23 @@ export class ProjectsComponent {
   EXAMPLE_PHOTO: string = "https://picsum.photos/id/120/1200/800";
   matchingProjects: Project[] = []
 
+/*
+  @HostListener("window:keydown", ["$event"])
+  keyEvent(event: KeyboardEvent) {
+    if (event.keyCode == 39) {
+      // right
+      console.log("right")
+    }
+    else if (event.keyCode == 37) {
+      // left
+      console.log("left")
+    }
+  }
+
+  */
+
+
+
   constructor() {
     this.matchingProjects.push({
       title: "Love Me (K)not",
@@ -23,7 +40,7 @@ export class ProjectsComponent {
         + "online dating with the often misguided help of friends and acquaintances.",
       type: ProjectType.Screen,
       subtype: ProjectSubType.TV,
-      startYear: "2023",
+      startYear: 2023,
       endYear: undefined,
       image: "assets/images/love_me_knot_2.png",
       youtube: "https://youtu.be/FoFsBxUdduY",
@@ -44,9 +61,9 @@ export class ProjectsComponent {
       + "recounts the story to her niece.",
       type: ProjectType.Stage,
       subtype: ProjectSubType.Play,
-      startYear: "2024",
+      startYear: 2024,
       endYear: undefined,
-      image: this.EXAMPLE_PHOTO,
+      image: "assets/images/comet_2.png",
       website: "https://alanblakeproductions.github.io/cometproduction/home",
       youtube: undefined,
       roles: [
@@ -67,8 +84,8 @@ export class ProjectsComponent {
       + "to do so, a series of misunderstandings bring mayhem to a quiet Iowa city.",
       type: ProjectType.Screen,
       subtype: ProjectSubType.TV,
-      startYear: "2023",
-      endYear: "2023",
+      startYear: 2023,
+      endYear: 2023,
       image: this.EXAMPLE_PHOTO,
       website: undefined,
       youtube: undefined,
@@ -97,8 +114,8 @@ export class ProjectsComponent {
         + "between a duo of inept criminals and a flighty small-time politician.",
       type: ProjectType.Screen,
       subtype: ProjectSubType.Feature,
-      startYear: "2024",
-      endYear: "2024",
+      startYear: 2024,
+      endYear: 2024,
       image: this.EXAMPLE_PHOTO,
       website: undefined,
       youtube: undefined,
@@ -114,8 +131,8 @@ export class ProjectsComponent {
       description: "A revisionist retelling of the Silence of the Lambs in musical form.",
       type: ProjectType.Stage,
       subtype: ProjectSubType.Musical,
-      startYear: "2020",
-      endYear: "2022",
+      startYear: 2020,
+      endYear: 2022,
       image: this.EXAMPLE_PHOTO,
       website: undefined,
       youtube: undefined,
@@ -129,5 +146,27 @@ export class ProjectsComponent {
 
   returnZero() {
     return 0;
+  }
+
+  getId(project: Project) {
+    return project.title.replaceAll(/[^a-zA-Z0-9]/g, "-")
+  }
+
+  getNextId(index: number) {
+    if (index == this.matchingProjects.length - 1) {
+      return this.getId(this.matchingProjects[0]);
+    }
+    return this.getId(this.matchingProjects[index + 1])
+  }
+
+  getPreviousId(index: number) {
+    if (index == 0) {
+      return this.getId(this.matchingProjects[this.matchingProjects.length - 1]);
+    }
+    return this.getId(this.matchingProjects[index - 1])
+  }
+
+  onKeyPress($event: any, index: number) {
+    console.log($event.keyCode)
   }
 }
