@@ -67,7 +67,7 @@
       <div *ngFor="let project of matchingProjects" class="uk-margin-remove uk-padding-remove">
         <div class="uk-inline" attr.uk-toggle="target: #{{getId(project)}}">
           <canvas width="1200" height="800"></canvas>
-          <img src="{{project.image}}" height="1200" width="800" uk-cover />
+          <img src="{{project.image}}" uk-cover />
           <div class="uk-overlay uk-overlay-primary uk-position-bottom">
             <p class="uk-text">{{project.title}}</p>
           </div>
@@ -104,8 +104,8 @@
 
         <dl class="uk-description-list">
           <ng-container *ngFor="let highlight of project.highlights">
-            <dt>{{highlight.description}}</dt>
-            <dd>{{highlight.title}}</dd>
+            <dt>{{highlight.title}}</dt>
+            <dd>{{highlight.description}}</dd>
           </ng-container>
         </dl>
 
