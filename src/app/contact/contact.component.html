@@ -1,0 +1,50 @@
+<div class="uk-section uk-section-small uk-section-muted">
+  <div class="uk-container">
+    <h1 class="uk-heading">Contact</h1>
+
+    <form class="uk-grid-small" uk-grid (ngSubmit)="onSubmit()" #contactForm="ngForm">
+      <div class="uk-width-1-1 uk-width-1-2@m">
+        <input class="uk-input"
+               type="text"
+               placeholder="Name"
+               name="name"
+               required
+               [(ngModel)]="model.name"
+              #name="ngModel"
+              [ngClass]="name.invalid && (name.dirty || name.touched) ? 'uk-form-danger' : ''"/>
+      </div>
+      <div class="uk-width-1-1 uk-width-1-2@m">
+        <input class="uk-input"
+               type="email"
+               placeholder="Email"
+               name="email"
+               required email
+               [(ngModel)]="model.email"
+               #email="ngModel"
+               [ngClass]="email.invalid && (email.dirty || email.touched) ? 'uk-form-danger' : ''"/>
+      </div>
+      <div class="uk-width-1-1">
+        <textarea class="uk-textarea"
+                  rows="4"
+                  placeholder="Leave me a message!"
+                  name="comments"
+                  required
+                  [(ngModel)]="model.comments"
+                  #comments="ngModel"
+                  [ngClass]="comments.invalid && (comments.dirty || comments.touched) ? 'uk-form-danger' : ''"></textarea>
+      </div>
+
+      <div class="uk-width-1-1">
+        <button class="uk-button uk-button-secondary" type="submit" [disabled]="!contactForm.form.valid">
+          Submit
+        </button>
+
+        <span class="uk-margin-left">
+          <span *ngIf="state == 'success'" uk-icon="check"></span>
+          <span *ngIf="state == 'error'" uk-icon="warning"></span>
+          {{message}}
+        </span>
+      </div>
+    </form>
+  </div>
+</div>
