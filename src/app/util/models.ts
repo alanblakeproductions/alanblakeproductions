@@ -27,6 +27,7 @@ export interface Project {
   image: string,
   youtube: string | undefined,
   website: string | undefined,
+  coverfly: string | undefined,
   highlights: Highlight[],
 }
 

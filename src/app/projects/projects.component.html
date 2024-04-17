@@ -73,7 +73,7 @@
           <canvas width="1600" height="800"></canvas>
           <img src="{{project.image}}" uk-cover />
           <div class="uk-overlay uk-overlay-primary uk-position-bottom">
-            <p class="uk-text uk-text-center">{{project.title}}</p>
+            <h5 class="uk-heading uk-text-muted uk-text-center">{{project.title}}</h5>
           </div>
         </div>
       </div>
@@ -115,6 +115,7 @@
 
         <a *ngIf="project.website" href="{{project.website}}" target="_blank" uk-icon="icon: world; ratio: 2"></a>
         <a *ngIf="project.youtube" href="{{project.youtube}}" target="_blank" uk-icon="icon: youtube; ratio: 2"></a>
+        <a *ngIf="project.coverfly" href="{{project.coverfly}}" target="_blank" uk-icon="icon: file-text; ratio: 2"></a>
       </div>
     </div>
   </div>

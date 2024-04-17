@@ -43,6 +43,7 @@ export class ProjectsComponent {
       startYear: 2023,
       endYear: undefined,
       image: "assets/images/love_me_knot_2.png",
+      coverfly: undefined,
       youtube: "https://youtu.be/FoFsBxUdduY",
       website: undefined,
       roles: [
@@ -64,6 +65,7 @@ export class ProjectsComponent {
       startYear: 2024,
       endYear: undefined,
       image: "assets/images/comet_2.png",
+      coverfly: undefined,
       website: "https://alanblakeproductions.github.io/cometproduction/home",
       youtube: undefined,
       roles: [
@@ -87,6 +89,7 @@ export class ProjectsComponent {
       startYear: 2023,
       endYear: 2023,
       image: this.EXAMPLE_PHOTO,
+      coverfly: "https://writers.coverfly.com/projects/view/787e13f5-aa82-473b-9e40-8c78197e5a23/I80_An_Interstate_Crime_Story",
       website: undefined,
       youtube: undefined,
       roles: [
@@ -117,6 +120,7 @@ export class ProjectsComponent {
       startYear: 2024,
       endYear: 2024,
       image: this.EXAMPLE_PHOTO,
+      coverfly: undefined,
       website: undefined,
       youtube: undefined,
       roles: [
@@ -134,6 +138,7 @@ export class ProjectsComponent {
       startYear: 2020,
       endYear: 2022,
       image: this.EXAMPLE_PHOTO,
+      coverfly: undefined,
       website: undefined,
       youtube: undefined,
       roles: [
