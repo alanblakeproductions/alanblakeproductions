@@ -62,6 +62,16 @@
 <div class="uk-section uk-section-xsmall">
   <div class="uk-container">
     <h1 class="uk-heading">Portfolio</h1>
+    <!--
+    <p class="uk-text">
+      Take a look at my portfolio. I've been lucky to work on projects like...
+    </p>
+    <ul class="uk-list uk-list-bullet">
+      <li><span class="uk-text-italic">Love Me (K)not</span>, an independently-produced rom-com web series</li>
+      <li><span class="uk-text-italic">Comet</span>, a sci-fi drama being staged during summer 2024</li>
+      <li><span class="uk-text-italic">I-80: An Interstate Crime Story</span>, a 60-minute dark comedy TV series</li>
+    </ul>
+    -->
   </div>
 </div>
 
@@ -88,7 +98,11 @@
 
     <button class="uk-modal-close-full uk-close-large" type="button" uk-close></button>
     <div class="uk-grid-collapse uk-child-width-1-2@s uk-flex-middle" uk-grid>
-      <div class="uk-background-cover" style="background-image: url({{project.image}});" uk-height-viewport></div>
+      <div class="uk-background-cover" style="background-image: url({{project.image}});" uk-height-viewport>
+        <div class="uk-position-bottom uk-margin-left">
+          <p class="uk-light">{{project.image_attribution}}</p>
+        </div>
+      </div>
       <div class="uk-padding-large">
         <h1 class="uk-heading uk-margin-remove-bottom">{{project.title}}</h1>
         <p class="uk-text uk-margin-remove-top">
@@ -113,9 +127,9 @@
           </ng-container>
         </dl>
 
-        <a *ngIf="project.website" href="{{project.website}}" target="_blank" uk-icon="icon: world; ratio: 2"></a>
-        <a *ngIf="project.youtube" href="{{project.youtube}}" target="_blank" uk-icon="icon: youtube; ratio: 2"></a>
-        <a *ngIf="project.coverfly" href="{{project.coverfly}}" target="_blank" uk-icon="icon: file-text; ratio: 2"></a>
+        <a *ngIf="project.website" class="uk-margin-right" href="{{project.website}}" target="_blank" uk-icon="icon: world; ratio: 2"></a>
+        <a *ngIf="project.youtube" class="uk-margin-right" href="{{project.youtube}}" target="_blank" uk-icon="icon: youtube; ratio: 2"></a>
+        <a *ngIf="project.coverfly" class="uk-margin-right" href="{{project.coverfly}}" target="_blank" uk-icon="icon: file-text; ratio: 2"></a>
       </div>
     </div>
   </div>

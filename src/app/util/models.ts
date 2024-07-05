@@ -25,6 +25,7 @@ export interface Project {
   endYear: number | undefined,
   roles: string[],
   image: string,
+  image_attribution: string | undefined,
   youtube: string | undefined,
   website: string | undefined,
   coverfly: string | undefined,
