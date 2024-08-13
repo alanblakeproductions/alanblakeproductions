@@ -132,7 +132,7 @@ export class ProjectsComponent {
       endYear: 2024,
       image: "assets/images/diner.png",
       image_attribution: "Lee Cartledge",
-      coverfly: undefined,
+      coverfly: "https://writers.coverfly.com/submissions/view/991637",
       website: undefined,
       youtube: undefined,
       roles: [
