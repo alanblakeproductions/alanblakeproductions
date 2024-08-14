@@ -67,7 +67,7 @@ export class ProjectsComponent {
       endYear: 2024,
       image: "assets/images/comet_1.jpg",
       image_attribution: undefined,
-      coverfly: "https://writers.coverfly.com/submissions/view/819826",
+      coverfly: "https://writers.coverfly.com/projects/view/ba67d38c-3bb0-4634-bc40-e48eb8c5ec19/The_Comet",
       website: "https://alanblakeproductions.github.io/cometproduction/home",
       youtube: undefined,
       roles: [
@@ -132,7 +132,7 @@ export class ProjectsComponent {
       endYear: 2024,
       image: "assets/images/diner.png",
       image_attribution: "Lee Cartledge",
-      coverfly: "https://writers.coverfly.com/submissions/view/991637",
+      coverfly: "https://writers.coverfly.com/projects/view/bf5d8da6-e4f6-4ec8-b47d-ec2388a8b723/Diner",
       website: undefined,
       youtube: undefined,
       roles: [
