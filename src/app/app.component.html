@@ -1,35 +1,5 @@
-<!--
-<div class="uk-height-large uk-background-cover uk-overflow-hidden uk-light uk-flex" style="background-image: url('https://picsum.photos/id/120/1200/800');">
-  <div class="uk-width-1-1 uk-width-1-2@s uk-text-center uk-text-left@s uk-margin-auto uk-margin-auto-vertical">
-    <h1 class="uk-heading-medium uk-margin-remove">Alan Blake</h1>
-    <p class="uk-text-lead uk-margin-remove">Writer / Editor</p>
-  </div>
-</div>
--->
-
 <div class="uk-section-secondary uk-preserve-color">
-  <!--
-  <div uk-sticky="start: 170; animation: uk-animation-slide-top; sel-target: .uk-navbar-container; cls-active: uk-navbar-sticky; cls-inactive: uk-navbar-transparent uk-light; end: ! *; offset: 80">
-    <nav class="uk-navbar-container uk-light">
-      <div class="uk-container">
-        <div uk-navbar>
-          <div class="uk-navbar-left">
-            <ul class="uk-nav uk-navbar-nav">
-              <li routerLinkActive="uk-active"><a routerLink="home">Home</a></li>
-            </ul>
-          </div>
-          <div class="uk-navbar-right">
-            <ul class="uk-nav uk-navbar-nav">
-              <li routerLinkActive="uk-active"><a routerLink="contact">Contact</a></li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </nav>
-  </div>
-  -->
-
-  <nav class="uk-navbar-container uk-navbar-transparent uk-light">
+  <nav class="uk-navbar-container uk-navbar-transparent uk-light" uk-dropnav>
     <div class="uk-container">
       <div uk-navbar>
         <div class="uk-navbar-left">
@@ -39,26 +9,20 @@
         </div>
         <div class="uk-navbar-right">
           <ul class="uk-navbar-nav">
+            <li class="uk-visible@s">
+              <a href>Active Projects <span uk-drop-parent-icon></span></a>
+              <div class="uk-dropdown">
+                <ul class="uk-nav uk-dropdown-nav">
+                  <li routerLinkActive="uk-active"><a routerLink="sedgwick">Sedgwick</a></li>
+                </ul>
+              </div>
+            </li>
             <li routerLinkActive="uk-active"><a routerLink="contact">Contact</a></li>
           </ul>
         </div>
       </div>
     </div>
   </nav>
-
-  <div class="uk-section-secondary uk-preserve-color uk-padding uk-padding-remove-top">
-    <div class="uk-container">
-      <div class="uk-grid uk-child-width-1-2@s uk-flex-center uk-text-center uk-light">
-        <div class="uk-margin-auto uk-margin-auto-vertical uk-visible@s">
-          <img class="uk-border-circle" src="assets/images/alan_blake_small.jpg" width="400" height="400" alt="Alan Blake" />
-        </div>
-        <div class="uk-margin-auto uk-margin-auto-vertical">
-          <h1 class="uk-heading-medium uk-margin-remove">Alan Blake</h1>
-          <p class="uk-text-lead uk-margin-remove">Writer / Editor</p>
-        </div>
-      </div>
-    </div>
-  </div>
 </div>
 
 <router-outlet></router-outlet>

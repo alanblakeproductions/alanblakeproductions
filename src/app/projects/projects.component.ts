@@ -1,5 +1,6 @@
 import { Component, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
 import { Address, Highlight, Person, Project, ProjectType, ProjectSubType, Showtime } from './../util/models'
 
 @Component({
@@ -7,6 +8,7 @@ import { Address, Highlight, Person, Project, ProjectType, ProjectSubType, Showt
   standalone: true,
   imports: [
     CommonModule,
+    RouterLink,
   ],
   templateUrl: './projects.component.html',
   styleUrl: './projects.component.less'
@@ -34,6 +36,26 @@ export class ProjectsComponent {
 
 
   constructor() {
+    this.matchingProjects.push({
+      title: "Sedgwick",
+      description: "A malevalent ghoul walks the streets of Chicago, embedding itself in the city inhabitants' lives. "
+        + "For some, it inspires fear; for others, its predictable and violent nature presents opportunity.",
+      type: ProjectType.Screen,
+      subtype: ProjectSubType.TV,
+      startYear: 2024,
+      endYear: undefined,
+      image: "assets/images/sedgwick.jpg",
+      image_attribution: undefined,
+      coverfly: undefined,
+      youtube: undefined,
+      website: "sedgwick",
+      roles: [
+        "Writer",
+      ],
+      highlights: [
+      ],
+    })
+
     this.matchingProjects.push({
       title: "Love Me (K)not",
       description: "Distraught by dating woes, Chicago 30-somethings Jesse and Alice reluctantly enter the realm of "
