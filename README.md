@@ -23,6 +23,7 @@ Run `ng build` to build the project. The build artifacts will be stored in the `
 
 ```
 ng deploy --base-href /alanblakeproductions/
+ng deploy --cname=alanblakeproductions.com
 ```
 
 ## Running unit tests
