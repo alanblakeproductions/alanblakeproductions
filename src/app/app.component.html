@@ -3,13 +3,43 @@
     <div class="uk-container">
       <div uk-navbar>
         <div class="uk-navbar-left">
-          <ul class="uk-visible uk-navbar-nav">
+          <!-- Visible for MOBILE -->
+          <a class="uk-hidden@s uk-navbar-item" routerLink="home">ALAN BLAKE</a>
+
+          <!-- Visible for DESKTOP -->
+          <ul class="uk-visible@s uk-navbar-nav">
             <li routerLinkActive="uk-active"><a class="uk-navbar-item" routerLink="home">Home</a></li>
           </ul>
         </div>
         <div class="uk-navbar-right">
-          <ul class="uk-navbar-nav">
-            <li class="uk-visible@s">
+          <!-- Visible for MOBILE -->
+          <a href="#offcanvas-nav-primary" class="uk-hidden@s uk-navbar-toggle uk-navbar-toggle-animate" uk-navbar-toggle-icon uk-toggle></a>
+
+          <div id="offcanvas-nav-primary" uk-offcanvas="overlay: true">
+            <div class="uk-offcanvas-bar">
+
+              <ul class="uk-nav uk-nav-default">
+                <li class="uk-nav-header">Navigation</li>
+                <li class="uk-nav-divider"></li>
+                <li routerLinkActive="uk-active">
+                  <a routerLink="home">Home</a>
+                </li>
+                <li class="uk-parent">
+                  <a href>Active Projects</a>
+                  <ul class="uk-nav-sub">
+                    <li routerLinkActive="uk-active"><a routerLink="sedgwick">Sedgwick</a></li>
+                  </ul>
+                </li>
+                <li routerLinkActive="uk-active">
+                  <a routerLink="contact">Contact</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Visible for DESKTOP -->
+          <ul class="uk-visible@s uk-navbar-nav">
+            <li>
               <a href>Active Projects <span uk-drop-parent-icon></span></a>
               <div class="uk-dropdown">
                 <ul class="uk-nav uk-dropdown-nav">
