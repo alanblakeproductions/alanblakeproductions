@@ -44,7 +44,7 @@ export class ProjectsComponent {
       subtype: ProjectSubType.TV,
       startYear: 2024,
       endYear: undefined,
-      image: "assets/images/sedgwick.jpg",
+      image: "assets/images/sedgwick/sedgwick_header.jpg",
       image_attribution: undefined,
       coverfly: undefined,
       youtube: undefined,
