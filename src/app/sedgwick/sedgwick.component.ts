@@ -1,6 +1,6 @@
 import { Component, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Address, Highlight, Person, Project, ProjectType, ProjectSubType, Showtime } from './../util/models'
+import { Address, Highlight, Person, Project, Showtime } from './../util/models'
 
 @Component({
   selector: 'app-sedgwick',

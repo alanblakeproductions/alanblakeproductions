@@ -1,7 +1,7 @@
 import { Component, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
-import { Address, Highlight, Person, Project, ProjectType, ProjectSubType, Showtime } from './../util/models'
+import { Address, Highlight, Person, Project, Showtime } from './../util/models'
 
 @Component({
   selector: 'app-projects',
@@ -40,8 +40,8 @@ export class ProjectsComponent {
       title: "Sedgwick",
       description: "A malevalent ghoul walks the streets of Chicago, embedding itself in the city inhabitants' lives. "
         + "For some, it inspires fear; for others, its predictable and violent nature presents opportunity.",
-      type: ProjectType.Screen,
-      subtype: ProjectSubType.TV,
+      type: "Episodic short series",
+      genre: "Horror",
       startYear: 2024,
       endYear: undefined,
       image: "assets/images/sedgwick/sedgwick_header.jpg",
@@ -57,11 +57,33 @@ export class ProjectsComponent {
     })
 
     this.matchingProjects.push({
+      title: "Immortal",
+      description: "Dreading aging and death, a man takes severe measures to guarantee his immortality.",
+      type: "Short",
+      genre: "Horror",
+      startYear: 2024,
+      endYear: 2024,
+      image: "assets/images/immortal.png",
+      image_attribution: undefined,
+      coverfly: undefined,
+      youtube: undefined,
+      website: undefined,
+      roles: [
+        "Writer",
+        "Director",
+        "Cinematographer",
+        "Editor"
+      ],
+      highlights: [
+      ],
+    })
+
+    this.matchingProjects.push({
       title: "Love Me (K)not",
       description: "Distraught by dating woes, Chicago 30-somethings Jesse and Alice reluctantly enter the realm of "
         + "online dating with the often misguided help of friends and acquaintances.",
-      type: ProjectType.Screen,
-      subtype: ProjectSubType.TV,
+      type: "Web series",
+      genre: "Rom-com",
       startYear: 2023,
       endYear: undefined,
       image: "assets/images/love_me_knot.png",
@@ -83,8 +105,8 @@ export class ProjectsComponent {
       title: "Comet",
       description: "15 years after a comet threatens extinction on Earth, one of the astronomers who discovered it "
       + "recounts the story to her niece.",
-      type: ProjectType.Stage,
-      subtype: ProjectSubType.Play,
+      type: "Feature",
+      genre: "Drama",
       startYear: 2024,
       endYear: 2024,
       image: "assets/images/comet_1.jpg",
@@ -116,8 +138,8 @@ export class ProjectsComponent {
       description: "A bumbling brother and sister seek petty revenge against a freight shipping magnate, drawing the "
       + "attention of a traveling gun-for-hire seeking to escape her world of violence. When she seizes an opportunity "
       + "to do so, a series of misunderstandings bring mayhem to a quiet Iowa city.",
-      type: ProjectType.Screen,
-      subtype: ProjectSubType.TV,
+      type: "Series",
+      genre: "Crime",
       startYear: 2023,
       endYear: 2023,
       image: "assets/images/i_80.png",
@@ -148,8 +170,8 @@ export class ProjectsComponent {
       title: "Diner",
       description: "On a single night, a tentative man is wrangled into taking a role in blackmail negotiations "
         + "between a duo of inept criminals and a flighty small-time politician.",
-      type: ProjectType.Screen,
-      subtype: ProjectSubType.Feature,
+      type: "Feature",
+      genre: "Crime comedy",
       startYear: 2024,
       endYear: 2024,
       image: "assets/images/diner.png",
@@ -167,8 +189,8 @@ export class ProjectsComponent {
     this.matchingProjects.push({
       title: "The Shearing",
       description: "A revisionist retelling of the Silence of the Lambs in musical form.",
-      type: ProjectType.Stage,
-      subtype: ProjectSubType.Musical,
+      type: "Stage musical",
+      genre: "Horror",
       startYear: 2020,
       endYear: 2022,
       image: "assets/images/shearing.png",

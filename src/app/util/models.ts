@@ -18,8 +18,8 @@ export interface Person {
 
 export interface Project {
   title: string,
-  type: ProjectType,
-  subtype: ProjectSubType,
+  type: string,
+  genre: string,
   description: string,
   startYear: number,
   endYear: number | undefined,
@@ -35,18 +35,6 @@ export interface Project {
 export interface Highlight {
   title: string,
   description: string
-}
-
-export enum ProjectType {
-  Stage,
-  Screen,
-}
-
-export enum ProjectSubType {
-   Play,
-   Musical,
-   TV,
-   Feature,
 }
 
 export interface Showrun {

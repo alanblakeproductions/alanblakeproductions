@@ -105,7 +105,10 @@
       </div>
       <div class="uk-padding-large">
         <h1 class="uk-heading uk-margin-remove-bottom">{{project.title}}</h1>
-        <p class="uk-text uk-margin-remove-top">
+
+        <p class="uk-text-uppercase uk-text-muted uk-margin-remove-top">
+          {{project.genre}} {{project.type}},
+
           <span *ngIf="project.endYear; then endedProject else ongoingProject"></span>
           <ng-template #ongoingProject>{{project.startYear}} &mdash;</ng-template>
           <ng-template #endedProject>
