@@ -77,14 +77,18 @@
 
 <div class="uk-section uk-section-xsmall">
   <div class="uk-container uk-padding-remove-left uk-padding-remove-right">
-    <div class="uk-grid-collapse uk-child-width-1-2@s" uk-grid>
+    <div class="uk-grid uk-grid-collapse uk-child-width-1-2@s" uk-grid>
       <div *ngFor="let project of matchingProjects" class="">
         <div class="uk-inline" attr.uk-toggle="target: #{{getId(project)}}">
           <canvas width="1600" height="800"></canvas>
           <img src="{{project.image}}" uk-cover />
+          <div class="uk-card-badge uk-label">{{project.title}}</div>
+
+          <!--
           <div class="uk-overlay uk-overlay-primary uk-position-bottom">
             <h5 class="uk-heading uk-text-muted uk-text-center">{{project.title}}</h5>
           </div>
+          -->
         </div>
       </div>
     </div>
