@@ -49,3 +49,10 @@ export interface Showtime {
   date: Date,
   time: string,
 }
+
+export interface Character {
+  name: string,
+  image: string,
+  quote: string,
+  summary: string,
+}

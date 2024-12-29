@@ -180,7 +180,7 @@ export class ProjectsComponent {
       genre: "Crime",
       startYear: 2023,
       endYear: 2023,
-      image: "assets/images/i_80.png",
+      image: "assets/images/i-80/i_80.png",
       image_attribution: "Jahongir Ismoilov",
       coverfly: "https://writers.coverfly.com/projects/view/787e13f5-aa82-473b-9e40-8c78197e5a23/I80_An_Interstate_Crime_Story",
       website: undefined,
