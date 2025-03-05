@@ -37,6 +37,26 @@ export class ProjectsComponent {
 
   constructor() {
     this.matchingProjects.push({
+      title: "Deepa",
+      description: "A middle-aged South Asian wife and mother is jolted into digging around for deeper meaning in the stable container that is her family life.",
+      type: "Short",
+      genre: "Drama",
+      startYear: 2025,
+      endYear: 2025,
+      image: "assets/images/deepa_open_1.png",
+      image_attribution: undefined,
+      coverfly: undefined,
+      youtube: undefined,
+      website: undefined,
+      roles: [
+        "Cinematographer",
+        "Editor",
+      ],
+      highlights: [
+      ],
+    });
+
+    this.matchingProjects.push({
       title: "Sedgwick",
       description: "A malevalent ghoul walks the streets of Chicago, embedding itself in the city inhabitants' lives. "
         + "For some, it inspires fear; for others, its predictable and violent nature presents opportunity.",
@@ -62,7 +82,7 @@ export class ProjectsComponent {
       type: "Short",
       genre: "Horror",
       startYear: 2024,
-      endYear: 2024,
+      endYear: 2025,
       image: "assets/images/immortal.png",
       image_attribution: undefined,
       coverfly: undefined,
@@ -75,6 +95,11 @@ export class ProjectsComponent {
         "Editor"
       ],
       highlights: [
+        {
+          title: "The Dunwich Horror Fest",
+          description: "Finalist",
+          image: "assets/images/the_dunwich_horror_fest_finalist_cthulhu_sign_black_transparent.png",
+        },
       ],
     })
 
@@ -121,14 +146,17 @@ export class ProjectsComponent {
         {
           title: "Chicago Rhinofest 2024",
           description: "Produced and staged for a 4-show run",
+          image: undefined,
         },
         {
           title: "Richmond International Film Festival Screenplay Competition",
           description: "Semifinalist",
+          image: undefined,
         },
         {
           title: "Creative World Awards",
           description: "Quarterfinalist",
+          image: undefined,
         },
       ],
     })
@@ -154,14 +182,17 @@ export class ProjectsComponent {
         {
           title: "Cinequest Screenwriting Competition 2023-2024",
           description: "Semifinalist",
+          image: undefined,
         },
         {
           title: "The Southern California Screenplay Competition 2023",
           description: "Quarterfinalist",
+          image: undefined,
         },
         {
           title: "The Finish Line Script Competition 2022-2023",
           description: "Honorable Mention",
+          image: undefined,
         }
       ],
     })

@@ -127,12 +127,24 @@
         </ng-container>
         <p>{{project.description}}</p>
 
-        <dl class="uk-description-list">
-          <ng-container *ngFor="let highlight of project.highlights">
-            <dt>{{highlight.title}}</dt>
-            <dd>{{highlight.description}}</dd>
-          </ng-container>
-        </dl>
+        <ul class="uk-comment-list">
+          <li *ngFor="let highlight of project.highlights" style="margin-top: 20px">
+
+            <article class="uk-comment uk-visible-toggle">
+              <header class="uk-comment-header uk-position-relative">
+                <div class="uk-grid-medium uk-flex-middle" uk-grid>
+                  <div class="uk-width-auto" *ngIf="highlight.image">
+                    <img class="uk-comment-avatar" [src]="highlight.image" width="80" height="80" alt="">
+                  </div>
+                  <div class="uk-width-expand">
+                    <h5 class="uk-comment-title uk-margin-remove">{{highlight.title}}</h5>
+                    <p class="uk-comment-meta uk-margin-remove-top">{{highlight.description}}</p>
+                  </div>
+                </div>
+              </header>
+            </article>
+          </li>
+        </ul>
 
         <a *ngIf="project.website" class="uk-margin-right" href="{{project.website}}" target="_blank" uk-icon="icon: world; ratio: 2"></a>
         <a *ngIf="project.youtube" class="uk-margin-right" href="{{project.youtube}}" target="_blank" uk-icon="icon: youtube; ratio: 2"></a>

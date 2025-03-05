@@ -34,7 +34,8 @@ export interface Project {
 
 export interface Highlight {
   title: string,
-  description: string
+  description: string,
+  image: string | undefined,
 }
 
 export interface Showrun {
