@@ -99,6 +99,7 @@ export class ProjectsComponent {
           title: "The Dunwich Horror Fest",
           description: "Finalist",
           image: "assets/images/the_dunwich_horror_fest_finalist_cthulhu_sign_black_transparent.png",
+          laurel: "assets/images/laurel_finalist_white_transparent.png",
         },
       ],
     })
@@ -114,7 +115,7 @@ export class ProjectsComponent {
       image: "assets/images/love_me_knot.png",
       image_attribution: undefined,
       coverfly: undefined,
-      youtube: "https://youtu.be/FoFsBxUdduY",
+      youtube: "https://www.youtube.com/watch?v=pyV2LYXo_w8",
       website: undefined,
       roles: [
         "Cinematographer",
@@ -123,6 +124,12 @@ export class ProjectsComponent {
         "Editor",
       ],
       highlights: [
+        {
+          title: "Star City Film Festival",
+          description: "Official Selection",
+          image: "assets/images/star_city_film_festival_official_selection_2025.png",
+          laurel: "assets/images/laurel_official_selection_white_transparent.png",
+        },
       ],
     })
 
@@ -147,16 +154,19 @@ export class ProjectsComponent {
           title: "Chicago Rhinofest 2024",
           description: "Produced and staged for a 4-show run",
           image: undefined,
+          laurel: undefined,
         },
         {
           title: "Richmond International Film Festival Screenplay Competition",
           description: "Semifinalist",
-          image: undefined,
+          image: "assets/images/richmond_international_film_festival_semifinalist_2024.png",
+          laurel: "assets/images/laurel_semifinalist_white_transparent.png",
         },
         {
           title: "Creative World Awards",
           description: "Quarterfinalist",
-          image: undefined,
+          image: "assets/images/creative_world_awards_quarterfinalist_2024.png",
+          laurel: "assets/images/laurel_quarterfinalist_white_transparent.png",
         },
       ],
     })
@@ -182,17 +192,20 @@ export class ProjectsComponent {
         {
           title: "Cinequest Screenwriting Competition 2023-2024",
           description: "Semifinalist",
-          image: undefined,
+          image: "assets/images/cinequest_screenwriting_competition_semifinalist_2024.png",
+          laurel: "assets/images/laurel_semifinalist_white_transparent.png",
         },
         {
           title: "The Southern California Screenplay Competition 2023",
           description: "Quarterfinalist",
-          image: undefined,
+          image: "assets/images/the_southern_california_screenplay_competition_quarterfinalist_2023.png",
+          laurel: "assets/images/laurel_quarterfinalist_white_transparent.png",
         },
         {
           title: "The Finish Line Script Competition 2022-2023",
           description: "Honorable Mention",
-          image: undefined,
+          image: "assets/images/the_finish_line_script_competition_honorable_mention_2023.png",
+          laurel: undefined,
         }
       ],
     })

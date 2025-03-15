@@ -36,6 +36,7 @@ export interface Highlight {
   title: string,
   description: string,
   image: string | undefined,
+  laurel: string | undefined,
 }
 
 export interface Showrun {

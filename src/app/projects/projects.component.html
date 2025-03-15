@@ -78,17 +78,34 @@
 <div class="uk-section uk-section-xsmall">
   <div class="uk-container uk-padding-remove-left uk-padding-remove-right">
     <div class="uk-grid uk-grid-collapse uk-child-width-1-2@s" uk-grid>
-      <div *ngFor="let project of matchingProjects" class="">
-        <div class="uk-inline" attr.uk-toggle="target: #{{getId(project)}}">
+      <div *ngFor="let project of matchingProjects" attr.uk-toggle="target: #{{getId(project)}}">
+        <div class="uk-inline">
           <canvas width="1600" height="800"></canvas>
           <img src="{{project.image}}" uk-cover />
+          <!--
           <div class="uk-card-badge uk-label">{{project.title}}</div>
+          -->
 
           <!--
-          <div class="uk-overlay uk-overlay-primary uk-position-bottom">
-            <h5 class="uk-heading uk-text-muted uk-text-center">{{project.title}}</h5>
+          <div class="uk-overlay uk-overlay-primary uk-position-bottom" style="height: 80px">
+            <h5 class="uk-heading uk-text-muted uk-text-left" style="display: inline">{{project.title}}</h5>
+
+            <div style="right: 0; display: inline; float: right; z-index: 2; position: relative; vertical-align: center; top: -15px">
+              <span *ngFor="let highlight of project.highlights">
+                <img *ngIf="highlight.laurel" class="uk-comment-avatar" [src]="highlight.laurel" width="70" height="70" alt="">
+              </span>
+            </div>
           </div>
           -->
+        </div>
+        <div class="project-image-caption">
+          <h5 class="uk-heading uk-text-muted uk-text-left" style="display: inline">{{project.title}}</h5>
+
+          <div class="project-image-caption-laurels">
+              <span *ngFor="let highlight of project.highlights">
+                <img *ngIf="highlight.laurel" class="uk-comment-avatar" [src]="highlight.laurel">
+              </span>
+          </div>
         </div>
       </div>
     </div>
@@ -145,6 +162,8 @@
             </article>
           </li>
         </ul>
+
+        <hr/>
 
         <a *ngIf="project.website" class="uk-margin-right" href="{{project.website}}" target="_blank" uk-icon="icon: world; ratio: 2"></a>
         <a *ngIf="project.youtube" class="uk-margin-right" href="{{project.youtube}}" target="_blank" uk-icon="icon: youtube; ratio: 2"></a>
