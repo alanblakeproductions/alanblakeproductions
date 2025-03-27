@@ -125,6 +125,12 @@ export class ProjectsComponent {
       ],
       highlights: [
         {
+          title: "Gothamite Monthly Film Awards",
+          description: "Best Web Series February 2025",
+          image: "assets/images/gothamite_best_web_series_february_2025.png",
+          laurel: "assets/images/laurel_winner_white_transparent.png"
+        },
+        {
           title: "Star City Film Festival",
           description: "Official Selection",
           image: "assets/images/star_city_film_festival_official_selection_2025.png",
