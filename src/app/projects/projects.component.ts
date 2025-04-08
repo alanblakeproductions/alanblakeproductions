@@ -101,6 +101,12 @@ export class ProjectsComponent {
           image: "assets/images/the_dunwich_horror_fest_finalist_cthulhu_sign_black_transparent.png",
           laurel: "assets/images/laurel_finalist_white_transparent.png",
         },
+        {
+          title: "Melrose Hill Short Film Festival",
+          description: "Official Selection",
+          image: "assets/images/melrose_hill_short_film_festival_official_selection_2025.png",
+          laurel: "assets/images/laurel_official_selection_white_transparent.png",
+        },
       ],
     })
 
