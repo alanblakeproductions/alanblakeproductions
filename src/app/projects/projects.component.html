@@ -102,8 +102,8 @@
           <h5 class="uk-heading uk-text-muted uk-text-left" style="display: inline">{{project.title}}</h5>
 
           <div class="project-image-caption-laurels">
-              <span *ngFor="let highlight of project.highlights">
-                <img *ngIf="highlight.laurel" class="uk-comment-avatar" [src]="highlight.laurel">
+              <span *ngFor="let laurel of getUniqueLaurels(project)">
+                <img *ngIf="laurel" class="uk-comment-avatar" [src]="laurel">
               </span>
           </div>
         </div>

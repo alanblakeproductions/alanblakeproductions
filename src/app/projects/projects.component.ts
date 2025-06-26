@@ -15,7 +15,6 @@ import { Address, Highlight, Person, Project, Showtime } from './../util/models'
 })
 export class ProjectsComponent {
 
-  EXAMPLE_PHOTO: string = "https://picsum.photos/id/120/1200/800";
   matchingProjects: Project[] = []
 
 /*
@@ -105,6 +104,12 @@ export class ProjectsComponent {
           title: "Melrose Hill Short Film Festival",
           description: "Official Selection",
           image: "assets/images/melrose_hill_short_film_festival_official_selection_2025.png",
+          laurel: "assets/images/laurel_official_selection_white_transparent.png",
+        },
+        {
+          title: "Loveland Shorts Film Festival",
+          description: "Official Selection",
+          image: "assets/images/loveland_shorts_film_festival_official_selection_2025.png",
           laurel: "assets/images/laurel_official_selection_white_transparent.png",
         },
       ],
@@ -282,6 +287,12 @@ export class ProjectsComponent {
       return this.getId(this.matchingProjects[this.matchingProjects.length - 1]);
     }
     return this.getId(this.matchingProjects[index - 1])
+  }
+
+  getUniqueLaurels(project: Project) {
+    return project.highlights
+          .map(highlight => highlight.laurel)
+          .filter((laurel, i, cumulative) => cumulative.indexOf(laurel) === i);
   }
 
   onKeyPress($event: any, index: number) {
