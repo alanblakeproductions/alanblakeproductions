@@ -147,6 +147,12 @@ export class ProjectsComponent {
           image: "assets/images/star_city_film_festival_official_selection_2025.png",
           laurel: "assets/images/laurel_official_selection_white_transparent.png",
         },
+        {
+          title: "Clout International Film Fest",
+          description: "Official Selection",
+          image: "assets/images/clout_international_film_fest_official_selection_2025.png",
+          laurel: "assets/images/laurel_official_selection_white_transparent.png",
+        },
       ],
     })
 
