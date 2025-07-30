@@ -103,13 +103,13 @@ export class ProjectsComponent {
         {
           title: "Melrose Hill Short Film Festival",
           description: "Official Selection",
-          image: "assets/images/melrose_hill_short_film_festival_official_selection_2025.png",
+          image: "assets/images/2025_melrose_hill_short_film_festival_official_selection.png",
           laurel: "assets/images/laurel_official_selection_white_transparent.png",
         },
         {
           title: "Loveland Shorts Film Festival",
           description: "Official Selection",
-          image: "assets/images/loveland_shorts_film_festival_official_selection_2025.png",
+          image: "assets/images/2025_loveland_shorts_film_festival_official_selection.png",
           laurel: "assets/images/laurel_official_selection_white_transparent.png",
         },
       ],
@@ -138,19 +138,25 @@ export class ProjectsComponent {
         {
           title: "Gothamite Monthly Film Awards",
           description: "Best Web Series February 2025",
-          image: "assets/images/gothamite_best_web_series_february_2025.png",
+          image: "assets/images/2025_february_gothamite_best_web_series.png",
           laurel: "assets/images/laurel_winner_white_transparent.png"
         },
         {
           title: "Star City Film Festival",
           description: "Official Selection",
-          image: "assets/images/star_city_film_festival_official_selection_2025.png",
+          image: "assets/images/2025_star_city_film_festival_official_selection.png",
           laurel: "assets/images/laurel_official_selection_white_transparent.png",
         },
         {
           title: "Clout International Film Fest",
           description: "Official Selection",
-          image: "assets/images/clout_international_film_fest_official_selection_2025.png",
+          image: "assets/images/2025_clout_international_film_fest_official_selection.png",
+          laurel: "assets/images/laurel_official_selection_white_transparent.png",
+        },
+        {
+          title: "PrairieFest Film Showcase",
+          description: "Official Selection",
+          image: "assets/images/2025_prairiefest_film_showcase_official_selection.png",
           laurel: "assets/images/laurel_official_selection_white_transparent.png",
         },
       ],
@@ -182,13 +188,13 @@ export class ProjectsComponent {
         {
           title: "Richmond International Film Festival Screenplay Competition",
           description: "Semifinalist",
-          image: "assets/images/richmond_international_film_festival_semifinalist_2024.png",
+          image: "assets/images/2024_richmond_international_film_festival_semifinalist.png",
           laurel: "assets/images/laurel_semifinalist_white_transparent.png",
         },
         {
           title: "Creative World Awards",
           description: "Quarterfinalist",
-          image: "assets/images/creative_world_awards_quarterfinalist_2024.png",
+          image: "assets/images/2024_creative_world_awards_quarterfinalist.png",
           laurel: "assets/images/laurel_quarterfinalist_white_transparent.png",
         },
       ],
@@ -215,19 +221,19 @@ export class ProjectsComponent {
         {
           title: "Cinequest Screenwriting Competition 2023-2024",
           description: "Semifinalist",
-          image: "assets/images/cinequest_screenwriting_competition_semifinalist_2024.png",
+          image: "assets/images/2024_cinequest_screenwriting_competition_semifinalist.png",
           laurel: "assets/images/laurel_semifinalist_white_transparent.png",
         },
         {
           title: "The Southern California Screenplay Competition 2023",
           description: "Quarterfinalist",
-          image: "assets/images/the_southern_california_screenplay_competition_quarterfinalist_2023.png",
+          image: "assets/images/2023_the_southern_california_screenplay_competition_quarterfinalist.png",
           laurel: "assets/images/laurel_quarterfinalist_white_transparent.png",
         },
         {
           title: "The Finish Line Script Competition 2022-2023",
           description: "Honorable Mention",
-          image: "assets/images/the_finish_line_script_competition_honorable_mention_2023.png",
+          image: "assets/images/2023_the_finish_line_script_competition_honorable_mention.png",
           laurel: undefined,
         }
       ],
