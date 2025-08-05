@@ -101,15 +101,15 @@ export class ProjectsComponent {
           laurel: "assets/images/laurel_finalist_white_transparent.png",
         },
         {
+          title: "Loveland Shorts Film Festival",
+          description: "Best Horror Short Finalist",
+          image: "assets/images/2025_loveland_shorts_film_festival_best_horror_short_finalist.png",
+          laurel: "assets/images/laurel_finalist_white_transparent.png",
+        },
+        {
           title: "Melrose Hill Short Film Festival",
           description: "Official Selection",
           image: "assets/images/2025_melrose_hill_short_film_festival_official_selection.png",
-          laurel: "assets/images/laurel_official_selection_white_transparent.png",
-        },
-        {
-          title: "Loveland Shorts Film Festival",
-          description: "Official Selection",
-          image: "assets/images/2025_loveland_shorts_film_festival_official_selection.png",
           laurel: "assets/images/laurel_official_selection_white_transparent.png",
         },
       ],
@@ -143,9 +143,15 @@ export class ProjectsComponent {
         },
         {
           title: "Star City Film Festival",
-          description: "Official Selection",
-          image: "assets/images/2025_star_city_film_festival_official_selection.png",
-          laurel: "assets/images/laurel_official_selection_white_transparent.png",
+          description: "Best TV Pilot",
+          image: "assets/images/2025_star_city_film_festival_best_tv_pilot.png",
+          laurel: "assets/images/laurel_winner_white_transparent.png"
+        },
+        {
+          title: "Star City Film Festival",
+          description: "Best Comedic Short",
+          image: "assets/images/2025_star_city_film_festival_best_comedic_short.png",
+          laurel: "assets/images/laurel_winner_white_transparent.png"
         },
         {
           title: "Clout International Film Fest",
