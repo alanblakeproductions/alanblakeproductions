@@ -143,14 +143,14 @@ export class ProjectsComponent {
         },
         {
           title: "Star City Film Festival",
-          description: "Best TV Pilot",
-          image: "assets/images/2025_star_city_film_festival_best_tv_pilot.png",
+          description: "Best Short Comedic Film",
+          image: "assets/images/2025_star_city_film_festival_best_short_comedic_film.png",
           laurel: "assets/images/laurel_winner_white_transparent.png"
         },
         {
           title: "Star City Film Festival",
-          description: "Best Comedic Short",
-          image: "assets/images/2025_star_city_film_festival_best_comedic_short.png",
+          description: "Best Cast in a Short Film",
+          image: "assets/images/2025_star_city_film_festival_best_cast_in_a_short_film.png",
           laurel: "assets/images/laurel_winner_white_transparent.png"
         },
         {
