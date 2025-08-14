@@ -155,9 +155,9 @@ export class ProjectsComponent {
         },
         {
           title: "Clout International Film Fest",
-          description: "Official Selection",
-          image: "assets/images/2025_clout_international_film_fest_official_selection.png",
-          laurel: "assets/images/laurel_official_selection_white_transparent.png",
+          description: "Best Web/TV Series",
+          image: "assets/images/2025_clout_international_film_fest_best_web_tv_series.png",
+          laurel: "assets/images/laurel_winner_white_transparent.png",
         },
         {
           title: "PrairieFest Film Showcase",
@@ -310,7 +310,12 @@ export class ProjectsComponent {
   getUniqueLaurels(project: Project) {
     return project.highlights
           .map(highlight => highlight.laurel)
-          .filter((laurel, i, cumulative) => cumulative.indexOf(laurel) === i);
+          .reduce((acc, laurel) => {
+            if (laurel) {
+              acc[laurel] = (acc[laurel] || 0) + 1;
+            }
+            return acc;
+          }, {} as Record<string, number>);
   }
 
   onKeyPress($event: any, index: number) {
