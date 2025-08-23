@@ -49,3 +49,36 @@ export interface Showtime {
   date: Date,
   time: string,
 }
+
+export interface ShotmakerProjectSummary {
+  title: string
+}
+
+export interface Shot {
+  scene: string,
+  setup: string,
+  shotId: string,
+  subject: string,
+  shotSize: string,
+  camera: string,
+  angle: string,
+  movement: string,
+  lens: string,
+  notes: string,
+  imageLink: string,
+  scriptLink: string,
+}
+
+export interface ShotmakerProjectShotlist {
+  file: string,
+}
+
+export interface ShotmakerProjectVideo {
+  link: string,
+}
+
+export interface ShotmakerProject {
+  summary: ShotmakerProjectSummary,
+  shotlist: ShotmakerProjectShotlist,
+  video: ShotmakerProjectVideo
+}

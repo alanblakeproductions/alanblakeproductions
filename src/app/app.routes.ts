@@ -4,6 +4,8 @@ import { ProjectsComponent } from './projects/projects.component'
 import { ContactComponent } from './contact/contact.component'
 
 import { SedgwickComponent } from './sedgwick/sedgwick.component'
+import { ShotmakerComponent } from './shotmaker/shotmaker.component'
+import { ShotmakerProjectComponent } from './shotmaker/shotmaker-project.component'
 
 import { Routes } from '@angular/router';
 
@@ -15,4 +17,7 @@ export const routes: Routes = [
   { path: 'contact', component: ContactComponent },
 
   { path: 'sedgwick', component: SedgwickComponent },
+  { path: 'shotmaker', component: ShotmakerComponent },
+  { path: 'shotmaker/:projectId', component: ShotmakerProjectComponent },
+  { path: 'shotmaker/:projectId/:tab', component: ShotmakerProjectComponent }
 ];

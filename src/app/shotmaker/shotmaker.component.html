@@ -1,0 +1,12 @@
+<div class="uk-section uk-section-small uk-section-muted">
+  <div class="uk-container">
+
+    <h1 class="uk-heading">Shotmaker</h1>
+
+    <ul class="uk-list">
+      <li *ngFor="let projectId of projectIds">
+        <a routerLink="/shotmaker/{{projectId}}">{{projectId}}</a>
+      </li>
+    </ul>
+  </div>
+</div>
