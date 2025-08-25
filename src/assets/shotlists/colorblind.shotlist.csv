@@ -1,27 +1,25 @@
 SCENE #	SETUP #	SHOT #	SUBJECT	SHOT SIZE	CAMERA	ANGLE	MOVEMENT	EQUIPMENT	LENS	SOUND	NOTES	PAGE(S)
-4	1	A	Alex OTS Dad	MS (OTS)	A CAM	Low Angle	Static	Sticks / Tripod	35 mm	Boom	Alex reacts to Dad	2-5
-4	2	A	Alex FOTS Ashley	MS (OTS)	A CAM	Eyelevel	Static	Sticks / Tripod	35 mm	Boom	Alex exchanges looks with Ashley	2-5
-4	2	B	Ashley FOTS Alex	MS (OTS)	B CAM	Eyelevel	Static	Sticks / Tripod	35 mm	Boom	Ashley exchanges looks with Alex	2-5
-4	3	A	Ashley OTS Dad	LS	A CAM	Low Angle	Static	Sticks / Tripod	35 mm	Boom	Ashley reacts to Dad	2-5
-4	3	B	Ashley OTS Dad	CU (OTS)	B CAM	Eyelevel	Static	Sticks / Tripod	50 mm	Boom	Ashley reacts to Dad	2-5
-4	4	A	Dad OTS Ashley	LS	A CAM	Low Angle	Static	Sticks / Tripod	35 mm	Boom	Dad freaks out to Ashley	2-5
-4	4	B	Dad OTS Alex	MS	B CAM	High Angle	Static	Sticks / Tripod	35 mm	Boom	Dad freaks out to Alex	2-5
-4	5	A	Mom OTS Dad	MS	A CAM	Low Angle	Static	Sticks / Tripod	35 mm	Boom	"David?"	3
-4	5	B	Dad OTS Mom	MS	B CAM	Low Angle	Static	Sticks / Tripod	35 mm	Boom	"Colorblind. Corrective. Lenses."	3
-4	6	A	Mom, Dad OTS Kids	LS	A CAM	Eyelevel	Static	Sticks / Tripod	17 mm	Boom
-4	8	A	Kids OTS Mom, Dad	LS	A CAM	Low Angle	Static	Sticks / Tripod	17 mm	Boom
-4	9	A	Alex OTS Mom	MS (OTS)	A CAM	Low Angle	Static	Sticks / Tripod	35 mm	Boom	Alex reacts to Mom
-4	10	A	Mom OTS Alex	MS (OTS)	A CAM	High Angle	Static	Sticks / Tripod	35 mm	Boom	Mom reacts to Alex
-4	10	B	Mom	CU	B CAM	Eyelevel	Static	Sticks / Tripod	50 mm	Boom	Mom reacts to Alex
-4	11	A	Ashley OTS Mom	MS (OTS)	A CAM	Eyelevel	Static	Sticks / Tripod	35 mm	Boom	Ashley reacts to Mom
-4	12	A	Mom OTS Ashley	MS (OTS)	A CAM	Eyelevel	Static	Sticks / Tripod	35 mm	Boom	Mom reacts to Alex
-4	13	A	All	LS	A CAM	Eyelevel	Static	Sticks / Tripod	35 mm	Boom	Travling to/from alley
-4	14	A	Nick	LS	A CAM	Eyelevel	Handheld	Handheld	35 mm	Boom	"Taskrabbit?" "You are cruel"
-4	15	A	Kids OTS Mom	LS	A CAM	Eyelevel	Static	Sticks / Tripod	35 mm	Boom	"Short. Dumb"
-4	30	A	Alex foreground, Ashley background	LS	ALEX'S PHONE	High Angle	Handheld		28 mm	Boom	Alex and Ashley walk through alley, Alex recording selfie	2
-4	31	A	Mom, cake	MS	ALEX'S PHONE	High Angle	Handheld		28 mm	Boom	Mom cutting the cake	2
-4	32	A	Dad, Mom	LS	ALEX'S PHONE	High Angle	Handheld		28 mm	Boom	Dad about to open present, while Mom comes to sit by him	2
-4	32	B	Dad, Ashley	MS	ALEX'S PHONE	Eyelevel	Handheld		28 mm	Boom	"We pick them special", then sweep to Ashley	2
-4	33	A	Alex, Dad	MS	ASHLEY'S PHONE	Eyelevel	Handheld		28 mm	Boom	Ashley sweeps to Alex, then back to Dad	2
-4	33	B	Dad	CU	ASHLEY'S PHONE	High Angle	Handheld		28 mm	Boom	Dad pulls out glasses	2
-4	33	C	Dad	MS	ASHLEY'S PHONE	High Angle	Handheld		28 mm	Boom	Dad freaks out	2
+4	1	A	Alex foreground, Ashley background	LS	ALEX'S PHONE	High Angle	Handheld	Handheld	28 mm	Boom	Alex and Ashley walk through alley, Alex recording selfie	2
+4	2	A	Mom, cake	MS	ALEX'S PHONE	High Angle	Handheld	Handheld	28 mm	Boom	Mom cutting the cake	2
+4	3	A	Dad, Mom	LS	ALEX'S PHONE	High Angle	Handheld	Handheld	28 mm	Boom	Dad about to open present, while Mom comes to sit by him	2
+4	3	B	Dad, Ashley	MS	ALEX'S PHONE	Eyelevel	Handheld	Handheld	28 mm	Boom	"We pick them special", then sweep to Ashley	2
+4	4	A	Alex, Dad	MS	ASHLEY'S PHONE	Eyelevel	Handheld	Handheld	28 mm	Boom	Ashley sweeps to Alex, then back to Dad	2
+4	4	B	Dad	CU	ASHLEY'S PHONE	High Angle	Handheld	Handheld	28 mm	Boom	Dad pulls out glasses	2
+4	5	A	Dad	MS	ASHLEY'S PHONE	High Angle	Handheld	Handheld	28 mm	Boom	Dad freaks out	2
+4	10	A	Alex OTS Dad	MS (OTS)	A CAM	Low Angle	Static	Sticks / Tripod	35 mm	Boom	Alex reacts to Dad
+4	11	A	Alex FOTS Ashley	MS (OTS)	A CAM	Eyelevel	Static	Sticks / Tripod	35 mm	Boom	Alex exchanges looks with Ashley
+4	12	A	Alex OTS Mom	MS (OTS)	A CAM	Low Angle	Static	Sticks / Tripod	35 mm	Boom	Alex reacts to Mom
+4	20	A	Ashley OTS Dad	LS	A CAM	Low Angle	Static	Sticks / Tripod	35 mm	Boom	Ashley reacts to Dad
+4	20	B	Ashley OTS Dad	CU (OTS)	B CAM	Eyelevel	Static	Sticks / Tripod	50 mm	Boom	Ashley reacts to Dad
+4	21	A	Ashley OTS Mom	MS (OTS)	A CAM	Eyelevel	Static	Sticks / Tripod	35 mm	Boom	Ashley reacts to Mom
+4	22	A	Ashley FOTS Alex	MS (OTS)	B CAM	Eyelevel	Static	Sticks / Tripod	35 mm	Boom	Ashley exchanges looks with Alex
+4	30	A	Dad OTS Ashley	LS	A CAM	Low Angle	Static	Sticks / Tripod	35 mm	Boom	Dad freaks out to Ashley
+4	30	B	Dad OTS Alex	MS	B CAM	High Angle	Static	Sticks / Tripod	35 mm	Boom	Dad freaks out to Alex
+4	31	A	Dad FOTS Mom	MS	A CAM	Low Angle	Static	Sticks / Tripod	35 mm	Boom	"Colorblind. Corrective. Lenses."
+4	40	A	Mom FOTS Dad	MS	A CAM	Low Angle	Static	Sticks / Tripod	35 mm	Boom	"David?"
+4	41	A	Mom OTS Alex	MS (OTS)	A CAM	High Angle	Static	Sticks / Tripod	35 mm	Boom	Mom reacts to Alex
+4	41	B	Mom	CU	B CAM	Eyelevel	Static	Sticks / Tripod	50 mm	Boom	Mom reacts to Alex
+4	42	A	Mom OTS Ashley	MS (OTS)	A CAM	Eyelevel	Static	Sticks / Tripod	35 mm	Boom	Mom reacts to Alex
+4	50	A	Mom, Dad OTS Kids	LS	A CAM	Eyelevel	Static	Sticks / Tripod	17 mm	Boom
+4	51	A	All	LS	A CAM	Eyelevel	Static	Sticks / Tripod	35 mm	Boom	Travling to/from alley
+4	52	A	Kids OTS Mom, Dad	LS	A CAM	Low Angle	Static	Sticks / Tripod	17 mm	Boom
