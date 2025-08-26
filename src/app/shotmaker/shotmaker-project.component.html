@@ -5,6 +5,7 @@
         <ul class="uk-navbar-nav " uk-tab uk-switcher="connect: .project-tab">
           <li class="uk-visible@s" routerLinkActive="uk-active"><a routerLink="/shotmaker/{{activeProjectId}}/summary">{{activeProject.summary.title}}</a></li>
           <li routerLinkActive="uk-active"><a routerLink="/shotmaker/{{activeProjectId}}/shotlist"><span class="uk-icon uk-margin-xsmall-right" uk-icon="icon: camera"></span> Shotlist</a></li>
+          <li routerLinkActive="uk-active"><a routerLink="/shotmaker/{{activeProjectId}}/shadows"><span class="uk-icon uk-margin-xsmall-right" uk-icon="icon: future"></span> Shadows</a></li>
           <li routerLinkActive="uk-active"><a routerLink="/shotmaker/{{activeProjectId}}/video"><span class="uk-icon uk-margin-xsmall-right" uk-icon="icon: play"></span> Video</a></li>
         </ul>
       </div>
@@ -20,6 +21,8 @@
       </div>
     </div>
   </div>
+
+  <!-- Shotlist -->
   <div>
     <div class="uk-grid uk-grid-collapse" uk-grid>
       <div class="uk-width-1-1 uk-width-1-6@m">
@@ -54,26 +57,47 @@
 
               <table class="uk-table uk-table-small uk-table-divider uk-margin-small-top">
                 <thead>
-                  <tr>
-                    <th class="uk-table-shrink uk-visible@m">Camera</th>
-                    <th class="uk-table-shrink">Lens</th>
-                    <th class="uk-table-shrink uk-visible@m">Angle</th>
-                    <th class="uk-table-shrink">Movement</th>
-                  </tr>
+                <tr>
+                  <th class="uk-table-shrink uk-visible@m">Camera</th>
+                  <th class="uk-table-shrink">Lens</th>
+                  <th class="uk-table-shrink uk-visible@m">Angle</th>
+                  <th class="uk-table-shrink">Movement</th>
+                </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td class="uk-visible@m">{{shot.camera}}</td>
-                    <td>{{shot.lens}}</td>
-                    <td class="uk-visible@m">{{shot.angle}}</td>
-                    <td>{{shot.movement}}</td>
-                  </tr>
+                <tr>
+                  <td class="uk-visible@m">{{shot.camera}}</td>
+                  <td>{{shot.lens}}</td>
+                  <td class="uk-visible@m">{{shot.angle}}</td>
+                  <td>{{shot.movement}}</td>
+                </tr>
                 </tbody>
               </table>
             </div>
           </div>
 
           <img src="{{shot.imageLink}}" />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Shadows -->
+  <div>
+    <div class="uk-grid uk-grid-collapse" uk-grid>
+      <div class="uk-width-1-1 uk-width-1-6@m">
+        <ul class="uk-tab-left" uk-tab uk-switcher="connect: .project-shotlist">
+          <li class="uk-text-truncate" routerLinkActive="uk-active" *ngFor="let shadow of activeProjectShadows">
+            <a href="#">
+              <span>{{shadow.time}}</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="uk-width-1-1 uk-width-5-6@m uk-switcher project-shotlist">
+        <div *ngFor="let shadow of activeProjectShadows">
+          <img src="{{shadow.imageLink}}" />
         </div>
       </div>
     </div>

@@ -69,7 +69,16 @@ export interface Shot {
   scriptLink: string,
 }
 
+export interface Shadow {
+  time: string,
+  imageLink: string,
+}
+
 export interface ShotmakerProjectShotlist {
+  file: string,
+}
+
+export interface ShotmakerProjectShadows {
   file: string,
 }
 
@@ -80,5 +89,6 @@ export interface ShotmakerProjectVideo {
 export interface ShotmakerProject {
   summary: ShotmakerProjectSummary,
   shotlist: ShotmakerProjectShotlist,
+  shadows: ShotmakerProjectShadows,
   video: ShotmakerProjectVideo
 }

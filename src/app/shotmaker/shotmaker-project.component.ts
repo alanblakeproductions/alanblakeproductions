@@ -2,7 +2,7 @@ import { Component, HostListener, OnInit} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute, RouterLink, RouterLinkActive } from '@angular/router';
-import { ShotmakerProject, ShotmakerProjectSummary, ShotmakerProjectShotlist, ShotmakerProjectVideo, Shot } from './../util/models'
+import { ShotmakerProject, ShotmakerProjectSummary, ShotmakerProjectShotlist, ShotmakerProjectVideo, Shadow, Shot } from './../util/models'
 import { switchMap } from 'rxjs/operators';
 //import * as fs from 'fs';
 
@@ -27,6 +27,9 @@ export class ShotmakerProjectComponent implements OnInit {
       shotlist: {
         file: "assets/shotlists/colorblind.shotlist.csv",
       },
+      shadows: {
+        file: "assets/shotlists/colorblind.shadows.csv",
+      },
       video: {
         link: "assets/colorblind/colorblind-demo-v1.mov",
       }
@@ -36,6 +39,7 @@ export class ShotmakerProjectComponent implements OnInit {
   activeProjectId: string = "colorblind";
   activeProject: ShotmakerProject = this.shotmakerProjects[this.activeProjectId];
   activeProjectShots: Shot[] = [];
+  activeProjectShadows: Shadow[] = [];
   activeTab: string = "shotlist";
 
   constructor(
@@ -51,8 +55,8 @@ export class ShotmakerProjectComponent implements OnInit {
 
     this.activeProject = this.shotmakerProjects[this.activeProjectId];
 
-    const csvFilePath = this.activeProject.shotlist.file;
-    this.http.get(csvFilePath, { responseType: 'text'}).subscribe(csvFileContents => {
+    const shotlistCsvFilePath = this.activeProject.shotlist.file;
+    this.http.get(shotlistCsvFilePath, { responseType: 'text'}).subscribe(csvFileContents => {
       let rows = csvFileContents.split("\n");
       let headers = rows[0].split("\t");
       let headerToIndex: Record<string, number> = {};
@@ -84,8 +88,28 @@ export class ShotmakerProjectComponent implements OnInit {
           movement: movement,
           lens: lens,
           notes: notes,
-          imageLink: "assets/" + this.activeProjectId + "/" + this.activeProjectId + "-scene-" + scene + "-" + setup + shotId + ".png",
+          imageLink: "assets/" + this.activeProjectId + "/shots/" + this.activeProjectId + "-scene-" + scene + "-" + setup + shotId + ".png",
           scriptLink: "",
+        });
+      }
+    });
+
+    const shadowsCsvFilePath = this.activeProject.shadows.file;
+    this.http.get(shadowsCsvFilePath, { responseType: 'text'}).subscribe(csvFileContents => {
+      let rows = csvFileContents.split("\n");
+      let headers = rows[0].split("\t");
+      let headerToIndex: Record<string, number> = {};
+      for (var i = 0; i < headers.length; i++) {
+        headerToIndex[headers[i]] = i;
+      }
+
+      for (var i = 1; i < rows.length; i++) {
+        let row = rows[i];
+        let cells = row.split("\t");
+        let time = cells[headerToIndex["TIME"]];
+        this.activeProjectShadows.push({
+          time: time,
+          imageLink: "assets/" + this.activeProjectId + "/shadows/" + this.activeProjectId + "-shadow-" + time.replace(":", "") + ".png",
         });
       }
     });
