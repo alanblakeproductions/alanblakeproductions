@@ -25,13 +25,13 @@ export class ShotmakerProjectComponent implements OnInit {
         title: "Colorblind",
       },
       shotlist: {
-        file: "assets/shotlists/colorblind.shotlist.csv",
+        file: "assets/shotmaker/colorblind.shotlist.csv",
       },
       shadows: {
-        file: "assets/shotlists/colorblind.shadows.csv",
+        file: "assets/shotmaker/colorblind.shadows.csv",
       },
       video: {
-        link: "assets/colorblind/colorblind-demo-v1.mov",
+        link: "assets/shotmaker/colorblind-demo-v3.mov",
       }
     }
   };
@@ -77,6 +77,7 @@ export class ShotmakerProjectComponent implements OnInit {
         let movement = cells[headerToIndex["MOVEMENT"]];
         let lens = cells[headerToIndex["LENS"]];
         let notes = cells[headerToIndex["NOTES"]];
+        let priority = cells[headerToIndex["PRIORITY"]];
         this.activeProjectShots.push({
           scene: scene,
           setup: setup,
@@ -88,6 +89,7 @@ export class ShotmakerProjectComponent implements OnInit {
           movement: movement,
           lens: lens,
           notes: notes,
+          priority: priority,
           imageLink: "assets/" + this.activeProjectId + "/shots/" + this.activeProjectId + "-scene-" + scene + "-" + setup + shotId + ".png",
           scriptLink: "",
         });

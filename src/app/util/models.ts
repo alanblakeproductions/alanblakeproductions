@@ -65,6 +65,7 @@ export interface Shot {
   movement: string,
   lens: string,
   notes: string,
+  priority: string,
   imageLink: string,
   scriptLink: string,
 }
