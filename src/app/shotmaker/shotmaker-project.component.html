@@ -26,9 +26,10 @@
   <div>
     <div class="uk-grid uk-grid-collapse" uk-grid>
       <div class="uk-width-1-1 uk-width-1-6@m">
-        <ul class="uk-tab-left" uk-tab uk-switcher="connect: .project-shotlist">
+        <ul class="uk-tab-left shot-list-items" uk-tab uk-switcher="connect: .project-shotlist">
           <li class="uk-text-truncate" routerLinkActive="uk-active" *ngFor="let shot of activeProjectShots">
             <a href="#">
+              <span class="shot-list-item-size-label uk-label {{getShotLabelClass(shot)}}">{{getShotLabel(shot)}}</span>
               <span>{{shot.scene}}-{{shot.setup}}{{shot.shotId}}</span>
               <div style="text-transform: none">{{shot.subject}}</div>
             </a>
@@ -90,7 +91,7 @@
   <div>
     <div class="uk-grid uk-grid-collapse" uk-grid>
       <div class="uk-width-1-1 uk-width-1-6@m">
-        <ul class="uk-tab-left" uk-tab uk-switcher="connect: .project-shotlist">
+        <ul class="uk-tab-left shot-list-items" uk-tab uk-switcher="connect: .project-shotlist">
           <li class="uk-text-truncate" routerLinkActive="uk-active" *ngFor="let shadow of activeProjectShadows">
             <a href="#">
               <span>{{shadow.time}}</span>

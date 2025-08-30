@@ -31,7 +31,7 @@ export class ShotmakerProjectComponent implements OnInit {
         file: "assets/shotmaker/colorblind.shadows.csv",
       },
       video: {
-        link: "assets/shotmaker/colorblind-demo-v3.mov",
+        link: "assets/shotmaker/colorblind-demo-v4.mov",
       }
     }
   };
@@ -91,7 +91,6 @@ export class ShotmakerProjectComponent implements OnInit {
           notes: notes,
           priority: priority,
           imageLink: "assets/" + this.activeProjectId + "/shots/" + this.activeProjectId + "-scene-" + scene + "-" + setup + shotId + ".png",
-          scriptLink: "",
         });
       }
     });
@@ -115,5 +114,31 @@ export class ShotmakerProjectComponent implements OnInit {
         });
       }
     });
+  }
+
+  getShotLabel(shot: Shot): string {
+    if (shot.shotSize) {
+      let spaceIndex = shot.shotSize.indexOf(" ");
+      if (spaceIndex > -1) {
+        return shot.shotSize.slice(0, spaceIndex);
+      }
+    }
+    return shot.shotSize;
+  }
+
+  getShotLabelClass(shot: Shot): string {
+    switch (shot.shotSize) {
+      case "LS":
+      case "LS (OTS)":
+        return "uk-label-success";
+      case "MS":
+      case "MS (OTS)":
+        return "uk-label-warning";
+      case "CU":
+      case "CU (OTS)":
+        return "uk-label-danger";
+      default:
+        return "";
+    }
   }
 }

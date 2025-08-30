@@ -67,7 +67,6 @@ export interface Shot {
   notes: string,
   priority: string,
   imageLink: string,
-  scriptLink: string,
 }
 
 export interface Shadow {
