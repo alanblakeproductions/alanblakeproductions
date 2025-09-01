@@ -118,6 +118,12 @@ export class ProjectsComponent {
           image: "assets/images/2025_wreak_havoc_film_festival_official_selection.png",
           laurel: "assets/images/laurel_official_selection_white_transparent.png",
         },
+        {
+          title: "City of Lights Film Festival",
+          description: "Official Selection",
+          image: "assets/images/2025_city_of_lights_film_festival_official_selection.png",
+          laurel: "assets/images/laurel_official_selection_white_transparent.png",
+        },
       ],
     })
 
