@@ -1,0 +1,17 @@
+<div style="height: 20rem; overflow: auto" cdkScrollable>
+<ul class="uk-nav uk-nav-default"
+    cdkDropList
+    [cdkDropListData]="shots"
+    (cdkDropListDropped)="dropShot($event)">
+  @for (shot of shots; track shot) {
+  <li routerLinkActive="uk-active" class="uk-text-truncate" cdkDrag>
+    <a class="shot-list-item" routerLink="/shotmaker/{{projectId}}/shotlist/{{status}}/{{shot.id}}">
+      <span class="shot-list-item-size-label uk-label {{getShotLabelClass(shot)}}">{{getShotLabel(shot)}}</span>
+      <span>{{shot.scene}}-{{shot.setup}}{{shot.shotId}}</span>
+      <div style="text-transform: none">{{shot.subject}}</div>
+    </a>
+  </li>
+  }
+</ul>
+
+</div>

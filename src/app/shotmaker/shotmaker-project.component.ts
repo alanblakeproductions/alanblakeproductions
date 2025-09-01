@@ -2,9 +2,12 @@ import { Component, HostListener, OnInit} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute, RouterLink, RouterLinkActive } from '@angular/router';
-import { ShotmakerProject, ShotmakerProjectSummary, ShotmakerProjectShotlist, ShotmakerProjectVideo, Shadow, Shot } from './../util/models'
-import { switchMap } from 'rxjs/operators';
-//import * as fs from 'fs';
+import { CdkDrag, CdkDragDrop, CdkDropList, CdkDropListGroup, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
+import { ShotmakerShotlistComponent } from './shotmaker-shotlist.component';
+import { ShotmakerProject, ShotmakerProjectSummary, ShotmakerProjectShotlist, ShotmakerProjectVideo, Shadow, Shot } from './../util/models';
+import { BrowserStorageService } from './../service/browser-storage.service';
+import { Observable, BehaviorSubject, Subject, of } from 'rxjs';
+import { map, switchMap, distinctUntilChanged } from 'rxjs/operators';
 
 @Component({
   selector: 'app-shotmaker-project',
@@ -13,14 +16,19 @@ import { switchMap } from 'rxjs/operators';
     CommonModule,
     RouterLink,
     RouterLinkActive,
+    CdkDrag,
+    CdkDropList,
+    CdkDropListGroup,
+    ShotmakerShotlistComponent,
   ],
   templateUrl: './shotmaker-project.component.html',
   styleUrl: './shotmaker-project.component.less'
 })
 export class ShotmakerProjectComponent implements OnInit {
 
-  shotmakerProjects: Record<string, ShotmakerProject> = {
+  SHOTMAKER_PROJECTS: Record<string, ShotmakerProject> = {
     "colorblind": {
+      id: "colorblind",
       summary: {
         title: "Colorblind",
       },
@@ -36,109 +44,43 @@ export class ShotmakerProjectComponent implements OnInit {
     }
   };
 
-  activeProjectId: string = "colorblind";
-  activeProject: ShotmakerProject = this.shotmakerProjects[this.activeProjectId];
-  activeProjectShots: Shot[] = [];
-  activeProjectShadows: Shadow[] = [];
-  activeTab: string = "shotlist";
+  project: ShotmakerProject = {} as ShotmakerProject;
+  projectShadows$: Subject<Shadow[]> = new Subject();
 
   constructor(
     private http: HttpClient,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private browserStorageService: BrowserStorageService
   ) {
   }
 
   ngOnInit(): void {
-    let params = this.route.snapshot.paramMap;
-    this.activeProjectId = params.get('projectId') ?? "colorblind";
-    this.activeTab = params.get('tab') ?? "shotlist";
+    this.route.params.pipe(map(params => params['projectId']), distinctUntilChanged()).subscribe(projectId => {
+      this.project = this.SHOTMAKER_PROJECTS[projectId];
 
-    this.activeProject = this.shotmakerProjects[this.activeProjectId];
+      const shadowsCsvFilePath = this.project.shadows.file;
+      const shadowsCsvFileContents$ = this.http.get(shadowsCsvFilePath, { responseType: 'text'});
+      shadowsCsvFileContents$.subscribe(csvFileContents => {
+        let rows = csvFileContents.split("\n");
+        let headers = rows[0].split("\t");
+        let headerToIndex: Record<string, number> = {};
+        for (var i = 0; i < headers.length; i++) {
+          headerToIndex[headers[i]] = i;
+        }
 
-    const shotlistCsvFilePath = this.activeProject.shotlist.file;
-    this.http.get(shotlistCsvFilePath, { responseType: 'text'}).subscribe(csvFileContents => {
-      let rows = csvFileContents.split("\n");
-      let headers = rows[0].split("\t");
-      let headerToIndex: Record<string, number> = {};
-      for (var i = 0; i < headers.length; i++) {
-        headerToIndex[headers[i]] = i;
-      }
+        let projectShadows = [];
+        for (var i = 1; i < rows.length; i++) {
+          let row = rows[i];
+          let cells = row.split("\t");
+          let time = cells[headerToIndex["TIME"]];
+          projectShadows.push({
+            time: time,
+            imageLink: "assets/" + this.project.id + "/shadows/" + this.project.id + "-shadow-" + time.replace(":", "") + ".png",
+          });
+        }
 
-      for (var i = 1; i < rows.length; i++) {
-        let row = rows[i];
-        let cells = row.split("\t");
-        let scene = cells[headerToIndex["SCENE #"]];
-        let setup = cells[headerToIndex["SETUP #"]];
-        let shotId = cells[headerToIndex["SHOT #"]];
-        let subject = cells[headerToIndex["SUBJECT"]];
-        let shotSize = cells[headerToIndex["SHOT SIZE"]];
-        let camera = cells[headerToIndex["CAMERA"]];
-        let angle = cells[headerToIndex["ANGLE"]];
-        let movement = cells[headerToIndex["MOVEMENT"]];
-        let lens = cells[headerToIndex["LENS"]];
-        let notes = cells[headerToIndex["NOTES"]];
-        let priority = cells[headerToIndex["PRIORITY"]];
-        this.activeProjectShots.push({
-          scene: scene,
-          setup: setup,
-          shotId: shotId,
-          subject: subject,
-          shotSize: shotSize,
-          camera: camera,
-          angle: angle,
-          movement: movement,
-          lens: lens,
-          notes: notes,
-          priority: priority,
-          imageLink: "assets/" + this.activeProjectId + "/shots/" + this.activeProjectId + "-scene-" + scene + "-" + setup + shotId + ".png",
-        });
-      }
+        this.projectShadows$.next(projectShadows);
+      });
     });
-
-    const shadowsCsvFilePath = this.activeProject.shadows.file;
-    this.http.get(shadowsCsvFilePath, { responseType: 'text'}).subscribe(csvFileContents => {
-      let rows = csvFileContents.split("\n");
-      let headers = rows[0].split("\t");
-      let headerToIndex: Record<string, number> = {};
-      for (var i = 0; i < headers.length; i++) {
-        headerToIndex[headers[i]] = i;
-      }
-
-      for (var i = 1; i < rows.length; i++) {
-        let row = rows[i];
-        let cells = row.split("\t");
-        let time = cells[headerToIndex["TIME"]];
-        this.activeProjectShadows.push({
-          time: time,
-          imageLink: "assets/" + this.activeProjectId + "/shadows/" + this.activeProjectId + "-shadow-" + time.replace(":", "") + ".png",
-        });
-      }
-    });
-  }
-
-  getShotLabel(shot: Shot): string {
-    if (shot.shotSize) {
-      let spaceIndex = shot.shotSize.indexOf(" ");
-      if (spaceIndex > -1) {
-        return shot.shotSize.slice(0, spaceIndex);
-      }
-    }
-    return shot.shotSize;
-  }
-
-  getShotLabelClass(shot: Shot): string {
-    switch (shot.shotSize) {
-      case "LS":
-      case "LS (OTS)":
-        return "uk-label-success";
-      case "MS":
-      case "MS (OTS)":
-        return "uk-label-warning";
-      case "CU":
-      case "CU (OTS)":
-        return "uk-label-danger";
-      default:
-        return "";
-    }
   }
 }

@@ -1,0 +1,26 @@
+<div class="uk-grid uk-grid-collapse" uk-grid>
+  <div class="uk-width-1-1 uk-width-1-6@m">
+    <div class="uk-navbar-container">
+      <ul class="uk-flex-center uk-margin-remove-bottom" uk-tab>
+        <li routerLinkActive="uk-active">
+          <a routerLink="/shotmaker/{{project.id}}/shotlist/todo">
+            <span class="uk-icon" uk-icon="icon: list"></span>
+          </a>
+        </li>
+        <li routerLinkActive="uk-active">
+          <a routerLink="/shotmaker/{{project.id}}/shotlist/done">
+            <span class="uk-icon" uk-icon="icon: check"></span>
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="">
+      <app-shotmaker-shot-nav-pane [shots$]="shotsWithStatus$"></app-shotmaker-shot-nav-pane>
+    </div>
+  </div>
+
+  <div class="uk-width-1-1 uk-width-5-6@m">
+    <app-shotmaker-shot-detail-pane [shot$]="shot$"></app-shotmaker-shot-detail-pane>
+  </div>
+</div>

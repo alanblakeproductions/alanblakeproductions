@@ -55,6 +55,7 @@ export interface ShotmakerProjectSummary {
 }
 
 export interface Shot {
+  id: number,
   scene: string,
   setup: string,
   shotId: string,
@@ -87,6 +88,7 @@ export interface ShotmakerProjectVideo {
 }
 
 export interface ShotmakerProject {
+  id: string,
   summary: ShotmakerProjectSummary,
   shotlist: ShotmakerProjectShotlist,
   shadows: ShotmakerProjectShadows,

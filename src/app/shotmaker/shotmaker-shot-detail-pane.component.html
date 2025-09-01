@@ -1,0 +1,62 @@
+<div [ngSwitch]="shot === undefined">
+  <div *ngSwitchCase="true" class="uk-section uk-padding-small">
+    <div class="uk-container uk-text-center">
+      <p class="uk-text-meta">Pick a shot</p>
+    </div>
+  </div>
+
+  <div *ngSwitchCase="false" class="uk-section uk-padding-small uk-section-muted">
+    <div class="uk-container">
+      <div class="uk-align-right">
+        <div *ngIf="shot?.priority">
+          <span class="uk-label">{{shot?.priority}} PRIORITY</span>
+        </div>
+      </div>
+
+      <div class="uk-button-group">
+        <button *ngIf="status == 'done'" class="uk-button uk-button-small uk-button-default" (click)="moveTo('done', 'todo')">
+          Move to Todo
+        </button>
+        <button *ngIf="status == 'todo'" class="uk-button uk-button-small uk-button-danger" (click)="moveTo('todo', 'done')">
+          Move to Done
+        </button>
+      </div>
+
+      <table class="uk-table uk-table-small uk-table-divider uk-margin-small-bottom">
+        <thead>
+        <tr>
+          <th class="uk-table-shrink">Subject</th>
+          <th class="uk-table-shrink">Notes</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td>{{shot?.subject}}</td>
+          <td>{{shot?.notes}}</td>
+        </tr>
+        </tbody>
+      </table>
+
+      <table class="uk-table uk-table-small uk-table-divider uk-margin-small-top">
+        <thead>
+        <tr>
+          <th class="uk-table-shrink uk-visible@m">Camera</th>
+          <th class="uk-table-shrink">Lens</th>
+          <th class="uk-table-shrink uk-visible@m">Angle</th>
+          <th class="uk-table-shrink">Movement</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td class="uk-visible@m">{{shot?.camera}}</td>
+          <td>{{shot?.lens}}</td>
+          <td class="uk-visible@m">{{shot?.angle}}</td>
+          <td>{{shot?.movement}}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <img src="{{shot?.imageLink}}" />
+</div>
