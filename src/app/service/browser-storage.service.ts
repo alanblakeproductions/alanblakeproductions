@@ -38,4 +38,20 @@ export class BrowserStorageService {
   setShotStatus(projectId: string, shotId: number, status: string): void {
     this.setItem(this.getShotStatusKey(projectId, shotId), status);
   }
+
+  private getShotOrderKey(projectId: string, status: string, shotId: number): string {
+    return "shotmaker.project-" + projectId + ".status-" + status + ".shot-" + shotId + ".order";
+  }
+
+  getShotOrder(projectId: string, status: string, shotId: number): number {
+    return Number(this.getItem(this.getShotOrderKey(projectId, status, shotId)) ?? "1000");
+  }
+
+  setShotOrder(projectId: string, status: string, shotId: number, order: number): void {
+    this.setItem(this.getShotOrderKey(projectId, status, shotId), "" + order);
+  }
+
+  removeShotOrder(projectId: string, status: string, shotId: number): void {
+    this.removeItem(this.getShotOrderKey(projectId, status, shotId));
+  }
 }

@@ -36,7 +36,6 @@ export class ShotmakerShotDetailPane implements OnInit {
     this.projectId = this.route.snapshot.paramMap.get('projectId') ?? "";
 
     this.shot$.subscribe(shot => {
-      console.log("pane loaded ", shot);
       if (shot) {
         this.shot = shot;
         this.status = this.browserStorageService.getShotStatus(this.projectId, shot.id);
@@ -47,6 +46,7 @@ export class ShotmakerShotDetailPane implements OnInit {
   moveTo(fromStatus: string, toStatus: string): void {
     if (this.shot) {
       this.browserStorageService.setShotStatus(this.projectId, this.shot.id, toStatus);
+      //this.browserStorageService.setShotOrder(this.projectId, toStatus, this.shot.id, 0);
       this.router.navigate(['shotmaker', this.projectId, 'shotlist', fromStatus]);
     }
   }

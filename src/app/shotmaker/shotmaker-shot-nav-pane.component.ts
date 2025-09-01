@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterLink, RouterLinkActive } from '@angular/router';
 import { CdkDrag, CdkDragDrop, CdkDropList, CdkDropListGroup, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
 import { Shot } from './../util/models';
+import { BrowserStorageService } from './../service/browser-storage.service';
 import { Observable, BehaviorSubject, Subject, of } from 'rxjs';
 
 @Component({
@@ -29,6 +30,7 @@ export class ShotmakerShotNavPane implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
+    private browserStorageService: BrowserStorageService
   ) {
   }
 
@@ -39,7 +41,11 @@ export class ShotmakerShotNavPane implements OnInit {
     });
 
     this.shots$.subscribe(shots => {
-      this.shots = shots;
+      this.shots = shots.sort((a, b) => {
+        let aOrder = this.browserStorageService.getShotOrder(this.projectId, this.status, a.id);
+        let bOrder = this.browserStorageService.getShotOrder(this.projectId, this.status, b.id);
+        return aOrder - bOrder;
+      });
     });
   }
 
@@ -71,5 +77,12 @@ export class ShotmakerShotNavPane implements OnInit {
 
   dropShot(event: CdkDragDrop<Shot[]>) {
     moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+
+    for (let i = 0; i < event.container.data.length; i++) {
+      let shot = event.container.data[i];
+      let shotId = shot.id;
+
+      this.browserStorageService.setShotOrder(this.projectId, this.status, shotId, i);
+    }
   }
 }

@@ -46,6 +46,10 @@ export class ShotmakerShotlistComponent implements OnInit {
   ngOnInit(): void {
     this.shots$.subscribe(shots => {
       this.route.params.subscribe(params => {
+        if (params['tab'] !== 'shotlist') {
+          return;
+        }
+
         if (params['status']) {
           let status = params['status'];
           let shotsWithStatus = shots.filter(shot => {
@@ -56,7 +60,6 @@ export class ShotmakerShotlistComponent implements OnInit {
           if (params['shotId']) {
             let shotId = Number(params['shotId']);
             let shot = shots[shotId - 1];
-            console.log("Shot ID found ", shot);
             this.shot$.next(shot);
           }
           else {
