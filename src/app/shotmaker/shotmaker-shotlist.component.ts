@@ -62,7 +62,7 @@ export class ShotmakerShotlistComponent implements OnInit {
             let shot = shots[shotId - 1];
             this.shot$.next(shot);
           }
-          else {
+          else if (shotsWithStatus.length > 0) {
             this.router.navigate(['shotmaker', this.project.id, 'shotlist', status, shotsWithStatus[0].id]);
           }
         }

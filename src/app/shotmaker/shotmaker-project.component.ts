@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute, RouterLink, RouterLinkActive } from '@angular/router';
 import { CdkDrag, CdkDragDrop, CdkDropList, CdkDropListGroup, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
+import { ShotmakerShadowsComponent } from './shotmaker-shadows.component';
 import { ShotmakerShotlistComponent } from './shotmaker-shotlist.component';
 import { ShotmakerProject, ShotmakerProjectSummary, ShotmakerProjectShotlist, ShotmakerProjectVideo, Shadow, Shot } from './../util/models';
 import { BrowserStorageService } from './../service/browser-storage.service';
@@ -19,6 +20,7 @@ import { map, switchMap, distinctUntilChanged } from 'rxjs/operators';
     CdkDrag,
     CdkDropList,
     CdkDropListGroup,
+    ShotmakerShadowsComponent,
     ShotmakerShotlistComponent,
   ],
   templateUrl: './shotmaker-project.component.html',
@@ -45,7 +47,6 @@ export class ShotmakerProjectComponent implements OnInit {
   };
 
   project: ShotmakerProject = {} as ShotmakerProject;
-  projectShadows$: Subject<Shadow[]> = new Subject();
 
   constructor(
     private http: HttpClient,
@@ -57,30 +58,6 @@ export class ShotmakerProjectComponent implements OnInit {
   ngOnInit(): void {
     this.route.params.pipe(map(params => params['projectId']), distinctUntilChanged()).subscribe(projectId => {
       this.project = this.SHOTMAKER_PROJECTS[projectId];
-
-      const shadowsCsvFilePath = this.project.shadows.file;
-      const shadowsCsvFileContents$ = this.http.get(shadowsCsvFilePath, { responseType: 'text'});
-      shadowsCsvFileContents$.subscribe(csvFileContents => {
-        let rows = csvFileContents.split("\n");
-        let headers = rows[0].split("\t");
-        let headerToIndex: Record<string, number> = {};
-        for (var i = 0; i < headers.length; i++) {
-          headerToIndex[headers[i]] = i;
-        }
-
-        let projectShadows = [];
-        for (var i = 1; i < rows.length; i++) {
-          let row = rows[i];
-          let cells = row.split("\t");
-          let time = cells[headerToIndex["TIME"]];
-          projectShadows.push({
-            time: time,
-            imageLink: "assets/" + this.project.id + "/shadows/" + this.project.id + "-shadow-" + time.replace(":", "") + ".png",
-          });
-        }
-
-        this.projectShadows$.next(projectShadows);
-      });
     });
   }
 }
