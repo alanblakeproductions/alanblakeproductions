@@ -23,8 +23,22 @@ export class BrowserStorageService {
   }
 
   // Clear all items from local storage
-  private clear(): void {
-    localStorage.clear();
+  private clear(regex: RegExp): void {
+    const keysToRemove: string[] = [];
+
+    // Iterate over localStorage and collect keys matching the regex
+    for (let i = 0; i < localStorage.length; i++) {
+      const key: string | null = localStorage.key(i);
+      if (key && regex.test(key)) {
+        keysToRemove.push(key);
+      }
+    }
+
+    // Remove the collected items
+    for (const key of keysToRemove) {
+      console.log("Clearing key", key);
+      this.removeItem(key);
+    }
   }
 
   private getShotStatusKey(projectId: string, shotId: number): string {
@@ -39,6 +53,10 @@ export class BrowserStorageService {
     this.setItem(this.getShotStatusKey(projectId, shotId), status);
   }
 
+  private getShotOrderKeyRegex(projectId: string) {
+    return new RegExp("shotmaker\.project-" + projectId + "\.status-.*\.shot-.*\.order");
+  }
+
   private getShotOrderKey(projectId: string, status: string, shotId: number): string {
     return "shotmaker.project-" + projectId + ".status-" + status + ".shot-" + shotId + ".order";
   }
@@ -51,7 +69,7 @@ export class BrowserStorageService {
     this.setItem(this.getShotOrderKey(projectId, status, shotId), "" + order);
   }
 
-  removeShotOrder(projectId: string, status: string, shotId: number): void {
-    this.removeItem(this.getShotOrderKey(projectId, status, shotId));
+  clearShotOrder(projectId: string): void {
+    this.clear(this.getShotOrderKeyRegex(projectId));
   }
 }

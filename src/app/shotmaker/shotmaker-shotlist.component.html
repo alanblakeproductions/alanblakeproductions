@@ -1,7 +1,7 @@
 <div class="uk-grid uk-grid-collapse" uk-grid>
   <div class="uk-width-1-1 uk-width-1-6@m">
     <div class="uk-navbar-container">
-      <ul class="uk-flex-center uk-margin-remove-bottom" uk-tab>
+      <ul class="uk-flex-center uk-margin-remove-bottom uk-tab" >
         <li routerLinkActive="uk-active">
           <a routerLink="/shotmaker/{{project.id}}/shotlist/todo">
             <span class="uk-icon" uk-icon="icon: list"></span>
@@ -12,15 +12,28 @@
             <span class="uk-icon" uk-icon="icon: check"></span>
           </a>
         </li>
+        <li>
+          <a class="uk-button uk-button-link" uk-toggle="target: #confirm-clear-local-storage-modal">
+            <span class="uk-icon" uk-icon="icon: trash"></span>
+          </a>
+        </li>
       </ul>
     </div>
 
-    <div class="">
-      <app-shotmaker-shot-nav-pane [shots$]="shotsWithStatus$"></app-shotmaker-shot-nav-pane>
-    </div>
+    <app-shotmaker-shot-nav-pane [shots$]="shotsWithStatus$"></app-shotmaker-shot-nav-pane>
   </div>
 
   <div class="uk-width-1-1 uk-width-5-6@m">
     <app-shotmaker-shot-detail-pane [shot$]="shot$"></app-shotmaker-shot-detail-pane>
+  </div>
+
+  <div id="confirm-clear-local-storage-modal" uk-modal>
+    <div class="uk-modal-dialog uk-modal-body">
+      <p>Clear local storage? This will clear all saved shot orders and statuses.</p>
+      <p class="uk-text-right">
+        <button class="uk-button uk-button-text uk-modal-close" type="button">Cancel</button>
+        <button class="uk-button uk-button-primary uk-modal-close uk-margin-left" type="button" (click)="clearShotOrder()">Go</button>
+      </p>
+    </div>
   </div>
 </div>

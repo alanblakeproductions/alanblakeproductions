@@ -8,9 +8,7 @@
   <div *ngSwitchCase="false" class="uk-section uk-padding-small uk-section-muted">
     <div class="uk-container">
       <div class="uk-align-right">
-        <div *ngIf="shot?.priority">
-          <span class="uk-label">{{shot?.priority}} PRIORITY</span>
-        </div>
+        <span *ngIf="shot?.priority" class="uk-badge uk-padding-small">{{shot?.priority}} PRIORITY</span>
       </div>
 
       <div class="uk-button-group">

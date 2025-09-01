@@ -113,4 +113,9 @@ export class ShotmakerShotlistComponent implements OnInit {
       this.shots$.next(shots);
     });
   }
+
+  clearShotOrder(): void {
+    this.browserStorageService.clearShotOrder(this.project.id);
+    window.location.reload();
+  }
 }
