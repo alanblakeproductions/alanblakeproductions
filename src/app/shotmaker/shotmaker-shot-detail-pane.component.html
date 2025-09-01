@@ -1,5 +1,5 @@
 <div [ngSwitch]="shot === undefined">
-  <div *ngSwitchCase="true" class="uk-section uk-padding-small">
+  <div *ngSwitchCase="true" class="uk-section uk-section-large">
     <div class="uk-container uk-text-center">
       <p class="uk-text-meta">Pick a shot</p>
     </div>
@@ -56,5 +56,5 @@
     </div>
   </div>
 
-  <img src="{{shot?.imageLink}}" />
+  <img src="{{shot?.imageLink}}"/>
 </div>
