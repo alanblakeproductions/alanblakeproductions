@@ -1,39 +1,46 @@
-SCENE #	SETUP #	SHOT #	SUBJECT	SHOT SIZE	CAMERA	ANGLE	MOVEMENT	EQUIPMENT	LENS	SOUND	NOTES	PRIORITY
-4	1	A	Alex foreground, Ashley background	LS	ALEX'S PHONE	High Angle	Handheld	Handheld	24 mm	Boom	Alex and Ashley walk through alley, Alex recording selfie	LOW
-4	2	A	Mom, cake	MS	ALEX'S PHONE	High Angle	Handheld	Handheld	24 mm	Boom	Mom bringing out the cake	
-4	3	A	Anyone	MS	ALEX'S PHONE	High Angle	Handheld	Handheld	24 mm	Boom	Someone eating cake	
-4	4	A	Dad, Mom	LS	ALEX'S PHONE	High Angle	Handheld	Handheld	24 mm	Boom	Dad about to open present, while Mom comes to sit by him	
-4	4	B	Dad, Ashley	MS	ALEX'S PHONE	Eyelevel	Handheld	Handheld	24 mm	Boom	"We pick them special", then sweep to Ashley	
-4	5	A	Alex, Dad	MS	ASHLEY'S PHONE	Eyelevel	Handheld	Handheld	24 mm	Boom	Ashley sweeps to Alex, then back to Dad	
-4	5	B	Dad	CU	ASHLEY'S PHONE	High Angle	Handheld	Handheld	24 mm	Boom	Dad pulls out glasses	
-4	6	A	Dad	MS	ASHLEY'S PHONE	High Angle	Handheld	Handheld	24 mm	Boom	Dad freaks out	
-4	10	A	Alex OTS Dad	MS (OTS)	A CAM	Low Angle	Static	Sticks / Tripod	35 mm	Boom		
-4	20	A	Ashley OTS Dad	MS (OTS)	A CAM	Eyelevel	Static	Sticks / Tripod	50 mm	Boom		
-4	20	B	Ashley OTS Mom	MS (OTS)	B CAM	Eyelevel	Static	Sticks / Tripod	35 mm	Boom		
-4	22	A	Ashley FOTS Alex	MS (OTS)	A CAM	Eyelevel	Static	Sticks / Tripod	35 mm	Boom	Ashley exchanges looks with Alex	LOW
-4	30	A	Dad OTS Ashley	LS	A CAM	Low Angle	Static	Sticks / Tripod	35 mm	Boom		
-4	30	B	Dad OTS Alex	MS	B CAM	High Angle	Static	Sticks / Tripod	35 mm	Boom		
-4	31	A	Dad FOTS Mom	MS	A CAM	Low Angle	Static	Sticks / Tripod	35 mm	Boom		
-4	40	A	Mom FOTS Dad	MS	A CAM	Low Angle	Static	Sticks / Tripod	35 mm	Boom	"David?"	
-4	42	A	Mom OTS Ashley	MS (OTS)	A CAM	Eyelevel	Tilt	Sticks / Tripod	35 mm	Boom	Tilt up when Mom stands	
-4	50	A	Mom, Dad OTS Kids	LS	A CAM	Eyelevel	Static	Sticks / Tripod	17 mm	Boom	 	
-4	52	A	Kids OTS Mom, Dad	LS	A CAM	Low Angle	Static	Sticks / Tripod	17 mm	Boom		
-4	60	A	Alex, Ashley OTS Mom	LS	A CAM	Eyelevel	Handheld	Handheld	35 mm	Lav		
-4	61	A	Alex, Ashley OTS Mom	MS (OTS)	A CAM	Eyelevel	Handheld	Handheld	35 mm	Lav		
-4	62	A	Dad foreground, all background	LS	A CAM	Eyelevel	Static	Sticks / Tripod	35 mm	Boom		
-4	70	A	Mom	MS	A CAM	Eyelevel	Handheld	Handheld	35 mm	Lav		
-4	80	A	Nick	MS	A CAM	Eyelevel	Handheld	Handheld	50 mm	Lav		MEDIUM
-4	81	A	Nick OTS Mom	LS	A CAM	Eyelevel	Rack Focus	Handheld	35 mm	Lav		
-4	90	A	Mom OTS Dad	MS (OTS)	A CAM	Eyelevel	Handheld	Handheld	35 mm	Lav		
-4	100	A	Alex, Ashley OTS Dad	MS (OTS)	A CAM	Eyelevel	Handheld	Handheld	35 mm	Lav		
-4	101	A	Alex OTS Dad	CU (OTS)	A CAM	Eyelevel	Handheld	Handheld	35 mm	Lav		MEDIUM
-4	101	B	Ashley OTS Dad	CU (OTS)	B CAM	Eyelevel	Handheld	Handheld	35 mm	Lav		MEDIUM
-4	112	A	Dad OTS Kids	MS	A CAM	Eyelevel	Static	Sticks / Tripod	35 mm	Boom		
-4	112	B	Dad	LS	B CAM	Eyelevel	Static	Sticks / Tripod	35 mm	Boom		
-4	120	A	Dad, OTS Alex	CU (OTS)	A CAM	Eyelevel	Handheld	Handheld	35 mm	Lav		
-4	120	B	Dad, OTS Ashley	MS (OTS)	B CAM	Eyelevel	Handheld	Handheld	35 mm	Lav		
-4	121	A	Alex, OTS Dad	MS (OTS)	A CAM	Eyelevel	Handheld	Handheld	35 mm	Lav		
-4	121	B	Ashley, OTS Dad	MS (OTS)	B CAM	Eyelevel	Handheld	Handheld	35 mm	Lav		
-4	122	A	Mom	MS (OTS)	A CAM	Eyelevel	Handheld	Handheld	35 mm	Lav		
-4	123	A	Alex, Ashley	MS	A CAM	Eyelevel	Static	Sticks / Tripod	35 mm	Boom		MEDIUM
-4	130	A	Glasses (foreground), All (background)	LS	A CAM	Eyelevel	Static	Sticks / Tripod	35 mm	Boom		LOW
+SCENE #	SETUP #	SHOT #	SUBJECT	SHOT SIZE	CAMERA	ANGLE	MOVEMENT	EQUIPMENT	LENS	NOTES	PRIORITY	PAGE(S)	SCRIPT TIME (MIN)	SETUP TIME (MIN)	RESET  TIME (MIN)	EST. # OF TAKES	SHOOT TIME (MIN)
+4	1	A	Alex foreground, Ashley background	LS	ALEX'S PHONE	High Angle	Handheld	Handheld	24 mm	Alex and Ashley walk through alley, Alex recording selfie	LOW	2	0.25	5	1	3	9
+4	2	A	Mom, cake	MS	ALEX'S PHONE	High Angle	Handheld	Handheld	24 mm	Mom bringing out the cake		2	0.25	5	1	3	9
+4	3	A	Anyone	MS	ALEX'S PHONE	High Angle	Handheld	Handheld	24 mm	Someone eating cake		2	0.25	5	1	2	8
+4	4	A	Dad, Mom	LS	ALEX'S PHONE	High Angle	Handheld	Handheld	24 mm	Dad about to open present, while Mom comes to sit by him		2	0.75	5	1	3	10
+4	4	B	Dad, Ashley	MS	ALEX'S PHONE	Eyelevel	Handheld	Handheld	24 mm	"We pick them special", then sweep to Ashley		2	0.75	5	1	3	10
+4	5	A	Alex, Dad	MS	ASHLEY'S PHONE	Eyelevel	Handheld	Handheld	24 mm	Ashley sweeps to Alex, then back to Dad		2	0.75	5	1	3	10
+4	5	B	Dad	CU	ASHLEY'S PHONE	High Angle	Handheld	Handheld	24 mm	Dad pulls out glasses		2	0.75	5	3	3	16
+4	6	A	Dad	MS	ASHLEY'S PHONE	High Angle	Handheld	Handheld	24 mm	Dad freaks out		2	0.75	2	1	3	7
+4	10	A	Alex OTS Dad	MS (OTS)	A CAM	Low Angle	Static	Sticks / Tripod	35 mm			"- ""WHY WOULD"" -> ""You've shattered""
+- ""Didja even think"" -> Alley"	2.5	10	1	3	21
+4	20	A	Ashley OTS Dad	MS (OTS)	A CAM	Eyelevel	Static	Sticks / Tripod	50 mm			"- ""WHY WOULD"" -> ""We found them online""
+- ""You murdered soldiers on your side?"""	1	10	1	5	20
+4	20	B	Ashley OTS Mom	MS (OTS)	B CAM	Eyelevel	Static	Sticks / Tripod	35 mm			"- ""WHY WOULD"" -> ""We found them online""
+- ""You murdered soldiers on your side?"""	1	0	1	0	0
+4	22	A	Ashley FOTS Alex	MS (OTS)	A CAM	Eyelevel	Static	Sticks / Tripod	35 mm	Ashley exchanges looks with Alex	LOW	"- ""WHY WOULD"" -> ""Who the fuck said...""
+- ""For 53 years"""	0.5	5	1	3	10
+4	30	A	Dad OTS Ashley	LS	A CAM	Low Angle	Static	Sticks / Tripod	35 mm			"WHY WOULD" -> "It's too sharp"	2.5	10	1	5	28
+4	30	B	Dad OTS Alex	MS	B CAM	High Angle	Static	Sticks / Tripod	35 mm			"WHY WOULD" -> alley	2.5	0	1	0	0
+4	31	A	Dad FOTS Mom	MS	A CAM	Low Angle	Static	Sticks / Tripod	35 mm			"- ""Colorblind. Corrrective""
+- ""Slow simple man"" *Nod vigorously*"	0.25	5	1	3	9
+4	40	A	Mom FOTS Dad	MS	A CAM	Low Angle	Static	Sticks / Tripod	35 mm	"David?"		- "Colorblind. Corrective. Glasses."	0.25	5	1	3	9
+4	42	A	Mom OTS Ashley	MS (OTS)	A CAM	Eyelevel	Tilt	Sticks / Tripod	35 mm	Tilt up when Mom stands		- "Slow simple man" -> alley	1	5	0	3	8
+4	50	A	Mom, Dad OTS Kids	LS	A CAM	Eyelevel	Static	Sticks / Tripod	17 mm	 		- "You've shattered my world" - alley	2.5	10	2	3	24
+4	52	A	Kids OTS Mom, Dad	LS	A CAM	Low Angle	Static	Sticks / Tripod	17 mm			"- ""You've shattered my world"" -> ""Jesus. Mom, what's going on?""
+- ""I fought in a war!"" -> ""He's gonna talk about the war"""	1	5	1	3	11
+4	60	A	Alex, Ashley OTS Mom	LS	A CAM	Eyelevel	Handheld	Handheld	35 mm			- Peak to see Nick	0.25	5	1	3	9
+4	61	A	Alex, Ashley OTS Mom	MS (OTS)	A CAM	Eyelevel	Handheld	Handheld	35 mm			- alley -> alley	1	5	1	3	11
+4	62	A	Dad foreground, all background	LS	A CAM	Eyelevel	Static	Sticks / Tripod	35 mm			- alley -> alley	1	5	1	3	11
+4	70	A	Mom	MS	A CAM	Eyelevel	Handheld	Handheld	35 mm			- alley -> alley	1	5	1	3	11
+4	80	A	Nick	MS	A CAM	Eyelevel	Handheld	Handheld	50 mm		LOW	- "Taskrabbit?"	0.25	5	1	3	9
+4	81	A	Nick OTS Mom	LS	A CAM	Eyelevel	Rack Focus	Handheld	35 mm			- "Tell me this is all you have planned" -> "You are cruel"	0.5	5	1	3	10
+4	90	A	Mom OTS Dad	MS (OTS)	A CAM	Eyelevel	Handheld	Handheld	35 mm			"- alley -> ""David, we created awful children""
+- *puts on glasses* *jumps to stop*"	0.5	5	1	3	10
+4	100	A	Alex, Ashley OTS Dad	MS (OTS)	A CAM	Eyelevel	Handheld	Handheld	35 mm			- alley -> hug	1	5	1	3	11
+4	101	A	Alex OTS Dad	CU (OTS)	A CAM	Eyelevel	Handheld	Handheld	35 mm		LOW	- alley -> "I mean, no"	0.5	5	1	3	10
+4	101	B	Ashley OTS Dad	CU (OTS)	B CAM	Eyelevel	Handheld	Handheld	35 mm		LOW	- alley -> "Handle it...it. The glasses"	0.5	0	1	0	0
+4	112	A	Dad OTS Kids	MS	A CAM	Eyelevel	Static	Sticks / Tripod	35 mm			- alley -> hug	1	5	1	3	11
+4	112	B	Dad	LS	B CAM	Eyelevel	Static	Sticks / Tripod	35 mm			- alley -> hug	1	0	1	0	0
+4	120	A	Dad, OTS Alex	CU (OTS)	A CAM	Eyelevel	Handheld	Handheld	35 mm	Dad hugging Alex			0.25	5	1	3	9
+4	120	B	Dad, OTS Ashley	MS (OTS)	B CAM	Eyelevel	Handheld	Handheld	35 mm	Dad hugging Ashley			0.25	0	1	0	0
+4	121	A	Alex, OTS Dad	MS (OTS)	A CAM	Eyelevel	Handheld	Handheld	35 mm	Dad hugging Alex			0.25	5	1	3	9
+4	121	B	Ashley, OTS Dad	MS (OTS)	B CAM	Eyelevel	Handheld	Handheld	35 mm	Dad hugging Ashley			0.25	0	1	0	0
+4	122	A	Mom	MS (OTS)	A CAM	Eyelevel	Handheld	Handheld	35 mm	Mom, joining in			0.25	5	1	3	9
+4	123	A	Alex, Ashley	MS	A CAM	Eyelevel	Static	Sticks / Tripod	35 mm	Alex, Ashley getting in car	MEDIUM		0.5	20	1	3	25
+4	130	A	Glasses (foreground), All (background)	LS	A CAM	Eyelevel	Static	Sticks / Tripod	35 mm	Glasses to sell hug -> car transition	MEDIUM	Hug	0.5	10	1	3	15
