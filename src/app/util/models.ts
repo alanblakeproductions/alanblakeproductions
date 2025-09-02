@@ -66,8 +66,10 @@ export interface Shot {
   movement: string,
   lens: string,
   notes: string,
+  pages: string,
   priority: string,
   imageLink: string,
+  shootTime: number,
 }
 
 export interface Shadow {

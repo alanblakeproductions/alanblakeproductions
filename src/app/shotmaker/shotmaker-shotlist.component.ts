@@ -59,7 +59,7 @@ export class ShotmakerShotlistComponent implements OnInit {
 
           if (params['shotId']) {
             let shotId = Number(params['shotId']);
-            let shot = shots[shotId - 1];
+            let shot = shots.find((shot) => shot.id === shotId) ?? {} as Shot;
             this.shot$.next(shot);
           }
           else if (shotsWithStatus.length > 0) {
@@ -87,14 +87,21 @@ export class ShotmakerShotlistComponent implements OnInit {
       let shots = [];
 
       for (var i = 1; i < rows.length; i++) {
+        let id = i;
         let row = rows[i];
         let cells = row.split("\t");
+        while (headers.length !== cells.length) {
+          let nextRow = rows[++i];
+          let nextCells = nextRow.split("\t");
+          cells[cells.length - 1] += "\n" + nextCells[0];
+          cells.push(...nextCells.slice(1, nextCells.length));
+        }
 
         let scene = cells[headerToIndex["SCENE #"]];
         let setup = cells[headerToIndex["SETUP #"]];
         let shotId = cells[headerToIndex["SHOT #"]];
         let projectShot = {
-          id: i,
+          id: id,
           scene: scene,
           setup: setup,
           shotId: shotId,
@@ -105,8 +112,10 @@ export class ShotmakerShotlistComponent implements OnInit {
           movement: cells[headerToIndex["MOVEMENT"]],
           lens: cells[headerToIndex["LENS"]],
           notes: cells[headerToIndex["NOTES"]],
+          pages: cells[headerToIndex["PAGE(S)"]].replaceAll("\n", "<br/>").replaceAll('"', ""),
           priority: cells[headerToIndex["PRIORITY"]],
           imageLink: "assets/" + this.project.id + "/shots/" + this.project.id + "-scene-" + scene + "-" + setup + shotId + ".png",
+          shootTime: Number(cells[headerToIndex["SHOOT TIME (MIN)"]]),
         } as Shot;
         shots.push(projectShot);
       }

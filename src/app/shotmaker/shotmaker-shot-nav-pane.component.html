@@ -1,4 +1,7 @@
 <div class="flex-column" cdkScrollable>
+  <div class="uk-section uk-section-muted shot-list-summary uk-text-center uk-text-uppercase uk-text-meta">
+    {{shotsShootTimeHours}} hr, {{shotsShootTimeMinutes}} min {{status}}
+  </div>
   <ul class="uk-nav uk-nav-default shot-list"
       cdkDropList
       [cdkDropListData]="shots"

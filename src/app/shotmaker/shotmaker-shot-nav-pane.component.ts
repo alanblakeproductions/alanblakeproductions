@@ -5,6 +5,7 @@ import { CdkDrag, CdkDragDrop, CdkDropList, CdkDropListGroup, moveItemInArray, t
 import { Shot } from './../util/models';
 import { BrowserStorageService } from './../service/browser-storage.service';
 import { Observable, BehaviorSubject, Subject, of } from 'rxjs';
+import { MomentModule } from 'ngx-moment';
 
 @Component({
   selector: 'app-shotmaker-shot-nav-pane',
@@ -16,6 +17,7 @@ import { Observable, BehaviorSubject, Subject, of } from 'rxjs';
     CdkDropList,
     CdkDropListGroup,
     CdkDrag,
+    MomentModule,
   ],
   templateUrl: './shotmaker-shot-nav-pane.component.html',
   styleUrl: './shotmaker-shot-nav-pane.component.less'
@@ -27,6 +29,8 @@ export class ShotmakerShotNavPane implements OnInit {
 
   projectId: string = "";
   status: string = "";
+  shotsShootTimeHours: number = 0;
+  shotsShootTimeMinutes: number = 0;
 
   constructor(
     private route: ActivatedRoute,
@@ -46,6 +50,9 @@ export class ShotmakerShotNavPane implements OnInit {
         let bOrder = this.browserStorageService.getShotOrder(this.projectId, this.status, b.id);
         return aOrder - bOrder;
       });
+      let shotsShootTime = shots.reduce((sum, shot) => sum + shot.shootTime, 0);
+      this.shotsShootTimeHours = Math.floor(shotsShootTime / 60);
+      this.shotsShootTimeMinutes = shotsShootTime % 60;
     });
   }
 

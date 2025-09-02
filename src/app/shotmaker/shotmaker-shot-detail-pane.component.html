@@ -8,6 +8,7 @@
   <div *ngSwitchCase="false" class="uk-section uk-padding-small uk-section-muted">
     <div class="uk-container">
       <div class="uk-align-right">
+        <span class="uk-text-meta uk-margin-small-right">EST. SHOOT TIME: {{shot?.shootTime}} MIN</span>
         <span *ngIf="shot?.priority" class="uk-badge uk-padding-small">{{shot?.priority}} PRIORITY</span>
       </div>
 
@@ -25,12 +26,14 @@
         <tr>
           <th class="uk-table-shrink">Subject</th>
           <th class="uk-table-shrink">Notes</th>
+          <th class="uk-table-shrink">Page(s)</th>
         </tr>
         </thead>
         <tbody>
         <tr>
           <td>{{shot?.subject}}</td>
           <td>{{shot?.notes}}</td>
+          <td [innerHTML]="shot?.pages"></td>
         </tr>
         </tbody>
       </table>
