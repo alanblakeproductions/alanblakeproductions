@@ -20,7 +20,7 @@ SCENE #	SETUP #	SHOT #	SUBJECT	SHOT SIZE	CAMERA	ANGLE	MOVEMENT	EQUIPMENT	LENS	NO
 4	31	A	Dad FOTS Mom	MS	A CAM	Low Angle	Static	Sticks / Tripod	35 mm			"- ""Colorblind. Corrrective""
 - ""Slow simple man"" *Nod vigorously*"	0.25	5	1	3	9
 4	40	A	Mom FOTS Dad	MS	A CAM	Low Angle	Static	Sticks / Tripod	35 mm	"David?"		- "Colorblind. Corrective. Glasses."	0.25	5	1	3	9
-4	42	A	Mom OTS Ashley	MS (OTS)	A CAM	Eyelevel	Tilt	Sticks / Tripod	35 mm	Tilt up when Mom stands		- "Slow simple man" -> alley	1	5	0	3	8
+4	42	A	Mom OTS Ashley	MS (OTS)	A CAM	Eyelevel	Tilt	Sticks / Tripod	35 mm	Tilt up when Mom stands		- "Slow simple man" -> alley	1	5	1	3	11
 4	50	A	Mom, Dad OTS Kids	LS	A CAM	Eyelevel	Static	Sticks / Tripod	17 mm	 		- "You've shattered my world" - alley	2.5	10	2	3	24
 4	52	A	Kids OTS Mom, Dad	LS	A CAM	Low Angle	Static	Sticks / Tripod	17 mm			"- ""You've shattered my world"" -> ""Jesus. Mom, what's going on?""
 - ""I fought in a war!"" -> ""He's gonna talk about the war"""	1	5	1	3	11
@@ -32,9 +32,9 @@ SCENE #	SETUP #	SHOT #	SUBJECT	SHOT SIZE	CAMERA	ANGLE	MOVEMENT	EQUIPMENT	LENS	NO
 4	81	A	Nick OTS Mom	LS	A CAM	Eyelevel	Rack Focus	Handheld	35 mm			- "Tell me this is all you have planned" -> "You are cruel"	0.5	5	1	3	10
 4	90	A	Mom OTS Dad	MS (OTS)	A CAM	Eyelevel	Handheld	Handheld	35 mm			"- alley -> ""David, we created awful children""
 - *puts on glasses* *jumps to stop*"	0.5	5	1	3	10
-4	100	A	Alex, Ashley OTS Dad	MS (OTS)	A CAM	Eyelevel	Handheld	Handheld	35 mm			- alley -> hug	1	5	1	3	11
-4	101	A	Alex OTS Dad	CU (OTS)	A CAM	Eyelevel	Handheld	Handheld	35 mm		LOW	- alley -> "I mean, no"	0.5	5	1	3	10
-4	101	B	Ashley OTS Dad	CU (OTS)	B CAM	Eyelevel	Handheld	Handheld	35 mm		LOW	- alley -> "Handle it...it. The glasses"	0.5	0	1	0	0
+4	100	A	Alex, Ashley OTS Dad	MS (OTS)	A CAM	Eyelevel	Static	Handheld	35 mm			- alley -> hug	1	5	1	3	11
+4	101	A	Alex OTS Dad	CU (OTS)	B CAM	Eyelevel	Static	Handheld	35 mm		MEDIUM	- alley -> reaction to glasses on	1	5	1	3	11
+4	101	B	Ashley OTS Dad	CU (OTS)	B CAM	Eyelevel	Static	Handheld	35 mm		MEDIUM	- alley -> reaction to glasses on	1	0	1	0	0
 4	112	A	Dad OTS Kids	MS	A CAM	Eyelevel	Static	Sticks / Tripod	35 mm			- alley -> hug	1	5	1	3	11
 4	112	B	Dad	LS	B CAM	Eyelevel	Static	Sticks / Tripod	35 mm			- alley -> hug	1	0	1	0	0
 4	120	A	Dad, OTS Alex	CU (OTS)	A CAM	Eyelevel	Handheld	Handheld	35 mm	Dad hugging Alex			0.25	5	1	3	9
