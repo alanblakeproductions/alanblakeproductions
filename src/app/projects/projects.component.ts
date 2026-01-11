@@ -36,6 +36,46 @@ export class ProjectsComponent {
 
   constructor() {
     this.matchingProjects.push({
+      title: "Colorblind",
+      description: "Two adult daughters buy their father colorblind corrective lenses for his birthday, provoking an unexpected reaction.",
+      type: "Short",
+      genre: "Comedy",
+      startYear: 2025,
+      endYear: 2026,
+      image: "assets/images/colorblind-mom.png",
+      image_attribution: undefined,
+      coverfly: undefined,
+      youtube: undefined,
+      website: undefined,
+      roles: [
+        "Writer",
+        "Director",
+        "Editor",
+      ],
+      highlights: [
+      ],
+    });
+
+    this.matchingProjects.push({
+      title: "The Scorekeeper",
+      description: "A woman struggles to evade a stalking entity.",
+      type: "Short",
+      genre: "Horror",
+      startYear: 2025,
+      endYear: 2026,
+      image: "assets/images/scorekeeper_pinkies_1.png",
+      image_attribution: undefined,
+      coverfly: undefined,
+      youtube: undefined,
+      website: undefined,
+      roles: [
+        "Editor",
+      ],
+      highlights: [
+      ],
+    });
+
+    this.matchingProjects.push({
       title: "Deepa",
       description: "A middle-aged South Asian wife and mother is jolted into digging around for deeper meaning in the stable container that is her family life.",
       type: "Short",
@@ -82,7 +122,7 @@ export class ProjectsComponent {
       genre: "Horror",
       startYear: 2024,
       endYear: 2025,
-      image: "assets/images/immortal.png",
+      image: "assets/images/immortal_colorgrade.png",
       image_attribution: undefined,
       coverfly: undefined,
       youtube: undefined,
@@ -135,7 +175,7 @@ export class ProjectsComponent {
       genre: "Rom-com",
       startYear: 2023,
       endYear: undefined,
-      image: "assets/images/love_me_knot.png",
+      image: "assets/images/love_me_knot_kelly_bar.png",
       image_attribution: undefined,
       coverfly: undefined,
       youtube: "https://www.youtube.com/watch?v=pyV2LYXo_w8",
