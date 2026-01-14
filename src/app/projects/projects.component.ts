@@ -164,6 +164,12 @@ export class ProjectsComponent {
           image: "assets/images/2025_city_of_lights_film_festival_official_selection.png",
           laurel: "assets/images/laurel_official_selection_white_transparent.png",
         },
+        {
+          title: "American Filmatic Arts Awards",
+          description: "Best Director in Short Film",
+          image: "assets/images/2025_american_filmatic_arts_awards_best_director_in_short_film.png",
+          laurel: "assets/images/laurel_winner_white_transparent.png",
+        },
       ],
     })
 
