@@ -223,6 +223,12 @@ export class ProjectsComponent {
           image: "assets/images/2025_prairiefest_film_showcase_official_selection.png",
           laurel: "assets/images/laurel_official_selection_white_transparent.png",
         },
+        {
+          title: "Women's Comedy Film Festival in Atlanta",
+          description: "Official Selection",
+          image: "assets/images/2026_womens_comedy_festival_in_atlanta_official_selection.png",
+          laurel: "assets/images/laurel_official_selection_white_transparent.png",
+        }
       ],
     })
 
