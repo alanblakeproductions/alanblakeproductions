@@ -17,6 +17,7 @@ import { Address, Highlight, Person, Project, Showtime } from './../util/models'
 export class ShotmakerComponent {
 
   projectIds: String[] = [
-    "colorblind"
+    "colorblind",
+    "love-me-knot"
   ];
 }
