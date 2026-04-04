@@ -1,0 +1,55 @@
+SCENE #	SETUP #	SHOT #	SUBJECT	SHOT SIZE	CAMERA	ANGLE	MOVEMENT	EQUIPMENT	LENS	NOTES	PRIORITY	MIC	PAGE(S)	SCRIPT TIME (MIN)	SETUP TIME (MIN)	RESET  TIME (MIN)	EST. # OF TAKES	SHOOT TIME (MIN)
+5	1	A	Jesse	MS	A CAM	Eyelevel	Tracking Shot		24 mm	Tracking stairs to "Come out, friend" sign		LAV: Jesse	Tracking stairs to "Come out, friend" sign	0.125	5	1	5	11
+5	2	A	Jesse	LS	A CAM	Eyelevel	Static		17 mm			"LAV: Jesse
+LAV: Levi"	Open door -> stop to see Levi	0.125	5	1	5	11
+5	3	A	Levi OTS Jesse	LS	A CAM	Eyelevel	Static		17 mm			"LAV: Jesse
+LAV: Levi"	Levi wave -> Jesse walk to him	0.125	5	1	5	11
+5	4	A	Levi + Jesse	LS	A CAM	Eyelevel	Static		17 mm	Everyone else in foreground		"LAV: Jesse
+LAV: Levi"	"Jesse walk to Levi -> ""You know you don't have to order...""
+SKIP TO
+""Come, the gang is all present"	0.125	10	1	5	16
+5	5	A	Levi OTS Jesse	MS	A CAM	Eyelevel	Handheld		35 mm			"LAV: Jesse
+LAV: Levi"	"You know you don't have to order..." -> "Come, the gang is all present"	0.625	10	1	5	18
+5	5	B	Jesse OTS Levi	MS	A CAM	Eyelevel	Handheld		35 mm			"LAV: Jesse
+LAV: Levi"	"You know you don't have to order..." -> "Come, the gang is all present"	0.625				0
+5	6	A	Levi	MS	A CAM	Low Angle	Static		70 mm	Levi packing ice cream		"LAV: Jesse
+LAV: Levi"	"You strike it until it surrenders..." -> Stand up	0.25	5	1	5	11
+5	7	A	Levi + Jesse	MS	A CAM	Eyelevel	Handheld		35 mm	Levi leaves frame		"LAV: Jesse
+LAV: Levi"	"Come the gang is all present" -> "Oh my god, you're really real"	0.25	5	1	5	11
+5	8	A	Katya	MS	A CAM	Eyelevel	Handheld		50 mm	Katya slow motion reveal		LAV: Levi	"Katya, my love?"	0.125	10	1	5	16
+5	9	A	Levi + Katya	MS	A CAM	Eyelevel	Static		35 mm			"LAV: Jesse
+LAV: Levi
+BOOM: Katya"	"Jesse! My love's best friend" -> "I'm really happy for you, Levi"	1	10	1	5	20
+5	9	B	Jesse	MS	A CAM	Eyelevel	Static		35 mm			"LAV: Jesse
+LAV: Levi
+BOOM: Katya"	"Jesse! My love's best friend" -> "I'm really happy for you, Levi"	1				0
+5	10	A	Gloria + DPH	LS	A CAM	Eyelevel	Static		17 mm			"LAV: Gloria
+LAV: DPH"	Hanging pinata	0.25	10	1	5	16
+5	10	B	Gloria + DPH	MS	A CAM	Eyelevel	Handheld		35 mm			"LAV: Gloria
+LAV: DPH"	Hanging pinata	0.25				0
+5	11	A	Spencer through slats	MS	A CAM	Eyelevel	Static		35 mm			"LAV: Spencer
+LAV: Levi
+BOOM: Katya"	"Why is she all up in his grill?" ->Spencer exit	0.5	5	1	5	13
+5	12	A	Spencer through slats OTS Gloria + DPH	LS	A CAM	Eyelevel	Static		70 mm			"LAV: Spencer
+LAV: Levi
+BOOM: Katya"	"Why is she all up in his grill?"	0.5	5	1	5	13
+5	13	A	Spencer + Levi + Katya + Jesse	LS	A CAM	Eyelevel	Static		17 mm			"LAV: Spencer
+LAV: Levi
+BOOM: Katya"	"Why is she all up in his grill?" ->Spencer exit	0.5	10	1	5	18
+5	13	B	Spencer OTS Levi	MS	A CAM	Eyelevel	Static		17 mm	From Levi + Katya + Jesse perspective		"LAV: Spencer
+LAV: Levi
+BOOM: Katya"	"Why is she all up in his grill?" ->Spencer exit	0.5				0
+5	14	A	Levi + Katya OTS Spencer	MS	A CAM	Eyelevel	Static		50 mm	From Spencer perspective		"LAV: Spencer
+LAV: Levi
+BOOM: Katya"	"Why is she all up in his grill?" -> Katya exit	0.75	10	1	5	19
+5	14	B	Jesse OTS Spencer	MS	A CAM	Eyelevel	Static		50 mm	From Spencer perspective		"LAV: Spencer
+LAV: Levi
+BOOM: Katya"	"Why is she all up in his grill?" -> Katya exit	0.75				0
+5	15	A	Jesse OTS Levi	MS	A CAM	Eyelevel	Static		35 mm	After Katya exit		"LAV: Jesse
+LAV: Levi"	Katya exit -> end	0.25	10	1	5	16
+5	15	B	Levi OTS Jesse	MS	A CAM	Eyelevel	Static		35 mm	After Katya exit		"LAV: Jesse
+LAV: Levi"	Katya exit -> end	0.25				0
+5	16	A	Jesse	LS	A CAM	Eyelevel	Static		17 mm	Beautiful closing shot		"LAV: Jesse
+LAV: Levi"	Levi exit -> END	0.125	5	1	5	11
+5	17	A	Jesse	LS	A CAM	Eyelevel	Static		17 mm	Jesse exiting front door		LAV: Jesse	Jesse putting profile inactive	0.25	10	1	5	16
+5	17	B	Jesse	MS	A CAM	Eyelevel	Static		70 mm	Jesse exiting front door		LAV: Jesse	Jesse putting profile inactive	0.25				0

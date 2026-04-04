@@ -44,13 +44,28 @@ export class ShotmakerProjectComponent implements OnInit {
         link: "assets/shotmaker/colorblind-demo-v4.mov",
       }
     },
-    "love-me-knot": {
-       id: "love-me-knot",
+    "love-me-knot-ep-5": {
+       id: "love-me-knot-ep-5",
        summary: {
-         title: "Love Me (K)not",
+         title: "Love Me (K)not: Episode 5",
        },
        shotlist: {
-         file: "assets/shotmaker/love-me-knot.shotlist.csv",
+         file: "assets/shotmaker/love-me-knot-ep-5.shotlist.csv",
+       },
+       shadows: {
+         file: "",
+       },
+       video: {
+         link: "",
+       }
+    },
+    "love-me-knot-ep-6": {
+       id: "love-me-knot-ep-6",
+       summary: {
+         title: "Love Me (K)not: Episode 6",
+       },
+       shotlist: {
+         file: "assets/shotmaker/love-me-knot-ep-6.shotlist.csv",
        },
        shadows: {
          file: "",

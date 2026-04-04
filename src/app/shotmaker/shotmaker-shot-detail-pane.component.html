@@ -27,6 +27,7 @@
           <th class="uk-table-shrink">Subject</th>
           <th class="uk-table-shrink">Notes</th>
           <th class="uk-table-shrink">Page(s)</th>
+          <th class="uk-table-shrink">Sound</th>
         </tr>
         </thead>
         <tbody>
@@ -34,6 +35,7 @@
           <td>{{shot?.subject}}</td>
           <td>{{shot?.notes}}</td>
           <td [innerHTML]="shot?.pages"></td>
+          <td [innerHTML]="shot?.mic"></td>
         </tr>
         </tbody>
       </table>

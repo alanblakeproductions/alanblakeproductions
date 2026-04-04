@@ -114,6 +114,7 @@ export class ShotmakerShotlistComponent implements OnInit {
           notes: cells[headerToIndex["NOTES"]],
           pages: cells[headerToIndex["PAGE(S)"]].replaceAll("\n", "<br/>").replaceAll('"', ""),
           priority: cells[headerToIndex["PRIORITY"]],
+          mic: cells[headerToIndex["MIC"]],
           imageLink: "assets/" + this.project.id + "/shots/" + this.project.id + "-scene-" + scene + "-" + setup + shotId + ".png",
           shootTime: Number(cells[headerToIndex["SHOOT TIME (MIN)"]]),
         } as Shot;

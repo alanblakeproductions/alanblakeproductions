@@ -68,6 +68,7 @@ export interface Shot {
   notes: string,
   pages: string,
   priority: string,
+  mic: string,
   imageLink: string,
   shootTime: number,
 }
