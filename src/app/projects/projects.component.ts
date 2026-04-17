@@ -92,6 +92,18 @@ export class ProjectsComponent {
         "Editor",
       ],
       highlights: [
+        {
+          title: "Women Make Movies Film Festival",
+          description: "Official Selection",
+          image: "assets/images/women_make_movies_film_festival_official_selection.png",
+          laurel: "assets/images/laurel_official_selection_white_transparent.png",
+        },
+        {
+          title: "Patrick Lives On Film Showcase & Fundraiser",
+          description: "Official Selection",
+          image: "assets/images/patrick_lives_on_film_showcase_and_fundraiser_official_selection.png",
+          laurel: "assets/images/laurel_official_selection_white_transparent.png",
+        },
       ],
     });
 
