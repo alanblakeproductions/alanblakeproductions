@@ -1,0 +1,23 @@
+<div *ngIf="isLoggedIn" class="uk-grid uk-grid-collapse" uk-grid>
+  <div class="uk-width-1-1 uk-width-1-6@m shotmaker-shotlist-nav">
+    <app-shotmaker-location-nav-pane [locations$]="locations$"></app-shotmaker-location-nav-pane>
+  </div>
+
+  <div class="uk-width-1-1 uk-width-5-6@m">
+    <app-shotmaker-location-detail-pane
+      [project]="project"
+      [location$]="location$"
+      [locationOptions$]="locationOptionsForLocation$"
+      [locationOptionFolder$]="locationOptionFolder$"
+      [locationOption$]="locationOption$">
+    </app-shotmaker-location-detail-pane>
+  </div>
+</div>
+
+<div *ngIf="!isLoggedIn" class="uk-grid uk-grid-collapse" uk-grid>
+  <div class="uk-width-1-1">
+    <div class="uk-text-center uk-section">
+      <p>Please log in</p>
+    </div>
+  </div>
+</div>

@@ -41,6 +41,22 @@ export class BrowserStorageService {
     }
   }
 
+  private getGoogleAccessTokenKey(): string {
+    return "shotmaker.access-token";
+  }
+
+  getGoogleAccessToken(): string | null {
+    return this.getItem(this.getGoogleAccessTokenKey());
+  }
+
+  setGoogleAccessToken(token: string): void {
+    this.setItem(this.getGoogleAccessTokenKey(), token);
+  }
+
+  clearGoogleAccessToken(): void {
+    this.removeItem(this.getGoogleAccessTokenKey());
+  }
+
   private getShotStatusKey(projectId: string, shotId: number): string {
     return "shotmaker.project-" + projectId + ".shot-" + shotId + ".status";
   }

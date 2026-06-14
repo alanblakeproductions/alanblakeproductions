@@ -3,9 +3,7 @@ import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute, Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { CdkDrag, CdkDragDrop, CdkDropList, CdkDropListGroup, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
-import { ShotmakerShotDetailPane } from './shotmaker-shot-detail-pane.component';
-import { ShotmakerShotNavPane } from './shotmaker-shot-nav-pane.component';
-import { ShotmakerProject, ShotmakerProjectSummary, ShotmakerProjectShotlist, ShotmakerProjectVideo, Shadow, Shot } from './../util/models';
+import { ShotmakerProject, Shadow } from './../util/models';
 import { BrowserStorageService } from './../service/browser-storage.service';
 import { Observable, BehaviorSubject, Subject, of } from 'rxjs';
 import { distinctUntilChanged, map, switchMap } from 'rxjs/operators';
@@ -36,6 +34,9 @@ export class ShotmakerShadowsComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    if (!this.project.shadows) {
+      return;
+    }
     const shadowsCsvFilePath = this.project.shadows.file;
     const shadowsCsvFileContents$ = this.http.get(shadowsCsvFilePath, { responseType: 'text'});
     shadowsCsvFileContents$.subscribe(csvFileContents => {

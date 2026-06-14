@@ -5,7 +5,7 @@ import { ActivatedRoute, Router, RouterLink, RouterLinkActive } from '@angular/r
 import { CdkDrag, CdkDragDrop, CdkDropList, CdkDropListGroup, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
 import { ShotmakerShotDetailPane } from './shotmaker-shot-detail-pane.component';
 import { ShotmakerShotNavPane } from './shotmaker-shot-nav-pane.component';
-import { ShotmakerProject, ShotmakerProjectSummary, ShotmakerProjectShotlist, ShotmakerProjectVideo, Shadow, Shot } from './../util/models';
+import { ShotmakerProject, Shot } from './../util/models';
 import { BrowserStorageService } from './../service/browser-storage.service';
 import { Observable, BehaviorSubject, Subject, of } from 'rxjs';
 import { distinctUntilChanged, map, switchMap } from 'rxjs/operators';
@@ -44,6 +44,9 @@ export class ShotmakerShotlistComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    if (!this.project.shotlist) {
+      return;
+    }
     this.shots$.subscribe(shots => {
       this.route.params.subscribe(params => {
         if (params['tab'] !== 'shotlist') {

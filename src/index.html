@@ -14,7 +14,27 @@
 <body>
   <app-root></app-root>
 
+  <script type="text/javascript">
+    function gapiLoaded() {
+      gapi.load('client', initializeGapiClient);
+    }
+
+    async function initializeGapiClient() {
+      console.log("initializing gapi client");
+      await gapi.client.init({
+        discoveryDocs: ['https://www.googleapis.com/discovery/v1/apis/drive/v3/rest']
+      });
+      await gapi.client.load('drive', 'v3', function() {
+        console.log("initialized drive v3");
+      });
+    }
+  </script>
   <script src="assets/uikit/dist/js/uikit.min.js"></script>
   <script src="assets/uikit/dist/js/uikit-icons.min.js"></script>
+  <!--
+  <script src="https://accounts.google.com/gsi/client" async></script>
+  <script async defer src="https://apis.google.com/js/api.js"></script>
+  <script async defer src="https://accounts.google.com/gsi/client"></script>
+  -->
 </body>
 </html>

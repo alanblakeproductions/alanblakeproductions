@@ -1,0 +1,13 @@
+<div class="flex-column">
+
+  <ul class="uk-nav uk-nav-default shot-list">
+    @for (location of locations; track location) {
+    <li routerLinkActive="uk-active" class="shot-list-item uk-text-truncate">
+      <a routerLink="/shotmaker/{{projectId}}/locations/{{location.id}}">
+        <span class="shot-list-item-size-label uk-label {{getLocationLabelClass(location)}}">{{getLocationLabel(location)}}</span>
+        <div style="text-transform: none">{{location.description}}</div>
+      </a>
+    </li>
+    }
+  </ul>
+</div>

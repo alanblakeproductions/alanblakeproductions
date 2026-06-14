@@ -1,0 +1,105 @@
+<div [ngSwitch]="location === undefined">
+  <div *ngSwitchCase="true" class="uk-section uk-section-large">
+    <div class="uk-container uk-text-center">
+      <p class="uk-text-meta">Pick a location</p>
+    </div>
+  </div>
+
+  <div *ngSwitchCase="false">
+    <div class="uk-section uk-section-muted uk-padding">
+      <div class="uk-container">
+        <div class="uk-align-left">
+          <h3 class="uk-header">{{location?.intExt}}. {{location?.description}} - {{location?.timeOfDay}}</h3>
+        </div>
+
+        <table class="uk-table uk-table-divider">
+          <tbody>
+            <tr>
+              <td class="uk-text-muted uk-width-small">SCENES</td>
+              <td>
+                <span class="uk-label uk-label-success" style="margin-right: 5px" *ngFor="let scene of location?.scenes">{{scene}}</span>
+              </td>
+            </tr>
+            <tr>
+              <td class="uk-text-muted uk-width-small">NOTES</td>
+              <td>{{location?.notes}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="uk-section uk-section-default">
+      <div class="uk-container">
+
+      </div>
+    </div>
+
+    <div class="uk-section uk-section-default uk-padding-small">
+      <div class="uk-container">
+        <div class="uk-width-1-1">
+          <ul class="uk-tab uk-child-width-expand" uk-tab uk-switcher="connect: .location-option">
+            <li routerLinkActive="uk-active" *ngFor="let option of locationOptions">
+              <a href="#">
+                <span>{{option.description}}</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="uk-switcher location-option">
+          <div *ngFor="let option of locationOptions">
+
+            <div class="uk-width-1-1">
+              <table class="uk-table uk-table-divider">
+                <tbody>
+                  <tr>
+                    <td class="uk-text-muted uk-width-small">CONTACT</td>
+                    <td>{{option.contactName}}<br/>{{option.contactEmail}}<br/>{{option.contactPhone}}</td>
+                  </tr>
+                  <tr>
+                    <td class="uk-text-muted uk-width-small">NOTES</td>
+                    <td>{{option.notes}}</td>
+                  </tr>
+                  <tr>
+                    <td class="uk-text-muted uk-width-small">IMAGES</td>
+                    <td>
+                      <a target="_blank" class="uk-icon-button" [href]="getFolderLink()"><span uk-icon="upload"></span></a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div *ngIf="loadingLocationOptionFiles" class="uk-flex-center" uk-grid>
+              <div uk-spinner="ratio: 3"></div>
+            </div>
+
+            <div class="uk-width-1-1">
+              <div class="uk-position-relative" uk-slideshow="animation: fade">
+
+                <div class="uk-slideshow-items">
+                  @for (item of locationOptionFiles | keyvalue; track item.key) {
+                  <div>
+                    <img [src]="item.key" alt="" uk-cover>
+                  </div>
+                  }
+                </div>
+
+                <div class="uk-position-bottom-center uk-position-small">
+                  <ul class="uk-slideshow-nav uk-thumbnav">
+                    @for (item of locationOptionFiles | keyvalue; track item.key; let i = $index) {
+                    <li [attr.uk-slideshow-item]="i">
+                      <a><img [src]="item.key" width="100" height="67" alt=""></a>
+                    </li>
+                    }
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

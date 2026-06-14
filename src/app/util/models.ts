@@ -78,6 +78,26 @@ export interface Shadow {
   imageLink: string,
 }
 
+export interface Location {
+  id: number,
+  scenes: number[],
+  intExt: string,
+  timeOfDay: string,
+  description: string,
+  notes: string,
+}
+
+export interface LocationOption {
+  id: number,
+  locationId: number,
+  description: string,
+  address: string,
+  notes: string,
+  contactName: string,
+  contactEmail: string,
+  contactPhone: string,
+}
+
 export interface ShotmakerProjectShotlist {
   file: string,
 }
@@ -90,10 +110,23 @@ export interface ShotmakerProjectVideo {
   link: string,
 }
 
+export interface ShotmakerProjectLocations {
+  googleDriveFolderId: string,
+  googleDriveLocationsUrl: string,
+  googleDriveLocationOptionsUrl: string,
+}
+
 export interface ShotmakerProject {
   id: string,
   summary: ShotmakerProjectSummary,
-  shotlist: ShotmakerProjectShotlist,
-  shadows: ShotmakerProjectShadows,
-  video: ShotmakerProjectVideo
+  shotlist: ShotmakerProjectShotlist | undefined,
+  shadows: ShotmakerProjectShadows | undefined,
+  video: ShotmakerProjectVideo | undefined,
+  locations: ShotmakerProjectLocations | undefined,
+}
+
+export interface GoogleDriveFile {
+  id: string,
+  name: string,
+  mimeType: string,
 }

@@ -4,10 +4,22 @@
       <div class="uk-navbar-left">
         <ul class="uk-navbar-nav " uk-tab uk-switcher="connect: .project-tab">
           <li class="uk-visible@s" routerLinkActive="uk-active"><a routerLink="/shotmaker/{{project.id}}/summary">{{project.summary.title}}</a></li>
-          <li routerLinkActive="uk-active"><a routerLink="/shotmaker/{{project.id}}/shotlist"><span class="uk-icon uk-margin-xsmall-right" uk-icon="icon: camera"></span> Shotlist</a></li>
-          <li routerLinkActive="uk-active"><a routerLink="/shotmaker/{{project.id}}/shadows"><span class="uk-icon uk-margin-xsmall-right" uk-icon="icon: future"></span> Shadows</a></li>
-          <li routerLinkActive="uk-active"><a routerLink="/shotmaker/{{project.id}}/video"><span class="uk-icon uk-margin-xsmall-right" uk-icon="icon: play"></span> Video</a></li>
+          <li *ngIf="project.shotlist" routerLinkActive="uk-active"><a routerLink="/shotmaker/{{project.id}}/shotlist"><span class="uk-icon uk-margin-xsmall-right" uk-icon="icon: camera"></span> Shotlist</a></li>
+          <li *ngIf="project.shadows" routerLinkActive="uk-active"><a routerLink="/shotmaker/{{project.id}}/shadows"><span class="uk-icon uk-margin-xsmall-right" uk-icon="icon: future"></span> Shadows</a></li>
+          <li *ngIf="project.video" routerLinkActive="uk-active"><a routerLink="/shotmaker/{{project.id}}/video"><span class="uk-icon uk-margin-xsmall-right" uk-icon="icon: play"></span> Video</a></li>
+          <li *ngIf="project.locations" routerLinkActive="uk-active"><a routerLink="/shotmaker/{{project.id}}/locations"><span class="uk-icon uk-margin-xsmall-right" uk-icon="icon: location"></span> Locations</a></li>
         </ul>
+      </div>
+
+      <div class="uk-navbar-right">
+        <div class="uk-navbar-item">
+          <button *ngIf="!isLoggedIn" class="uk-button uk-button-secondary" (click)="login()">
+            <span class="uk-icon" uk-icon="google"></span> Log in
+          </button>
+          <button *ngIf="isLoggedIn" class="uk-button uk-button-default" (click)="logout()">
+            <span class="uk-icon" uk-icon="google"></span> Log out
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -25,17 +37,20 @@
   </div>
 
   <!-- Shotlist -->
-  <app-shotmaker-shotlist [project]="project"></app-shotmaker-shotlist>
+  <app-shotmaker-shotlist *ngIf="project.shotlist" [project]="project"></app-shotmaker-shotlist>
 
   <!-- Shadows -->
-  <app-shotmaker-shadows [project]="project"></app-shotmaker-shadows>
+  <app-shotmaker-shadows *ngIf="project.shadows" [project]="project"></app-shotmaker-shadows>
 
   <!-- Video -->
-  <div>
+  <div *ngIf="project.video">
     <div class="uk-section uk-section-small">
       <div class="uk-container">
         <video [src]="project.video.link" width="1920" height="1080" controls uk-video="autoplay: false"></video>
       </div>
     </div>
   </div>
+
+  <!-- Locations -->
+  <app-shotmaker-locations *ngIf="project.locations" [project]="project"></app-shotmaker-locations>
 </div>
