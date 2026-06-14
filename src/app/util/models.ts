@@ -98,6 +98,14 @@ export interface LocationOption {
   contactPhone: string,
 }
 
+export interface LocationOptionDetail {
+  option: LocationOption,
+  folder: GoogleDriveFile,
+  folderUrl: string,
+  images: GoogleDriveFile[],
+  imageUrls: string[]
+}
+
 export interface ShotmakerProjectShotlist {
   file: string,
 }

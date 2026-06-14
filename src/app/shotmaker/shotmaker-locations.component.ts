@@ -31,13 +31,12 @@ export class ShotmakerLocationsComponent implements OnInit {
   isLoggedIn: Boolean = false;
 
   locations$: Subject<Location[]> = new Subject();
-  location$: Subject<Location> = new Subject();
-
   locationOptions$: Subject<LocationOption[]> = new Subject();
-  locationOptionsForLocation$: Subject<LocationOption[]> = new Subject();
+  locationOptionFolders$: Subject<GoogleDriveFile[]> = new Subject();
 
-  locationOption$: Subject<LocationOption> = new Subject();
-  locationOptionFolder$: Subject<GoogleDriveFile> = new Subject();
+  selectedLocation$: Subject<Location> = new Subject();
+  selectedLocationOptions$: Subject<Record<number, LocationOption>> = new Subject();
+  selectedLocationOptionFolders$: Subject<Record<number, GoogleDriveFile>> = new Subject();
 
   constructor(
     private http: HttpClient,
@@ -61,6 +60,37 @@ export class ShotmakerLocationsComponent implements OnInit {
     if (googleAccessToken) {
       this.onAuthStatusChange(true);
     }
+
+    this.locations$.subscribe(locations => {
+      this.locationOptions$.subscribe(locationOptions => {
+        this.locationOptionFolders$.subscribe(files => {
+          console.log(`Loaded ${locations.length} locations`);
+          console.log(`Loaded ${locationOptions.length} location options`);
+          console.log(`Loaded ${files.length} location option folders`);
+          this.route.params.subscribe(params => {
+            if (!params['status']) {
+              return;
+            }
+
+            let selectedLocationId = Number(params['status']);
+            let selectedLocation = locations.find((location) => location.id === selectedLocationId) ?? {} as Location;
+            if (!selectedLocation) {
+              return;
+            }
+
+            let selectedLocationOptions = Object.fromEntries(
+              locationOptions
+                .filter((locationOption) => locationOption.locationId === selectedLocationId)
+                .map((locationOption) => [locationOption.id, locationOption]));
+            let selectedLocationOptionFolders = Object.fromEntries(files.map(file => [Number(file.name), file]));
+
+            this.selectedLocation$.next(selectedLocation);
+            this.selectedLocationOptions$.next(selectedLocationOptions);
+            this.selectedLocationOptionFolders$.next(selectedLocationOptionFolders);
+          });
+        });
+      });
+    });
   }
 
   onAuthStatusChange(isLoggedIn: boolean): void {
@@ -75,59 +105,28 @@ export class ShotmakerLocationsComponent implements OnInit {
   }
 
   loadData(): void {
-    this.locations$.subscribe(locations => {
-      this.locationOptions$.subscribe(locationOptions => {
-        this.googleService.listFiles(this.project.locations?.googleDriveFolderId ?? "").subscribe((files: GoogleDriveFile[]) => {
-          console.log(`Loaded ${locations.length} locations`);
-          console.log(`Loaded ${locationOptions.length} location options`);
-          console.log(`Loaded ${files.length} location option folders`);
-          this.route.params.subscribe(params => {
-            if (params['tab'] !== 'locations') {
-              return;
-            }
+    this.fetchLocations().then(locations => {
+      this.locations$.next(locations);
 
-            if (params['status']) {
-              let locationId = Number(params['status']);
-              let location = locations.find((location) => location.id === locationId) ?? {} as Location;
-              this.location$.next(location);
+      this.fetchLocationOptions().then(locationOptions => {
+        this.locationOptions$.next(locationOptions);
 
-              let locationOptionsForLocation = locationOptions.filter((locationOption) => locationOption.locationId === locationId);
-              this.locationOptionsForLocation$.next(locationOptionsForLocation);
-
-              if (params['status']) {
-                let locationOptionId = Number(params['status']);
-                let locationOption = locationOptionsForLocation.find((locationOption) => locationOption.id === locationOptionId) ?? {} as LocationOption;
-
-                var locationOptionFolder = files.find(file => locationOptionId === Number(file.name));
-                if (locationOptionFolder) {
-                  this.locationOption$.next(locationOption);
-                  this.locationOptionFolder$.next(locationOptionFolder);
-                }
-                else {
-                  // Create
-                }
-              }
-            }
-          });
+        this.fetchLocationOptionFolders().subscribe(locationOptionFolders => {
+          this.locationOptionFolders$.next(locationOptionFolders);
         });
       });
     });
-
-    this.fetchLocations();
-
   }
 
-  clearData(): void {
+  private clearData(): void {
     this.locations$.next([]);
     this.locationOptions$.next([]);
+    this.locationOptionFolders$.next([]);
   }
 
-  fetchLocations(): void {
-    if (!this.project.locations) {
-      return;
-    }
-    fetch(
-      this.project.locations.googleDriveLocationsUrl
+  private fetchLocations(): Promise<Location[]> {
+    return fetch(
+      this.project.locations?.googleDriveLocationsUrl ?? ""
     )
       .then((response) => response.text())
       .then((data) => {
@@ -158,18 +157,13 @@ export class ShotmakerLocationsComponent implements OnInit {
           });
         }
 
-        this.locations$.next(projectLocations);
-
-        this.fetchLocationOptions();
+        return projectLocations;
       });
   }
 
-  fetchLocationOptions(): void {
-    if (!this.project.locations) {
-      return;
-    }
-    fetch(
-      this.project.locations.googleDriveLocationOptionsUrl
+  private fetchLocationOptions(): Promise<LocationOption[]> {
+    return fetch(
+      this.project.locations?.googleDriveLocationOptionsUrl ?? ""
     )
       .then((response) => response.text())
       .then((data) => {
@@ -204,7 +198,11 @@ export class ShotmakerLocationsComponent implements OnInit {
           });
         }
 
-        this.locationOptions$.next(locationOptions);
+        return locationOptions;
       });
+  }
+
+  private fetchLocationOptionFolders(): Observable<GoogleDriveFile[]> {
+    return this.googleService.listFiles(this.project.locations?.googleDriveFolderId ?? "");
   }
 }

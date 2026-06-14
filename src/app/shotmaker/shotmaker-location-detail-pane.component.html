@@ -39,39 +39,41 @@
       <div class="uk-container">
         <div class="uk-width-1-1">
           <ul class="uk-tab uk-child-width-expand" uk-tab uk-switcher="connect: .location-option">
-            <li routerLinkActive="uk-active" *ngFor="let option of locationOptions">
+            @for (item of locationOptionDetails | keyvalue; track item.key) {
+            <li routerLinkActive="uk-active">
               <a href="#">
-                <span>{{option.description}}</span>
+                <span>{{item.value.option.description}}</span>
               </a>
             </li>
+            }
           </ul>
         </div>
 
         <div class="uk-switcher location-option">
-          <div *ngFor="let option of locationOptions">
-
+          @for (item of locationOptionDetails | keyvalue; track item.key) {
+          <div>
             <div class="uk-width-1-1">
               <table class="uk-table uk-table-divider">
                 <tbody>
                   <tr>
                     <td class="uk-text-muted uk-width-small">CONTACT</td>
-                    <td>{{option.contactName}}<br/>{{option.contactEmail}}<br/>{{option.contactPhone}}</td>
+                    <td>{{item.value.option.contactName}}<br/>{{item.value.option.contactEmail}}<br/>{{item.value.option.contactPhone}}</td>
                   </tr>
                   <tr>
                     <td class="uk-text-muted uk-width-small">NOTES</td>
-                    <td>{{option.notes}}</td>
+                    <td>{{item.value.option.notes}}</td>
                   </tr>
                   <tr>
                     <td class="uk-text-muted uk-width-small">IMAGES</td>
                     <td>
-                      <a target="_blank" class="uk-icon-button" [href]="getFolderLink()"><span uk-icon="upload"></span></a>
+                      <a target="_blank" class="uk-icon-button" [href]="item.value.folderUrl"><span uk-icon="upload"></span></a>
                     </td>
                   </tr>
                 </tbody>
               </table>
             </div>
 
-            <div *ngIf="loadingLocationOptionFiles" class="uk-flex-center" uk-grid>
+            <div *ngIf="loadingImages" class="uk-flex-center" uk-grid>
               <div uk-spinner="ratio: 3"></div>
             </div>
 
@@ -79,18 +81,16 @@
               <div class="uk-position-relative" uk-slideshow="animation: fade">
 
                 <div class="uk-slideshow-items">
-                  @for (item of locationOptionFiles | keyvalue; track item.key) {
-                  <div>
-                    <img [src]="item.key" alt="" uk-cover>
+                  <div *ngFor="let imageUrl of item.value.imageUrls">
+                    <img [src]="imageUrl" alt="" uk-cover>
                   </div>
-                  }
                 </div>
 
                 <div class="uk-position-bottom-center uk-position-small">
                   <ul class="uk-slideshow-nav uk-thumbnav">
-                    @for (item of locationOptionFiles | keyvalue; track item.key; let i = $index) {
+                    @for (imageUrl of item.value.imageUrls; track imageUrl; let i = $index) {
                     <li [attr.uk-slideshow-item]="i">
-                      <a><img [src]="item.key" width="100" height="67" alt=""></a>
+                      <a><img [src]="imageUrl" width="100" height="67" alt=""></a>
                     </li>
                     }
                   </ul>
@@ -98,6 +98,7 @@
               </div>
             </div>
           </div>
+          }
         </div>
       </div>
     </div>

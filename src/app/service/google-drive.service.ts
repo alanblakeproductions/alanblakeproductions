@@ -52,6 +52,12 @@ export class GoogleDriveService {
     }
   }
 
+  private tickleAccessToken() {
+    if (this.tokenClient) {
+      //this.tokenClient.requestAccessToken({ prompt: '' });
+    }
+  }
+
   public logout() {
     var accessToken = this.browserStorageService.getGoogleAccessToken();
     this.browserStorageService.clearGoogleAccessToken();
@@ -66,11 +72,13 @@ export class GoogleDriveService {
   }
 
   public getAuthStatus(): Observable<boolean> {
+    this.tickleAccessToken();
     return this.authStatus$.asObservable();
   }
 
   public listFiles(folderId: string): Observable<GoogleDriveFile[]> {
     // Call the Google Drive v3 files endpoint
+    this.tickleAccessToken();
     const headers = new HttpHeaders({
       Authorization: `Bearer ${this.browserStorageService.getGoogleAccessToken()}`,
     });
@@ -85,6 +93,7 @@ export class GoogleDriveService {
   }
 
   public loadImageUrl(file: GoogleDriveFile): Observable<string> {
+    this.tickleAccessToken();
     const myHeaders = new HttpHeaders({
       Authorization: `Bearer ${this.browserStorageService.getGoogleAccessToken()}`,
     });
@@ -101,6 +110,8 @@ export class GoogleDriveService {
   }
 
   public createFolder(parentId: string, name: string): Observable<GoogleDriveFile> {
+    this.tickleAccessToken();
+
     const headers = new HttpHeaders({
       Authorization: `Bearer ${this.browserStorageService.getGoogleAccessToken()}`,
     });
@@ -109,10 +120,17 @@ export class GoogleDriveService {
       mimeType: "application/vnd.google-apps.folder",
       parents: [parentId],
     };
-    return this.http.post<any>('https://www.googleapis.com/drive/v3/files', { headers, body })
+    return this.http.post<any>('https://www.googleapis.com/drive/v3/files',
+      body,
+      {
+        headers,
+      })
       .pipe(map((response) => {
-        console.log("POST RESPONSE", response);
-        return response.files;
+        return {
+          id: response.id,
+          name: response.name,
+          mimeType: response.mimeType
+        };
       }));
   }
 }

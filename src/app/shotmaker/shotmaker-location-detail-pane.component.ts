@@ -4,8 +4,9 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { Location, LocationOption, ShotmakerProject } from './../util/models';
 import { GoogleDriveService } from './../service/google-drive.service';
-import { GoogleDriveFile } from './../util/models';
-import { Observable, Subject, BehaviorSubject, of } from 'rxjs';
+import { GoogleDriveFile, LocationOptionDetail } from './../util/models';
+import { Observable, Subject, BehaviorSubject, concat, of, forkJoin } from 'rxjs';
+import { toArray } from 'rxjs/operators';
 
 declare var UIkit: any;
 
@@ -25,19 +26,12 @@ export class ShotmakerLocationDetailPane implements OnInit {
 
   @Input() project: ShotmakerProject = {} as ShotmakerProject;
   @Input() location$: Subject<Location> = new Subject();
-  @Input() locationOptions$: Subject<LocationOption[]> = new Subject();
-
-  @Input() locationOptionFolder$: Subject<GoogleDriveFile> = new Subject();
-  @Input() locationOption$: Subject<LocationOption> = new Subject();
+  @Input() locationOptions$: Subject<Record<number, LocationOption>> = new Subject();
+  @Input() locationOptionFolders$: Subject<Record<number, GoogleDriveFile>> = new Subject();
 
   location: Location | undefined = undefined;
-  locationOptionFolder: GoogleDriveFile | undefined = undefined;
-  locationOptionFiles: Record<string, GoogleDriveFile> = {};
-  loadingLocationOptionFiles: boolean = true;
-  locationOptions: LocationOption[] | undefined = undefined;
-  locationOption: LocationOption | undefined = undefined;
-
-  projectId: string = "";
+  locationOptionDetails: Record<number, LocationOptionDetail> = {};
+  loadingImages: boolean = true;
 
   constructor(
     private route: ActivatedRoute,
@@ -46,46 +40,45 @@ export class ShotmakerLocationDetailPane implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.projectId = this.route.snapshot.paramMap.get('projectId') ?? "";
-
     this.location$.subscribe(location => {
-      if (location) {
-        this.location = location;
-      }
-    });
+      this.locationOptions$.subscribe((locationOptions: Record<number, LocationOption>) => {
+        this.locationOptionFolders$.subscribe((locationOptionFolders: Record<number, GoogleDriveFile>) => {
+          this.loadingImages = true;
 
-    this.locationOptions$.subscribe(locationOptions => {
-      if (locationOptions) {
-        this.locationOptions = locationOptions;
-      }
-    });
+          this.location = location;
 
-    this.locationOption$.subscribe(locationOption => {
-      if (locationOption) {
-        this.locationOption = locationOption;
-      }
-    });
+          Object.entries(locationOptionFolders).forEach(([optionId, folder]) => {
+            let option = locationOptions[Number(optionId)];
+            if (option) {
+              this.locationOptionDetails[Number(optionId)] = {
+                option: option,
+                folder: folder,
+                folderUrl: `https://drive.google.com/drive/u/1/folders/${folder.id}`,
+                images: [],
+                imageUrls: []
+              };
+            }
+          });
 
-    this.locationOptionFolder$.subscribe(locationOptionFolder => {
-    console.log("locationOptionFolder", locationOptionFolder);
-      if (locationOptionFolder) {
-        this.locationOptionFolder = locationOptionFolder;
-        this.locationOptionFiles = {};
-        this.loadingLocationOptionFiles = true;
-        this.googleService.listFiles(locationOptionFolder.id).subscribe((files) => {
-          for (let file of files) {
-            this.googleService.loadImageUrl(file).subscribe((url) => {
-              this.locationOptionFiles[url] = file;
-              this.loadingLocationOptionFiles = false;
-            });
-          }
+          Object.entries(locationOptionFolders).forEach(([optionId, folder]) => {
+            this.loadImages(folder);
+          });
         });
-      }
+      });
     });
   }
 
-  getFolderLink(): string {
-    let folderId = this.locationOptionFolder?.id;
-    return `https://drive.google.com/drive/u/1/folders/${folderId}`;
+  private loadImages(folder: GoogleDriveFile): void {
+    this.googleService.listFiles(folder.id).subscribe((files) => {
+      const imageUrlObservables: Observable<string>[] = files.map(file => {
+        return this.googleService.loadImageUrl(file);
+      });
+
+      forkJoin(imageUrlObservables).subscribe((imageUrls: string[]) => {
+        this.locationOptionDetails[Number(folder.name)].imageUrls = imageUrls;
+
+        this.loadingImages = false;
+      });
+    });
   }
 }
