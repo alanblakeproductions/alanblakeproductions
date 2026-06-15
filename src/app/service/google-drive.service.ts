@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, Subject } from 'rxjs';
 import { BrowserStorageService } from './browser-storage.service';
-import { GoogleDriveFile } from './../util/models';
+import { GoogleDriveFile, LocationOptionImage } from './../util/models';
 import { map } from 'rxjs/operators';
 
 declare const google: any; // Declares the GIS SDK global variable
@@ -14,7 +14,7 @@ export class GoogleDriveService {
 
   private readonly CLIENT_ID = '508987750835-k2slqr9rk4uik5o821c34s21ra4e7nv9.apps.googleusercontent.com';
   private readonly DISCOVERY_DOCS = ['https://www.googleapis.com/discovery/v1/apis/drive/v3/rest'];
-  private readonly SCOPES = 'https://www.googleapis.com/auth/drive';
+  private readonly SCOPES = 'https://www.googleapis.com/auth/drive https://www.googleapis.com/auth/drive.metadata.readonly';
 
   private tokenClient: any;
   private authStatus$ = new Subject<boolean>();
@@ -84,15 +84,23 @@ export class GoogleDriveService {
     });
     const params = {
       q: `'${folderId}' in parents and trashed=false`,
-      fields: 'files(id,name,mimeType)'
+      fields: 'files(id,name,mimeType,imageMediaMetadata(height, width))'
     };
     return this.http.get<any>('https://www.googleapis.com/drive/v3/files', { headers, params })
       .pipe(map((response) => {
-        return response.files;
+        return response.files.map((file: any) => {
+          return {
+            id: String(file.id),
+            name: String(file.name),
+            mimeType: String(file.mimeType),
+            imageHeight: Number(file.imageMediaMetadata?.height ?? 0),
+            imageWidth: Number(file.imageMediaMetadata?.width ?? 0),
+          } as GoogleDriveFile;
+        });
       }));
   }
 
-  public loadImageUrl(file: GoogleDriveFile): Observable<string> {
+  public loadImage(file: GoogleDriveFile): Observable<LocationOptionImage> {
     this.tickleAccessToken();
     const myHeaders = new HttpHeaders({
       Authorization: `Bearer ${this.browserStorageService.getGoogleAccessToken()}`,
@@ -106,7 +114,13 @@ export class GoogleDriveService {
         params: params,
         responseType: 'blob' as const
       })
-      .pipe(map(blob => URL.createObjectURL(blob)));
+      .pipe(map(blob => {
+        return {
+          file: file,
+          url: URL.createObjectURL(blob)
+
+        }
+      }));
   }
 
   public createFolder(parentId: string, name: string): Observable<GoogleDriveFile> {
@@ -129,7 +143,10 @@ export class GoogleDriveService {
         return {
           id: response.id,
           name: response.name,
-          mimeType: response.mimeType
+          mimeType: response.mimeType,
+          imageHeight: undefined,
+          imageWidth: undefined,
+
         };
       }));
   }

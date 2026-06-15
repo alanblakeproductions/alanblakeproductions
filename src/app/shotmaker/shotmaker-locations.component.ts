@@ -7,7 +7,7 @@ import { ShotmakerLocationDetailPane } from './shotmaker-location-detail-pane.co
 import { ShotmakerLocationNavPane } from './shotmaker-location-nav-pane.component';
 import { GoogleDriveFile, ShotmakerProject, ShotmakerProjectLocations, Location, LocationOption } from './../util/models';
 import { BrowserStorageService } from './../service/browser-storage.service';
-import { Observable, BehaviorSubject, Subject, of } from 'rxjs';
+import { Observable, BehaviorSubject, Subject, of, forkJoin } from 'rxjs';
 import { GoogleDriveService } from './../service/google-drive.service';
 import { distinctUntilChanged, map, switchMap } from 'rxjs/operators';
 
@@ -67,6 +67,10 @@ export class ShotmakerLocationsComponent implements OnInit {
           console.log(`Loaded ${locations.length} locations`);
           console.log(`Loaded ${locationOptions.length} location options`);
           console.log(`Loaded ${files.length} location option folders`);
+
+          let allLocationOptionFolders = Object.fromEntries(files
+              .map(file => [Number(file.name), file]));
+
           this.route.params.subscribe(params => {
             if (!params['status']) {
               return;
@@ -82,11 +86,36 @@ export class ShotmakerLocationsComponent implements OnInit {
               locationOptions
                 .filter((locationOption) => locationOption.locationId === selectedLocationId)
                 .map((locationOption) => [locationOption.id, locationOption]));
-            let selectedLocationOptionFolders = Object.fromEntries(files.map(file => [Number(file.name), file]));
+            let selectedLocationOptionFolders = Object.fromEntries(Object
+                .entries(allLocationOptionFolders)
+                .filter(([optionId]) => Object.hasOwn(selectedLocationOptions, optionId)));
 
-            this.selectedLocation$.next(selectedLocation);
-            this.selectedLocationOptions$.next(selectedLocationOptions);
-            this.selectedLocationOptionFolders$.next(selectedLocationOptionFolders);
+            let missingLocationOptionFolders = locationOptions.map(option => option.id).filter(optionId => !Object.hasOwn(allLocationOptionFolders, optionId));
+            if (missingLocationOptionFolders.length === 0) {
+              this.selectedLocation$.next(selectedLocation);
+              this.selectedLocationOptions$.next(selectedLocationOptions);
+              this.selectedLocationOptionFolders$.next(selectedLocationOptionFolders);
+              return;
+            }
+
+            const missingLocationOptionFolderObservables: Observable<GoogleDriveFile>[] = missingLocationOptionFolders.map(optionId => {
+              return this.googleService.createFolder(this.project.locations?.googleDriveFolderId ?? "", String(optionId));
+            });
+
+            forkJoin(missingLocationOptionFolderObservables)
+              .subscribe({
+                next: (missingLocationOptionFolders: GoogleDriveFile[]) => {
+                  for (let missingLocationOptionFolder of missingLocationOptionFolders) {
+                    console.log(`Created missing folder ${missingLocationOptionFolder.name}`);
+                    selectedLocationOptionFolders[Number(missingLocationOptionFolder.name)] = missingLocationOptionFolder;
+                  }
+
+                  this.selectedLocation$.next(selectedLocation);
+                  this.selectedLocationOptions$.next(selectedLocationOptions);
+                  this.selectedLocationOptionFolders$.next(selectedLocationOptionFolders);
+                },
+                error: this.handleError
+              });
           });
         });
       });
@@ -105,17 +134,33 @@ export class ShotmakerLocationsComponent implements OnInit {
   }
 
   loadData(): void {
-    this.fetchLocations().then(locations => {
-      this.locations$.next(locations);
+    this.fetchLocations()
+      .then(locations => {
+        this.locations$.next(locations);
 
-      this.fetchLocationOptions().then(locationOptions => {
-        this.locationOptions$.next(locationOptions);
+        this.fetchLocationOptions()
+          .then(locationOptions => {
+            this.locationOptions$.next(locationOptions);
 
-        this.fetchLocationOptionFolders().subscribe(locationOptionFolders => {
-          this.locationOptionFolders$.next(locationOptionFolders);
-        });
-      });
-    });
+            this.fetchLocationOptionFolders().subscribe({
+              next: (locationOptionFolders) => {
+                this.locationOptionFolders$.next(locationOptionFolders);
+              },
+              error: (error) => this.handleError(error)
+            });
+        }).catch(error => this.handleError(error));
+      }).catch(error => this.handleError(error));
+  }
+
+  private handleError(error: any): void {
+    if (error.status === 401) {
+      this.clearData();
+      this.googleService.logout();
+      window.location.reload();
+    }
+    else {
+      console.error("Encountered error", error);
+    }
   }
 
   private clearData(): void {
@@ -142,11 +187,12 @@ export class ShotmakerLocationsComponent implements OnInit {
           let row = rows[i];
           let cells = row.trim().split("\t");
           let locationId = Number(cells[headerToIndex["Location ID"]]);
-          let scenes = cells[headerToIndex["Scenes"]].split(",").map(val => Number(val));
-          let intExt = cells[headerToIndex["INT/EXT"]];
-          let timeOfDay = cells[headerToIndex["Time Of Day"]];
-          let description = cells[headerToIndex["Description"]];
+          let scenes = cells[headerToIndex["Scenes"]].split(",").map(val => val.trim());
+          let intExt = cells[headerToIndex["INT/EXT"]].trim();
+          let timeOfDay = cells[headerToIndex["Time Of Day"]].trim();
+          let description = cells[headerToIndex["Description"]].trim();
           let notes = cells[headerToIndex["Notes"]];
+
           projectLocations.push({
             id: locationId,
             scenes: scenes,
@@ -182,7 +228,7 @@ export class ShotmakerLocationsComponent implements OnInit {
           let locationId = Number(cells[headerToIndex["Location ID"]]);
           let description = cells[headerToIndex["Description"]];
           let address = cells[headerToIndex["Address"]];
-          let notes = cells[headerToIndex["Notes"]];
+          let notes = (cells[headerToIndex["Notes"]] ?? "").replace("  ", "<br/>");
           let contactName = cells[headerToIndex["Contact Name"]];
           let contactEmail = cells[headerToIndex["Contact Email"]];
           let contactPhone = cells[headerToIndex["Contact Phone"]];

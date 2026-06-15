@@ -80,7 +80,7 @@ export interface Shadow {
 
 export interface Location {
   id: number,
-  scenes: number[],
+  scenes: string[],
   intExt: string,
   timeOfDay: string,
   description: string,
@@ -102,8 +102,12 @@ export interface LocationOptionDetail {
   option: LocationOption,
   folder: GoogleDriveFile,
   folderUrl: string,
-  images: GoogleDriveFile[],
-  imageUrls: string[]
+  images: LocationOptionImage[],
+}
+
+export interface LocationOptionImage {
+  file: GoogleDriveFile,
+  url: string,
 }
 
 export interface ShotmakerProjectShotlist {
@@ -137,4 +141,6 @@ export interface GoogleDriveFile {
   id: string,
   name: string,
   mimeType: string,
+  imageHeight: number | undefined,
+  imageWidth: number | undefined,
 }

@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { Location, LocationOption, ShotmakerProject } from './../util/models';
 import { GoogleDriveService } from './../service/google-drive.service';
-import { GoogleDriveFile, LocationOptionDetail } from './../util/models';
+import { GoogleDriveFile, LocationOptionDetail, LocationOptionImage } from './../util/models';
 import { Observable, Subject, BehaviorSubject, concat, of, forkJoin } from 'rxjs';
 import { toArray } from 'rxjs/operators';
 
@@ -43,9 +43,9 @@ export class ShotmakerLocationDetailPane implements OnInit {
     this.location$.subscribe(location => {
       this.locationOptions$.subscribe((locationOptions: Record<number, LocationOption>) => {
         this.locationOptionFolders$.subscribe((locationOptionFolders: Record<number, GoogleDriveFile>) => {
-          this.loadingImages = true;
-
           this.location = location;
+          this.locationOptionDetails = {};
+          this.loadingImages = true;
 
           Object.entries(locationOptionFolders).forEach(([optionId, folder]) => {
             let option = locationOptions[Number(optionId)];
@@ -55,7 +55,6 @@ export class ShotmakerLocationDetailPane implements OnInit {
                 folder: folder,
                 folderUrl: `https://drive.google.com/drive/u/1/folders/${folder.id}`,
                 images: [],
-                imageUrls: []
               };
             }
           });
@@ -68,17 +67,53 @@ export class ShotmakerLocationDetailPane implements OnInit {
     });
   }
 
+  private handleError(error: any): void {
+    if (error.status === 401) {
+      this.googleService.logout();
+      window.location.reload();
+    }
+    else {
+      console.error("Encountered error", error);
+    }
+  }
+
   private loadImages(folder: GoogleDriveFile): void {
-    this.googleService.listFiles(folder.id).subscribe((files) => {
-      const imageUrlObservables: Observable<string>[] = files.map(file => {
-        return this.googleService.loadImageUrl(file);
-      });
+    this.googleService.listFiles(folder.id)
+      .subscribe({
+        next: (files) => {
+          if (files.length === 0) {
+            this.loadingImages = false;
+            return;
+          }
 
-      forkJoin(imageUrlObservables).subscribe((imageUrls: string[]) => {
-        this.locationOptionDetails[Number(folder.name)].imageUrls = imageUrls;
+          const imageObservables: Observable<LocationOptionImage>[] = files.map(file => {
+            return this.googleService.loadImage(file);
+          });
 
-        this.loadingImages = false;
+          forkJoin(imageObservables)
+            .subscribe({
+              next: (images: LocationOptionImage[]) => {
+                this.locationOptionDetails[Number(folder.name)].images = images;
+                console.log(images);
+
+                this.loadingImages = false;
+              },
+              error: (error) => this.handleError(error)
+            });
+        },
+        error: (error) => this.handleError(error)
       });
-    });
+  }
+
+  getOptionTitle(detail: LocationOptionDetail): string {
+    if (detail.option.description) {
+      return detail.option.description;
+    }
+
+    if (detail.option.address) {
+      return detail.option.address;
+    }
+
+    return `Option ${detail.option.id}`;
   }
 }
