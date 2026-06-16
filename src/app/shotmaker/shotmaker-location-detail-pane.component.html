@@ -17,7 +17,7 @@
             <tr>
               <td class="uk-text-muted uk-width-small">SCENES</td>
               <td>
-                <span class="uk-label uk-label-success" style="margin-right: 5px" *ngFor="let scene of location?.scenes">{{scene}}</span>
+                <span class="uk-label" style="margin-right: 5px" *ngFor="let scene of location?.scenes">{{scene}}</span>
               </td>
             </tr>
             <tr>
@@ -51,7 +51,11 @@
                 <tbody>
                   <tr>
                     <td class="uk-text-muted uk-width-small">CONTACT</td>
-                    <td>{{item.value.option.contactName}}<br/>{{item.value.option.contactEmail}}<br/>{{item.value.option.contactPhone}}</td>
+                    <td *ngFor="let contact of item.value.option.contacts">
+                      {{contact.name}}<br/>
+                      {{contact.email}}<br/>
+                      {{contact.phone}}
+                    </td>
                   </tr>
                   <tr>
                     <td class="uk-text-muted uk-width-small">NOTES</td>

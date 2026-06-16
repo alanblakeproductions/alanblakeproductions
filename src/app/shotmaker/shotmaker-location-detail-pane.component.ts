@@ -94,7 +94,6 @@ export class ShotmakerLocationDetailPane implements OnInit {
             .subscribe({
               next: (images: LocationOptionImage[]) => {
                 this.locationOptionDetails[Number(folder.name)].images = images;
-                console.log(images);
 
                 this.loadingImages = false;
               },

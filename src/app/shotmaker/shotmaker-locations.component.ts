@@ -114,7 +114,7 @@ export class ShotmakerLocationsComponent implements OnInit {
                   this.selectedLocationOptions$.next(selectedLocationOptions);
                   this.selectedLocationOptionFolders$.next(selectedLocationOptionFolders);
                 },
-                error: this.handleError
+                error: (error) => this.handleError(error)
               });
           });
         });
@@ -229,18 +229,30 @@ export class ShotmakerLocationsComponent implements OnInit {
           let description = cells[headerToIndex["Description"]];
           let address = cells[headerToIndex["Address"]];
           let notes = (cells[headerToIndex["Notes"]] ?? "").replace("  ", "<br/>");
-          let contactName = cells[headerToIndex["Contact Name"]];
-          let contactEmail = cells[headerToIndex["Contact Email"]];
-          let contactPhone = cells[headerToIndex["Contact Phone"]];
+          let contactNames = (cells[headerToIndex["Contact Name"]] ?? "").split(",");
+          let contactEmails = (cells[headerToIndex["Contact Email"]] ?? "").split(",");
+          let contactPhones = (cells[headerToIndex["Contact Phone"]] ?? "").split(",");
+          let contacts = []
+          if (contactNames.length !== contactEmails.length || contactEmails.length !== contactPhones.length) {
+            console.error(`Row ${i} has improper contacts: names=[${contactNames}], emails=[${contactEmails}], phones=[${contactPhones}]`);
+          }
+          else {
+            for (let i = 0; i < contactNames.length; i++) {
+              contacts.push({
+                name: contactNames[i],
+                email: contactEmails[i],
+                phone: contactPhones[i],
+              });
+            }
+          }
+
           locationOptions.push({
             id: locationOptionId,
             locationId: locationId,
             description: description,
             address: address,
             notes: notes,
-            contactName: contactName,
-            contactEmail: contactEmail,
-            contactPhone: contactPhone
+            contacts: contacts
           });
         }
 

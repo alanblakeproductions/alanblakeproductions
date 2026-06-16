@@ -93,9 +93,13 @@ export interface LocationOption {
   description: string,
   address: string,
   notes: string,
-  contactName: string,
-  contactEmail: string,
-  contactPhone: string,
+  contacts: Contact[],
+}
+
+export interface Contact {
+  name: string,
+  email: string,
+  phone: string,
 }
 
 export interface LocationOptionDetail {
