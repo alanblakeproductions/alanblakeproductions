@@ -2,9 +2,10 @@ import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink, RouterLinkActive } from '@angular/router';
-import { Location, LocationOption, ShotmakerProject } from './../util/models';
+import { ShotmakerProject } from './../util/models';
+import { Scene, Location, LocationEntity, LocationOption, LocationOptionEntity, LocationOptionDetail, LocationOptionImage } from './../util/shotmaker-location-models';
 import { GoogleDriveService } from './../service/google-drive.service';
-import { GoogleDriveFile, LocationOptionDetail, LocationOptionImage } from './../util/models';
+import { GoogleDriveFile } from './../util/google-models';
 import { Observable, Subject, BehaviorSubject, concat, of, forkJoin } from 'rxjs';
 import { toArray } from 'rxjs/operators';
 
@@ -25,11 +26,10 @@ declare var UIkit: any;
 export class ShotmakerLocationDetailPane implements OnInit {
 
   @Input() project: ShotmakerProject = {} as ShotmakerProject;
-  @Input() location$: Subject<Location> = new Subject();
-  @Input() locationOptions$: Subject<Record<number, LocationOption>> = new Subject();
+  @Input() scene$: Subject<Scene> = new Subject();
   @Input() locationOptionFolders$: Subject<Record<number, GoogleDriveFile>> = new Subject();
 
-  location: Location | undefined = undefined;
+  scene: Scene | undefined = undefined;
   locationOptionDetails: Record<number, LocationOptionDetail> = {};
   loadingImages: boolean = true;
 
@@ -40,28 +40,29 @@ export class ShotmakerLocationDetailPane implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.location$.subscribe(location => {
-      this.locationOptions$.subscribe((locationOptions: Record<number, LocationOption>) => {
-        this.locationOptionFolders$.subscribe((locationOptionFolders: Record<number, GoogleDriveFile>) => {
-          this.location = location;
-          this.locationOptionDetails = {};
-          this.loadingImages = true;
+    this.scene$.subscribe(scene => {
+      this.scene = scene;
 
-          Object.entries(locationOptionFolders).forEach(([optionId, folder]) => {
-            let option = locationOptions[Number(optionId)];
-            if (option) {
-              this.locationOptionDetails[Number(optionId)] = {
-                option: option,
-                folder: folder,
-                folderUrl: `https://drive.google.com/drive/u/1/folders/${folder.id}`,
-                images: [],
-              };
-            }
-          });
+      let locationOptions = Object.fromEntries(scene.locationOptions.map(option => [option.id, option]));
+      this.locationOptionFolders$.subscribe((locationOptionFolders: Record<number, GoogleDriveFile>) => {
 
-          Object.entries(locationOptionFolders).forEach(([optionId, folder]) => {
-            this.loadImages(folder);
-          });
+        this.locationOptionDetails = {};
+        this.loadingImages = true;
+
+        Object.entries(locationOptionFolders).forEach(([optionId, folder]) => {
+          let option = locationOptions[Number(optionId)];
+          if (option) {
+            this.locationOptionDetails[Number(optionId)] = {
+              option: option,
+              folder: folder,
+              folderUrl: `https://drive.google.com/drive/u/1/folders/${folder.id}`,
+              images: [],
+            };
+          }
+        });
+
+        Object.entries(locationOptionFolders).forEach(([optionId, folder]) => {
+          this.loadImages(folder);
         });
       });
     });

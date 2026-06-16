@@ -1,13 +1,12 @@
 <div *ngIf="isLoggedIn" class="uk-grid uk-grid-collapse" uk-grid>
-  <div class="uk-width-1-1 uk-width-1-6@m shotmaker-shotlist-nav">
-    <app-shotmaker-location-nav-pane [locations$]="locations$"></app-shotmaker-location-nav-pane>
+  <div class="uk-width-1-1 uk-width-1-5@m shotmaker-shotlist-nav">
+    <app-shotmaker-location-nav-pane [scenes$]="scenes$" [locations$]="locations$"></app-shotmaker-location-nav-pane>
   </div>
 
-  <div class="uk-width-1-1 uk-width-5-6@m">
+  <div class="uk-width-1-1 uk-width-4-5@m">
     <app-shotmaker-location-detail-pane
       [project]="project"
-      [location$]="selectedLocation$"
-      [locationOptions$]="selectedLocationOptions$"
+      [scene$]="selectedScene$"
       [locationOptionFolders$]="selectedLocationOptionFolders$">
     </app-shotmaker-location-detail-pane>
   </div>

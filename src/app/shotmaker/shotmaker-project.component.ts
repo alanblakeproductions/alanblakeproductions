@@ -42,8 +42,9 @@ export class ShotmakerProjectComponent implements OnInit {
       video: undefined,
       locations: {
         googleDriveFolderId: "1d20CsOIaQqeJh-GZnLLub08OJnrOh9ZO",
-        googleDriveLocationsUrl: "https://docs.google.com/spreadsheets/d/e/2PACX-1vS4b9qDkAnSYCoiOtpkEC9xKL6OvtDCfRmXe2a-GZqAM9NngFwrGe_aPVNlD8aWzh1oho2odaQ_szmE/pub?gid=0&single=true&output=tsv",
-        googleDriveLocationOptionsUrl: "https://docs.google.com/spreadsheets/d/e/2PACX-1vS4b9qDkAnSYCoiOtpkEC9xKL6OvtDCfRmXe2a-GZqAM9NngFwrGe_aPVNlD8aWzh1oho2odaQ_szmE/pub?gid=649795268&single=true&output=tsv"
+        googleDriveScenesUrl: "https://docs.google.com/spreadsheets/d/e/2PACX-1vS4b9qDkAnSYCoiOtpkEC9xKL6OvtDCfRmXe2a-GZqAM9NngFwrGe_aPVNlD8aWzh1oho2odaQ_szmE/pub?gid=1319809646&single=true&output=tsv",
+        googleDriveLocationsUrl: "https://docs.google.com/spreadsheets/d/e/2PACX-1vS4b9qDkAnSYCoiOtpkEC9xKL6OvtDCfRmXe2a-GZqAM9NngFwrGe_aPVNlD8aWzh1oho2odaQ_szmE/pub?gid=825830746&single=true&output=tsv",
+        googleDriveLocationOptionsUrl: "https://docs.google.com/spreadsheets/d/e/2PACX-1vS4b9qDkAnSYCoiOtpkEC9xKL6OvtDCfRmXe2a-GZqAM9NngFwrGe_aPVNlD8aWzh1oho2odaQ_szmE/pub?gid=2118767106&single=true&output=tsv"
       },
     },
     "colorblind": {

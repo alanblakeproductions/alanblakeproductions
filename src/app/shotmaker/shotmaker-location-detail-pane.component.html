@@ -1,7 +1,7 @@
-<div [ngSwitch]="location === undefined">
+<div [ngSwitch]="scene === undefined">
   <div *ngSwitchCase="true" class="uk-section uk-section-large">
     <div class="uk-container uk-text-center">
-      <p class="uk-text-meta">Pick a location</p>
+      <p class="uk-text-meta">Pick a scene</p>
     </div>
   </div>
 
@@ -9,20 +9,35 @@
     <div class="uk-section uk-section-muted uk-padding">
       <div class="uk-container">
         <div class="uk-align-left">
-          <h3 class="uk-header">{{location?.intExt}}. {{location?.description}} - {{location?.timeOfDay}}</h3>
+          <h3 class="uk-header">{{scene?.setting}}. {{scene?.description}} - {{scene?.timeOfDay}}</h3>
         </div>
 
         <table class="uk-table uk-table-divider">
+          <caption>SCENE DETAILS</caption>
+          <tbody>
+          <tr>
+            <td class="uk-text-muted uk-width-small">FILM DAY</td>
+            <td>{{scene?.filmDay}}</td>
+          </tr>
+          <tr>
+            <td class="uk-text-muted uk-width-small">NOTES</td>
+            <td>{{scene?.notes}}</td>
+          </tr>
+          </tbody>
+        </table>
+
+        <table class="uk-table uk-table-divider">
+          <caption>LOCATION DETAILS</caption>
           <tbody>
             <tr>
-              <td class="uk-text-muted uk-width-small">SCENES</td>
+              <td class="uk-text-muted uk-width-small">OTHER SCENES</td>
               <td>
-                <span class="uk-label" style="margin-right: 5px" *ngFor="let scene of location?.scenes">{{scene}}</span>
+                <span class="uk-label" style="margin-right: 5px" *ngFor="let sceneId of scene?.location?.sceneIds">{{sceneId}}</span>
               </td>
             </tr>
             <tr>
               <td class="uk-text-muted uk-width-small">NOTES</td>
-              <td>{{location?.notes}}</td>
+              <td>{{scene?.location?.notes}}</td>
             </tr>
           </tbody>
         </table>

@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, Subject } from 'rxjs';
 import { BrowserStorageService } from './browser-storage.service';
-import { GoogleDriveFile, LocationOptionImage } from './../util/models';
+import { GoogleDriveFile } from './../util/google-models';
+import { LocationOptionImage } from './../util/shotmaker-location-models';
 import { map } from 'rxjs/operators';
 
 declare const google: any; // Declares the GIS SDK global variable

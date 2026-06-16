@@ -5,7 +5,9 @@ import { ActivatedRoute, Router, RouterLink, RouterLinkActive } from '@angular/r
 import { CdkDrag, CdkDragDrop, CdkDropList, CdkDropListGroup, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
 import { ShotmakerLocationDetailPane } from './shotmaker-location-detail-pane.component';
 import { ShotmakerLocationNavPane } from './shotmaker-location-nav-pane.component';
-import { GoogleDriveFile, ShotmakerProject, ShotmakerProjectLocations, Location, LocationOption } from './../util/models';
+import { ShotmakerProject, ShotmakerProjectLocations } from './../util/models';
+import { SceneEntity, Scene, LocationEntity, LocationOptionEntity, LocationOptionApprovalStatus, Location2, LocationOption2, Location, LocationOption } from './../util/shotmaker-location-models';
+import { GoogleDriveFile } from './../util/google-models';
 import { BrowserStorageService } from './../service/browser-storage.service';
 import { Observable, BehaviorSubject, Subject, of, forkJoin } from 'rxjs';
 import { GoogleDriveService } from './../service/google-drive.service';
@@ -30,12 +32,17 @@ export class ShotmakerLocationsComponent implements OnInit {
 
   isLoggedIn: Boolean = false;
 
+  sceneEntities$: Subject<SceneEntity[]> = new Subject();
+  locationEntities$: Subject<LocationEntity[]> = new Subject();
+  locationOptionEntities$: Subject<LocationOptionEntity[]> = new Subject();
+
+  scenes$: Subject<Scene[]> = new Subject();
+
   locations$: Subject<Location[]> = new Subject();
   locationOptions$: Subject<LocationOption[]> = new Subject();
   locationOptionFolders$: Subject<GoogleDriveFile[]> = new Subject();
 
-  selectedLocation$: Subject<Location> = new Subject();
-  selectedLocationOptions$: Subject<Record<number, LocationOption>> = new Subject();
+  selectedScene$: Subject<Scene> = new Subject();
   selectedLocationOptionFolders$: Subject<Record<number, GoogleDriveFile>> = new Subject();
 
   constructor(
@@ -61,61 +68,129 @@ export class ShotmakerLocationsComponent implements OnInit {
       this.onAuthStatusChange(true);
     }
 
-    this.locations$.subscribe(locations => {
-      this.locationOptions$.subscribe(locationOptions => {
-        this.locationOptionFolders$.subscribe(files => {
-          console.log(`Loaded ${locations.length} locations`);
-          console.log(`Loaded ${locationOptions.length} location options`);
-          console.log(`Loaded ${files.length} location option folders`);
+    this.sceneEntities$.subscribe(sceneEntities => {
+      this.locationEntities$.subscribe(locationEntities => {
+        this.locationOptionEntities$.subscribe(locationOptionEntities => {
+          this.locationOptionFolders$.subscribe(files => {
+            console.log(`Loaded ${sceneEntities.length} scenes`);
+            console.log(`Loaded ${locationEntities.length} locations`);
+            console.log(`Loaded ${locationOptionEntities.length} location options`);
+            console.log(`Loaded ${files.length} location option folders`);
 
-          let allLocationOptionFolders = Object.fromEntries(files
-              .map(file => [Number(file.name), file]));
+            let locationEntitiesById = Object.fromEntries(locationEntities.map(entity => [entity.id, entity]));
+            let locationOptionEntitiesByLocationId = locationOptionEntities.reduce((map, entity) => {
+              if (!map.has(entity.locationId)) {
+                map.set(entity.locationId, []);
+              }
+              map.get(entity.locationId)!.push(entity);
+              return map;
+            }, new Map<number, LocationOptionEntity[]>());
 
-          this.route.params.subscribe(params => {
-            if (!params['status']) {
-              return;
-            }
+            let scenes: Scene[] = [];
+            for (let sceneEntity of sceneEntities) {
+              let locationOptionEntities = locationOptionEntitiesByLocationId.get(sceneEntity.locationId) ?? [];
+              let locationOptions = locationOptionEntities.map((entity) => {
+                let approvalStatus = entity.approvalStatus as LocationOptionApprovalStatus ?? LocationOptionApprovalStatus.NOT_APPROVED;
 
-            let selectedLocationId = Number(params['status']);
-            let selectedLocation = locations.find((location) => location.id === selectedLocationId) ?? {} as Location;
-            if (!selectedLocation) {
-              return;
-            }
+                let warnings: string[] = [];
+                if (!([LocationOptionApprovalStatus.APPROVED, LocationOptionApprovalStatus.NOT_APPLICABLE].includes(approvalStatus))) {
+                  warnings.push("This location option has not yet been approved");
+                }
+                else if (approvalStatus !== LocationOptionApprovalStatus.NOT_APPLICABLE && entity.contacts.length === 0) {
+                  warnings.push("No contact exists for this location option");
+                }
 
-            let selectedLocationOptions = Object.fromEntries(
-              locationOptions
-                .filter((locationOption) => locationOption.locationId === selectedLocationId)
-                .map((locationOption) => [locationOption.id, locationOption]));
-            let selectedLocationOptionFolders = Object.fromEntries(Object
-                .entries(allLocationOptionFolders)
-                .filter(([optionId]) => Object.hasOwn(selectedLocationOptions, optionId)));
+                if (entity.address === undefined || entity.address === "") {
+                  warnings.push("No address for this location option");
+                }
 
-            let missingLocationOptionFolders = locationOptions.map(option => option.id).filter(optionId => !Object.hasOwn(allLocationOptionFolders, optionId));
-            if (missingLocationOptionFolders.length === 0) {
-              this.selectedLocation$.next(selectedLocation);
-              this.selectedLocationOptions$.next(selectedLocationOptions);
-              this.selectedLocationOptionFolders$.next(selectedLocationOptionFolders);
-              return;
-            }
-
-            const missingLocationOptionFolderObservables: Observable<GoogleDriveFile>[] = missingLocationOptionFolders.map(optionId => {
-              return this.googleService.createFolder(this.project.locations?.googleDriveFolderId ?? "", String(optionId));
-            });
-
-            forkJoin(missingLocationOptionFolderObservables)
-              .subscribe({
-                next: (missingLocationOptionFolders: GoogleDriveFile[]) => {
-                  for (let missingLocationOptionFolder of missingLocationOptionFolders) {
-                    console.log(`Created missing folder ${missingLocationOptionFolder.name}`);
-                    selectedLocationOptionFolders[Number(missingLocationOptionFolder.name)] = missingLocationOptionFolder;
-                  }
-
-                  this.selectedLocation$.next(selectedLocation);
-                  this.selectedLocationOptions$.next(selectedLocationOptions);
-                  this.selectedLocationOptionFolders$.next(selectedLocationOptionFolders);
-                },
-                error: (error) => this.handleError(error)
+                return {
+                  id: entity.id,
+                  description: entity.description,
+                  address: entity.address,
+                  notes: entity.notes,
+                  approvalStatus: entity.approvalStatus as LocationOptionApprovalStatus ?? LocationOptionApprovalStatus.NOT_APPROVED,
+                  contacts: entity.contacts,
+                  warnings: warnings,
+                }
               });
+
+              let locationWarnings: string[] = [];
+              if (locationOptions.length === 0) {
+                locationWarnings.push("No location options exist for this scene yet");
+              }
+              let locationEntity = locationEntitiesById[sceneEntity.locationId];
+              let location: Location2 = {
+                id: locationEntity.id,
+                name: locationEntity.name,
+                notes: locationEntity.notes,
+                sceneIds: [],
+                warnings: locationWarnings,
+              };
+
+              let sceneWarnings: string[] = [];
+
+              scenes.push({
+                id: sceneEntity.id,
+                status: sceneEntity.status,
+                setting: sceneEntity.setting,
+                description: sceneEntity.description,
+                timeOfDay: sceneEntity.timeOfDay,
+                notes: sceneEntity.notes,
+                filmDay: sceneEntity.filmDay,
+                location: location,
+                locationOptions: locationOptions,
+                warnings: sceneWarnings,
+                childWarnings: [...locationOptions.map(option => option.warnings).flat(), ...location.warnings],
+              });
+            }
+
+            this.scenes$.next(scenes);
+
+            let allLocationOptionFolders = Object.fromEntries(files
+                .map(file => [Number(file.name), file]));
+
+            this.route.params.subscribe(params => {
+              if (!params['status']) {
+                return;
+              }
+
+              let selectedSceneId = params['status'];
+              let selectedScene = scenes.find((scene) => scene.id === selectedSceneId) ?? {} as Scene;
+              if (!selectedScene) {
+                return;
+              }
+
+              let selectedLocationOptions = Object.fromEntries(selectedScene.locationOptions
+                  .map((locationOption) => [locationOption.id, locationOption]));
+              let selectedLocationOptionFolders = Object.fromEntries(Object
+                  .entries(allLocationOptionFolders)
+                  .filter(([optionId]) => Object.hasOwn(selectedLocationOptions, optionId)));
+
+              let missingLocationOptionFolders = locationOptions.map(option => option.id).filter(optionId => !Object.hasOwn(allLocationOptionFolders, optionId));
+              if (missingLocationOptionFolders.length === 0) {
+                this.selectedLocationOptionFolders$.next(selectedLocationOptionFolders);
+                return;
+              }
+
+              const missingLocationOptionFolderObservables: Observable<GoogleDriveFile>[] = missingLocationOptionFolders.map(optionId => {
+                return this.googleService.createFolder(this.project.locations?.googleDriveFolderId ?? "", String(optionId));
+              });
+
+              forkJoin(missingLocationOptionFolderObservables)
+                .subscribe({
+                  next: (missingLocationOptionFolders: GoogleDriveFile[]) => {
+                    for (let missingLocationOptionFolder of missingLocationOptionFolders) {
+                      console.log(`Created missing folder ${missingLocationOptionFolder.name}`);
+                      selectedLocationOptionFolders[Number(missingLocationOptionFolder.name)] = missingLocationOptionFolder;
+                    }
+
+                    this.selectedScene$.next(selectedScene);
+                    this.selectedLocationOptionFolders$.next(selectedLocationOptionFolders);
+                  },
+                  error: (error) => this.handleError(error)
+                });
+            });
           });
         });
       });
@@ -134,21 +209,26 @@ export class ShotmakerLocationsComponent implements OnInit {
   }
 
   loadData(): void {
-    this.fetchLocations()
-      .then(locations => {
-        this.locations$.next(locations);
+    this.fetchSceneEntities()
+      .then(sceneEntities => {
+        this.sceneEntities$.next(sceneEntities);
 
-        this.fetchLocationOptions()
-          .then(locationOptions => {
-            this.locationOptions$.next(locationOptions);
+        this.fetchLocationEntities()
+          .then(locationEntities => {
+            this.locationEntities$.next(locationEntities);
 
-            this.fetchLocationOptionFolders().subscribe({
-              next: (locationOptionFolders) => {
-                this.locationOptionFolders$.next(locationOptionFolders);
-              },
-              error: (error) => this.handleError(error)
-            });
-        }).catch(error => this.handleError(error));
+            this.fetchLocationOptionEntities()
+              .then(locationOptionEntities => {
+                this.locationOptionEntities$.next(locationOptionEntities);
+
+                this.fetchLocationOptionFolders().subscribe({
+                  next: (locationOptionFolders) => {
+                    this.locationOptionFolders$.next(locationOptionFolders);
+                  },
+                  error: (error) => this.handleError(error)
+                });
+            }).catch(error => this.handleError(error));
+          }).catch(error => this.handleError(error));
       }).catch(error => this.handleError(error));
   }
 
@@ -164,12 +244,60 @@ export class ShotmakerLocationsComponent implements OnInit {
   }
 
   private clearData(): void {
-    this.locations$.next([]);
-    this.locationOptions$.next([]);
+    this.sceneEntities$.next([]);
+    this.locationEntities$.next([]);
+    this.locationOptionEntities$.next([]);
     this.locationOptionFolders$.next([]);
+    this.scenes$.next([]);
   }
 
-  private fetchLocations(): Promise<Location[]> {
+  private fetchSceneEntities(): Promise<SceneEntity[]> {
+    return fetch(
+      this.project.locations?.googleDriveScenesUrl ?? ""
+    )
+      .then((response) => response.text())
+      .then((data) => {
+        let rows = data.trim().split("\n");
+        let headers = rows[0].split("\t");
+        let headerToIndex: Record<string, number> = {};
+        for (var i = 0; i < headers.length; i++) {
+          headerToIndex[headers[i].trim()] = i;
+        }
+
+        let scenes: SceneEntity[] = [];
+        for (var i = 1; i < rows.length; i++) {
+          let row = rows[i];
+          let cells = row.trim().split("\t").map(val => val.trim());
+          let status = cells[headerToIndex["Status"]];
+          if (status === "DEAD") {
+            continue;
+          }
+
+          let id = cells[headerToIndex["Scene ID"]];
+          let setting = cells[headerToIndex["Setting"]];
+          let description = cells[headerToIndex["Description"]];
+          let timeOfDay = cells[headerToIndex["Time Of Day"]];
+          let notes = cells[headerToIndex["Notes"]].split("  ");
+          let filmDay = cells[headerToIndex["Film Day"]];
+          let locationId = Number(cells[headerToIndex["Location ID"]]);
+
+          scenes.push({
+            id: id,
+            status: status,
+            setting: setting,
+            description: description,
+            timeOfDay: timeOfDay,
+            notes: notes,
+            filmDay: filmDay,
+            locationId: locationId,
+          });
+        }
+
+        return scenes;
+      });
+  }
+
+  private fetchLocationEntities(): Promise<LocationEntity[]> {
     return fetch(
       this.project.locations?.googleDriveLocationsUrl ?? ""
     )
@@ -182,32 +310,26 @@ export class ShotmakerLocationsComponent implements OnInit {
           headerToIndex[headers[i].trim()] = i;
         }
 
-        let projectLocations = [];
+        let locations: LocationEntity[] = [];
         for (var i = 1; i < rows.length; i++) {
           let row = rows[i];
-          let cells = row.trim().split("\t");
-          let locationId = Number(cells[headerToIndex["Location ID"]]);
-          let scenes = cells[headerToIndex["Scenes"]].split(",").map(val => val.trim());
-          let intExt = cells[headerToIndex["INT/EXT"]].trim();
-          let timeOfDay = cells[headerToIndex["Time Of Day"]].trim();
-          let description = cells[headerToIndex["Description"]].trim();
-          let notes = cells[headerToIndex["Notes"]];
+          let cells = row.trim().split("\t").map(val => val.trim());
+          let id = Number(cells[headerToIndex["Location ID"]]);
+          let name = cells[headerToIndex["Name"]];
+          let notes = (cells[headerToIndex["Notes"]] ?? "").split("  ");
 
-          projectLocations.push({
-            id: locationId,
-            scenes: scenes,
-            intExt: intExt,
-            timeOfDay: timeOfDay,
-            description: description,
+          locations.push({
+            id: id,
+            name: name,
             notes: notes,
           });
         }
 
-        return projectLocations;
+        return locations;
       });
   }
 
-  private fetchLocationOptions(): Promise<LocationOption[]> {
+  private fetchLocationOptionEntities(): Promise<LocationOptionEntity[]> {
     return fetch(
       this.project.locations?.googleDriveLocationOptionsUrl ?? ""
     )
@@ -220,15 +342,16 @@ export class ShotmakerLocationsComponent implements OnInit {
           headerToIndex[headers[i].trim()] = i;
         }
 
-        let locationOptions = [];
+        let locationOptions: LocationOptionEntity[] = [];
         for (var i = 1; i < rows.length; i++) {
           let row = rows[i];
-          let cells = row.trim().split("\t");
-          let locationOptionId = Number(cells[headerToIndex["Option ID"]]);
+          let cells = row.trim().split("\t").map(val => val.trim());
+          let id = Number(cells[headerToIndex["Option ID"]]);
           let locationId = Number(cells[headerToIndex["Location ID"]]);
           let description = cells[headerToIndex["Description"]];
           let address = cells[headerToIndex["Address"]];
-          let notes = (cells[headerToIndex["Notes"]] ?? "").replace("  ", "<br/>");
+          let notes = (cells[headerToIndex["Notes"]] ?? "").split("  ");
+          let approvalStatus = cells[headerToIndex["Approval Status"]];
           let contactNames = (cells[headerToIndex["Contact Name"]] ?? "").split(",");
           let contactEmails = (cells[headerToIndex["Contact Email"]] ?? "").split(",");
           let contactPhones = (cells[headerToIndex["Contact Phone"]] ?? "").split(",");
@@ -247,11 +370,12 @@ export class ShotmakerLocationsComponent implements OnInit {
           }
 
           locationOptions.push({
-            id: locationOptionId,
+            id: id,
             locationId: locationId,
             description: description,
             address: address,
             notes: notes,
+            approvalStatus: approvalStatus,
             contacts: contacts
           });
         }

@@ -1,5 +1,5 @@
-.shot-list-summary,
-.shot-list-item {
+.scene-list-summary,
+.scene-list-item {
   font-size: 0.8rem;
   padding-left: 5px;
   border-top: 0.1px solid #999;
@@ -8,12 +8,32 @@
   }
 }
 
-.shot-list-summary {
+.scene-list-row {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.scene-list-summary {
   padding-top: 5px;
   padding-bottom: 5px;
 }
 
-.shot-list-item-size-label {
+.scene-list-item-text {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-transform: none;
+  white-space: nowrap;
+}
+
+.scene-list-item-size-label {
   font-family: monospace;
   font-size: 0.7rem;
+  width: 20px;
+}
+
+.scene-list-item-icon {
+  margin-left: auto;
 }

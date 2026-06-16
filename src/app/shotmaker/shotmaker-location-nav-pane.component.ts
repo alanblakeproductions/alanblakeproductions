@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterLink, RouterLinkActive } from '@angular/router';
-import { Location } from './../util/models';
+import { Scene, Location } from './../util/shotmaker-location-models';
 
 import { Observable, BehaviorSubject, Subject, of } from 'rxjs';
 import { MomentModule } from 'ngx-moment';
@@ -20,7 +20,9 @@ import { MomentModule } from 'ngx-moment';
 })
 export class ShotmakerLocationNavPane implements OnInit {
 
+  @Input() scenes$: Subject<Scene[]> = new Subject();
   @Input() locations$: Subject<Location[]> = new Subject();
+  scenes: Scene[] = [];
   locations: Location[] = [];
 
   projectId: string = "";
@@ -38,27 +40,32 @@ export class ShotmakerLocationNavPane implements OnInit {
     this.locations$.subscribe(locations => {
       this.locations = locations;
     });
+
+    this.scenes$.subscribe(scenes => {
+      this.scenes = scenes;
+      console.log(this.scenes);
+    });
   }
 
-  getLocationLabel(location: Location): string {
-    switch(location.intExt) {
-      case "INT/EXT":
-        return "I/E";
-      default:
-        return location.intExt;
-    }
+  getLabel(scene: Scene): string {
+    return scene.id;
   }
 
-  getLocationLabelClass(location: Location): string {
-    switch (location.timeOfDay) {
+  getLabelClass(scene: Scene): string {
+    switch (scene.timeOfDay) {
+      case "EARLY MORNING":
+      case "MORNING":
       case "DAY":
+      case "AFTERNOON":
         return "uk-label-danger";
+      case "EARLY EVENING":
       case "EVENING":
         return "uk-label-warning";
       case "NIGHT":
-        return "uk-label-success";
-      default:
+      case "LATE NIGHT":
         return "";
+      default:
+        return "uk-label-success";
     }
   }
 }
