@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { ShotmakerProject } from './../util/models';
-import { Scene, Location, LocationEntity, LocationOption, LocationOptionEntity, LocationOptionDetail, LocationOptionImage } from './../util/shotmaker-location-models';
+import { Scene, Location, LocationEntity, LocationOption, LocationOptionEntity, LocationOptionDetail, LocationOptionImage, LocationOptionApprovalStatus } from './../util/shotmaker-location-models';
 import { GoogleDriveService } from './../service/google-drive.service';
 import { GoogleDriveFile } from './../util/google-models';
 import { Observable, Subject, BehaviorSubject, concat, of, forkJoin } from 'rxjs';
@@ -115,5 +115,19 @@ export class ShotmakerLocationDetailPane implements OnInit {
     }
 
     return `Option ${detail.option.id}`;
+  }
+
+  getApprovalStatusClass(option: LocationOption): string {
+    switch (option.approvalStatus) {
+      case LocationOptionApprovalStatus.NOT_APPLICABLE:
+      case LocationOptionApprovalStatus.APPROVED:
+        return "uk-label-success";
+      case LocationOptionApprovalStatus.PENDING_APPROVAL:
+        return "uk-label-warning";
+      case LocationOptionApprovalStatus.NOT_APPROVED:
+        return "uk-label-danger";
+      default:
+        return "uk-label-warning";
+    }
   }
 }

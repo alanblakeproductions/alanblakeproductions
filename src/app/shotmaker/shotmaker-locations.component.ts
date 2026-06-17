@@ -6,7 +6,7 @@ import { CdkDrag, CdkDragDrop, CdkDropList, CdkDropListGroup, moveItemInArray, t
 import { ShotmakerLocationDetailPane } from './shotmaker-location-detail-pane.component';
 import { ShotmakerLocationNavPane } from './shotmaker-location-nav-pane.component';
 import { ShotmakerProject, ShotmakerProjectLocations } from './../util/models';
-import { SceneEntity, Scene, LocationEntity, LocationOptionEntity, LocationOptionApprovalStatus, Location2, LocationOption2, Location, LocationOption } from './../util/shotmaker-location-models';
+import { SceneEntity, Scene, LocationEntity, LocationOptionEntity, LocationOptionApprovalStatus, Location, LocationOption } from './../util/shotmaker-location-models';
 import { GoogleDriveFile } from './../util/google-models';
 import { BrowserStorageService } from './../service/browser-storage.service';
 import { Observable, BehaviorSubject, Subject, of, forkJoin } from 'rxjs';
@@ -86,6 +86,29 @@ export class ShotmakerLocationsComponent implements OnInit {
               return map;
             }, new Map<number, LocationOptionEntity[]>());
 
+            let allLocationOptionFolders = Object.fromEntries(files
+                .map(file => [Number(file.name), file]));
+            let missingLocationOptionFolders = locationOptionEntities
+                .map(option => option.id)
+                .filter(optionId => !Object.hasOwn(allLocationOptionFolders, optionId));
+            if (missingLocationOptionFolders.length > 0) {
+              console.log("Missing location option folders", missingLocationOptionFolders);
+              const missingLocationOptionFolderObservables: Observable<GoogleDriveFile>[] = missingLocationOptionFolders.map(optionId => {
+                return this.googleService.createFolder(this.project.locations?.googleDriveFolderId ?? "", String(optionId));
+              });
+
+              forkJoin(missingLocationOptionFolderObservables)
+                .subscribe({
+                  next: (missingLocationOptionFolders: GoogleDriveFile[]) => {
+                    for (let missingLocationOptionFolder of missingLocationOptionFolders) {
+                      console.log(`Created missing folder ${missingLocationOptionFolder.name}`);
+                      allLocationOptionFolders[Number(missingLocationOptionFolder.name)] = missingLocationOptionFolder;
+                    }
+                  },
+                  error: (error) => this.handleError(error)
+                });
+            }
+
             let scenes: Scene[] = [];
             for (let sceneEntity of sceneEntities) {
               let locationOptionEntities = locationOptionEntitiesByLocationId.get(sceneEntity.locationId) ?? [];
@@ -99,7 +122,6 @@ export class ShotmakerLocationsComponent implements OnInit {
                 else if (approvalStatus !== LocationOptionApprovalStatus.NOT_APPLICABLE && entity.contacts.length === 0) {
                   warnings.push("No contact exists for this location option");
                 }
-
                 if (entity.address === undefined || entity.address === "") {
                   warnings.push("No address for this location option");
                 }
@@ -120,7 +142,7 @@ export class ShotmakerLocationsComponent implements OnInit {
                 locationWarnings.push("No location options exist for this scene yet");
               }
               let locationEntity = locationEntitiesById[sceneEntity.locationId];
-              let location: Location2 = {
+              let location: Location = {
                 id: locationEntity.id,
                 name: locationEntity.name,
                 notes: locationEntity.notes,
@@ -145,19 +167,16 @@ export class ShotmakerLocationsComponent implements OnInit {
               });
             }
 
-            this.scenes$.next(scenes);
-
-            let allLocationOptionFolders = Object.fromEntries(files
-                .map(file => [Number(file.name), file]));
-
             this.route.params.subscribe(params => {
               if (!params['status']) {
+                this.scenes$.next(scenes);
                 return;
               }
 
               let selectedSceneId = params['status'];
               let selectedScene = scenes.find((scene) => scene.id === selectedSceneId) ?? {} as Scene;
               if (!selectedScene) {
+                this.scenes$.next(scenes);
                 return;
               }
 
@@ -167,29 +186,9 @@ export class ShotmakerLocationsComponent implements OnInit {
                   .entries(allLocationOptionFolders)
                   .filter(([optionId]) => Object.hasOwn(selectedLocationOptions, optionId)));
 
-              let missingLocationOptionFolders = locationOptions.map(option => option.id).filter(optionId => !Object.hasOwn(allLocationOptionFolders, optionId));
-              if (missingLocationOptionFolders.length === 0) {
-                this.selectedLocationOptionFolders$.next(selectedLocationOptionFolders);
-                return;
-              }
-
-              const missingLocationOptionFolderObservables: Observable<GoogleDriveFile>[] = missingLocationOptionFolders.map(optionId => {
-                return this.googleService.createFolder(this.project.locations?.googleDriveFolderId ?? "", String(optionId));
-              });
-
-              forkJoin(missingLocationOptionFolderObservables)
-                .subscribe({
-                  next: (missingLocationOptionFolders: GoogleDriveFile[]) => {
-                    for (let missingLocationOptionFolder of missingLocationOptionFolders) {
-                      console.log(`Created missing folder ${missingLocationOptionFolder.name}`);
-                      selectedLocationOptionFolders[Number(missingLocationOptionFolder.name)] = missingLocationOptionFolder;
-                    }
-
-                    this.selectedScene$.next(selectedScene);
-                    this.selectedLocationOptionFolders$.next(selectedLocationOptionFolders);
-                  },
-                  error: (error) => this.handleError(error)
-                });
+              this.scenes$.next(scenes);
+              this.selectedScene$.next(selectedScene);
+              this.selectedLocationOptionFolders$.next(selectedLocationOptionFolders);
             });
           });
         });

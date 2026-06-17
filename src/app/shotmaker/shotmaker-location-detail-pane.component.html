@@ -12,6 +12,10 @@
           <h3 class="uk-header">{{scene?.setting}}. {{scene?.description}} - {{scene?.timeOfDay}}</h3>
         </div>
 
+        <div class="uk-alert-danger" uk-alert *ngFor="let warning of scene?.warnings">
+          <span class="uk-margin-small-right" uk-icon="warning"></span> {{warning}}
+        </div>
+
         <table class="uk-table uk-table-divider">
           <caption>SCENE DETAILS</caption>
           <tbody>
@@ -21,10 +25,18 @@
           </tr>
           <tr>
             <td class="uk-text-muted uk-width-small">NOTES</td>
-            <td>{{scene?.notes}}</td>
+            <td>
+              <span *ngFor="let note of scene?.notes">
+                {{note}}<br/>
+              </span>
+            </td>
           </tr>
           </tbody>
         </table>
+
+        <div class="uk-alert-danger" uk-alert *ngFor="let warning of scene?.location?.warnings">
+          <span class="uk-margin-small-right" uk-icon="warning"></span> {{warning}}
+        </div>
 
         <table class="uk-table uk-table-divider">
           <caption>LOCATION DETAILS</caption>
@@ -37,7 +49,11 @@
             </tr>
             <tr>
               <td class="uk-text-muted uk-width-small">NOTES</td>
-              <td>{{scene?.location?.notes}}</td>
+              <td>
+                <span *ngFor="let note of scene?.location?.notes">
+                  {{note}}<br/>
+                </span>
+              </td>
             </tr>
           </tbody>
         </table>
@@ -62,6 +78,11 @@
           @for (item of locationOptionDetails | keyvalue; track item.key) {
           <div>
             <div class="uk-width-1-1">
+
+              <div class="uk-alert-danger" uk-alert *ngFor="let warning of item.value.option.warnings">
+                <span class="uk-margin-small-right" uk-icon="warning"></span> {{warning}}
+              </div>
+
               <table class="uk-table uk-table-divider">
                 <tbody>
                   <tr>
@@ -74,7 +95,15 @@
                   </tr>
                   <tr>
                     <td class="uk-text-muted uk-width-small">NOTES</td>
-                    <td [innerHTML]="item.value.option.notes"></td>
+                    <td>
+                      <span *ngFor="let note of item.value.option.notes">
+                        {{note}}<br/>
+                      </span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="uk-text-muted uk-width-small">APPROVAL</td>
+                    <td><span class="uk-label {{getApprovalStatusClass(item.value.option)}}">{{item.value.option.approvalStatus}}</span></td>
                   </tr>
                   <tr>
                     <td class="uk-text-muted uk-width-small">IMAGES</td>

@@ -36,13 +36,13 @@ export interface Scene {
   timeOfDay: string,
   notes: string[],
   filmDay: string,
-  location: Location2,
-  locationOptions: LocationOption2[],
+  location: Location,
+  locationOptions: LocationOption[],
   warnings: string[],
   childWarnings: string[],
 }
 
-export interface Location2 {
+export interface Location {
   id: number,
   name: string,
   notes: string[],
@@ -50,7 +50,7 @@ export interface Location2 {
   warnings: string[],
 }
 
-export interface LocationOption2 {
+export interface LocationOption {
   id: number,
   description: string,
   address: string,
@@ -67,24 +67,6 @@ export enum LocationOptionApprovalStatus {
   NOT_APPROVED = "NOT_APPROVED"
 }
 
-export interface Location {
-  id: number,
-  scenes: string[],
-  intExt: string,
-  timeOfDay: string,
-  description: string,
-  notes: string,
-}
-
-export interface LocationOption {
-  id: number,
-  locationId: number,
-  description: string,
-  address: string,
-  notes: string,
-  contacts: Contact[],
-}
-
 export interface Contact {
   name: string,
   email: string,
@@ -92,7 +74,7 @@ export interface Contact {
 }
 
 export interface LocationOptionDetail {
-  option: LocationOption2,
+  option: LocationOption,
   folder: GoogleDriveFile,
   folderUrl: string,
   images: LocationOptionImage[],
