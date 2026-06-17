@@ -38,7 +38,6 @@ export class ShotmakerLocationsComponent implements OnInit {
 
   scenes$: Subject<Scene[]> = new Subject();
 
-  locations$: Subject<Location[]> = new Subject();
   locationOptions$: Subject<LocationOption[]> = new Subject();
   locationOptionFolders$: Subject<GoogleDriveFile[]> = new Subject();
 
@@ -109,8 +108,14 @@ export class ShotmakerLocationsComponent implements OnInit {
                 });
             }
 
-            let scenes: Scene[] = [];
+            let scenes: Record<string, Scene> = {};
+            var locationIdToSceneIds: Record<number, string[]> = {};
             for (let sceneEntity of sceneEntities) {
+              if (!Object.hasOwn(locationIdToSceneIds, sceneEntity.locationId)) {
+                locationIdToSceneIds[sceneEntity.locationId] = [];
+              }
+              locationIdToSceneIds[sceneEntity.locationId].push(sceneEntity.id);
+
               let locationOptionEntities = locationOptionEntitiesByLocationId.get(sceneEntity.locationId) ?? [];
               let locationOptions = locationOptionEntities.map((entity) => {
                 let approvalStatus = entity.approvalStatus as LocationOptionApprovalStatus ?? LocationOptionApprovalStatus.NOT_APPROVED;
@@ -152,7 +157,7 @@ export class ShotmakerLocationsComponent implements OnInit {
 
               let sceneWarnings: string[] = [];
 
-              scenes.push({
+              scenes[sceneEntity.id] = {
                 id: sceneEntity.id,
                 status: sceneEntity.status,
                 setting: sceneEntity.setting,
@@ -164,19 +169,23 @@ export class ShotmakerLocationsComponent implements OnInit {
                 locationOptions: locationOptions,
                 warnings: sceneWarnings,
                 childWarnings: [...locationOptions.map(option => option.warnings).flat(), ...location.warnings],
-              });
+              };
             }
+
+            for (let scene of Object.values(scenes)) {
+              scene.location.sceneIds = locationIdToSceneIds[scene.location.id];
+            }
+
+            this.scenes$.next(Object.values(scenes));
 
             this.route.params.subscribe(params => {
               if (!params['status']) {
-                this.scenes$.next(scenes);
                 return;
               }
 
               let selectedSceneId = params['status'];
-              let selectedScene = scenes.find((scene) => scene.id === selectedSceneId) ?? {} as Scene;
+              let selectedScene = scenes[selectedSceneId] ?? {} as Scene;
               if (!selectedScene) {
-                this.scenes$.next(scenes);
                 return;
               }
 
@@ -186,7 +195,6 @@ export class ShotmakerLocationsComponent implements OnInit {
                   .entries(allLocationOptionFolders)
                   .filter(([optionId]) => Object.hasOwn(selectedLocationOptions, optionId)));
 
-              this.scenes$.next(scenes);
               this.selectedScene$.next(selectedScene);
               this.selectedLocationOptionFolders$.next(selectedLocationOptionFolders);
             });

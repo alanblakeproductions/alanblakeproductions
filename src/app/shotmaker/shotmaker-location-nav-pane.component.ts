@@ -21,9 +21,7 @@ import { MomentModule } from 'ngx-moment';
 export class ShotmakerLocationNavPane implements OnInit {
 
   @Input() scenes$: Subject<Scene[]> = new Subject();
-  @Input() locations$: Subject<Location[]> = new Subject();
   scenes: Scene[] = [];
-  locations: Location[] = [];
 
   projectId: string = "";
 
@@ -37,13 +35,8 @@ export class ShotmakerLocationNavPane implements OnInit {
       this.projectId = params['projectId'] ?? "ballad-of-the-night-owl";
     });
 
-    this.locations$.subscribe(locations => {
-      this.locations = locations;
-    });
-
     this.scenes$.subscribe(scenes => {
       this.scenes = scenes;
-      console.log(this.scenes);
     });
   }
 
