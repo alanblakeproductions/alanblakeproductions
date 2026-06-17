@@ -36,7 +36,11 @@ export class ShotmakerLocationNavPane implements OnInit {
     });
 
     this.scenes$.subscribe(scenes => {
-      this.scenes = scenes;
+      this.scenes = scenes.sort((a, b) => {
+        let aId = Number(a.id.match(/\d+/g));
+        let bId = Number(b.id.match(/\d+/g));
+        return aId - bId;
+      });
     });
   }
 
