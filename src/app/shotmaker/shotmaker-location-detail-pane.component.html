@@ -86,6 +86,12 @@
               <table class="uk-table uk-table-divider">
                 <tbody>
                   <tr>
+                    <td class="uk-text-muted uk-width-small">ADDRESS</td>
+                    <td>
+                      {{item.value.option.address}}
+                    </td>
+                  </tr>
+                  <tr>
                     <td class="uk-text-muted uk-width-small">CONTACT</td>
                     <td *ngFor="let contact of item.value.option.contacts">
                       {{contact.name}}<br/>

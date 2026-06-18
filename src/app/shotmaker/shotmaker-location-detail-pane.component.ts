@@ -45,7 +45,6 @@ export class ShotmakerLocationDetailPane implements OnInit {
 
       let locationOptions = Object.fromEntries(scene.locationOptions.map(option => [option.id, option]));
       this.locationOptionFolders$.subscribe((locationOptionFolders: Record<number, GoogleDriveFile>) => {
-
         this.locationOptionDetails = {};
         this.loadingImages = true;
 
