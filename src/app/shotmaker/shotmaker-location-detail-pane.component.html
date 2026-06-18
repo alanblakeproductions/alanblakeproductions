@@ -6,7 +6,7 @@
   </div>
 
   <div *ngSwitchCase="false">
-    <div class="uk-section uk-section-muted uk-padding">
+    <div class="uk-section uk-section-muted">
       <div class="uk-container">
         <div class="uk-align-left">
           <h3 class="uk-header">{{scene?.setting}}. {{scene?.description}} - {{scene?.timeOfDay}}</h3>
@@ -119,10 +119,18 @@
               <div uk-spinner="ratio: 3"></div>
             </div>
 
+            <div class="uk-child-width-1-1@s" uk-grid="masonry: pack">
+              <div *ngFor="let image of item.value.horizontalImages">
+                <div class="uk-card uk-flex uk-flex-center uk-flex-middle" style="height: {{image.file.imageMetadata?.smallHeight}}px">
+                  <img [src]="image.url" alt="" [height]="image.file.imageMetadata?.smallHeight" [width]="image.file.imageMetadata?.smallWidth" uk-cover>
+                </div>
+              </div>
+            </div>
+
             <div class="uk-child-width-1-2@s" uk-grid="masonry: pack">
-              <div *ngFor="let image of item.value.images">
-                <div class="uk-card uk-flex uk-flex-center uk-flex-middle" style="height: {{image.file.imageHeight}}px">
-                  <img [src]="image.url" alt="" [height]="image.file.imageHeight" [width]="image.file.imageWidth" uk-cover>
+              <div *ngFor="let image of item.value.verticalImages">
+                <div class="uk-card uk-flex uk-flex-center uk-flex-middle" style="height: {{image.file.imageMetadata?.smallHeight}}px">
+                  <img [src]="image.url" alt="" [height]="image.file.imageMetadata?.smallHeight" [width]="image.file.imageMetadata?.smallWidth" uk-cover>
                 </div>
               </div>
               <!--

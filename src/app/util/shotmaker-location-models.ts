@@ -77,7 +77,8 @@ export interface LocationOptionDetail {
   option: LocationOption,
   folder: GoogleDriveFile,
   folderUrl: string,
-  images: LocationOptionImage[],
+  horizontalImages: LocationOptionImage[],
+  verticalImages: LocationOptionImage[],
 }
 
 export interface LocationOptionImage {

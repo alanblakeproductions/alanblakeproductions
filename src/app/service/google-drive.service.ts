@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, Subject } from 'rxjs';
 import { BrowserStorageService } from './browser-storage.service';
-import { GoogleDriveFile } from './../util/google-models';
+import { GoogleDriveFile, ImageMetadata, ImageDisplayDirection } from './../util/google-models';
 import { LocationOptionImage } from './../util/shotmaker-location-models';
 import { map } from 'rxjs/operators';
 
@@ -90,12 +90,29 @@ export class GoogleDriveService {
     return this.http.get<any>('https://www.googleapis.com/drive/v3/files', { headers, params })
       .pipe(map((response) => {
         return response.files.map((file: any) => {
+          let imageMetadata = undefined;
+          if (file.imageMediaMetadata?.width) {
+            let imageDivisor = 1;
+            if (file.imageMediaMetadata?.width > 5000) {
+              imageDivisor = 6;
+            }
+            else if (file.imageMediaMetadata?.width > 2500) {
+              imageDivisor = 4;
+            }
+            imageMetadata = {
+              height: Number(file.imageMediaMetadata.height ?? 0),
+              width: Number(file.imageMediaMetadata.width ?? 0),
+              smallHeight: Number((file.imageMediaMetadata.height ?? 0) / imageDivisor),
+              smallWidth: Number((file.imageMediaMetadata.height ?? 0) / imageDivisor),
+              displayDirection: Number(file.imageMediaMetadata.height) > Number(file.imageMediaMetadata.width) ? ImageDisplayDirection.VERTICAL : ImageDisplayDirection.HORIZONTAL
+            };
+          }
           return {
             id: String(file.id),
             name: String(file.name),
             mimeType: String(file.mimeType),
-            imageHeight: Number(file.imageMediaMetadata?.height ?? 0),
-            imageWidth: Number(file.imageMediaMetadata?.width ?? 0),
+            imageMetadata: imageMetadata,
+
           } as GoogleDriveFile;
         });
       }));
@@ -145,9 +162,7 @@ export class GoogleDriveService {
           id: response.id,
           name: response.name,
           mimeType: response.mimeType,
-          imageHeight: undefined,
-          imageWidth: undefined,
-
+          imageMetadata: undefined,
         };
       }));
   }

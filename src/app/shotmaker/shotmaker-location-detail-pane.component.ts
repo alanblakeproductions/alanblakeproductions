@@ -5,7 +5,7 @@ import { ActivatedRoute, Router, RouterLink, RouterLinkActive } from '@angular/r
 import { ShotmakerProject } from './../util/models';
 import { Scene, Location, LocationEntity, LocationOption, LocationOptionEntity, LocationOptionDetail, LocationOptionImage, LocationOptionApprovalStatus } from './../util/shotmaker-location-models';
 import { GoogleDriveService } from './../service/google-drive.service';
-import { GoogleDriveFile } from './../util/google-models';
+import { GoogleDriveFile, ImageDisplayDirection } from './../util/google-models';
 import { Observable, Subject, BehaviorSubject, concat, of, forkJoin } from 'rxjs';
 import { toArray } from 'rxjs/operators';
 
@@ -56,7 +56,8 @@ export class ShotmakerLocationDetailPane implements OnInit {
               option: option,
               folder: folder,
               folderUrl: `https://drive.google.com/drive/u/1/folders/${folder.id}`,
-              images: [],
+              horizontalImages: [],
+              verticalImages: []
             };
           }
         });
@@ -94,7 +95,10 @@ export class ShotmakerLocationDetailPane implements OnInit {
           forkJoin(imageObservables)
             .subscribe({
               next: (images: LocationOptionImage[]) => {
-                this.locationOptionDetails[Number(folder.name)].images = images;
+                let verticalImages = images.filter(image => image.file.imageMetadata?.displayDirection === ImageDisplayDirection.VERTICAL);
+                let horizontalImages = images.filter(image => image.file.imageMetadata?.displayDirection !== ImageDisplayDirection.VERTICAL);
+                this.locationOptionDetails[Number(folder.name)].verticalImages = verticalImages;
+                this.locationOptionDetails[Number(folder.name)].horizontalImages = horizontalImages;
 
                 this.loadingImages = false;
               },
