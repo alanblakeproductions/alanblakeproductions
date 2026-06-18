@@ -103,7 +103,7 @@ export class GoogleDriveService {
               height: Number(file.imageMediaMetadata.height ?? 0),
               width: Number(file.imageMediaMetadata.width ?? 0),
               smallHeight: Number((file.imageMediaMetadata.height ?? 0) / imageDivisor),
-              smallWidth: Number((file.imageMediaMetadata.height ?? 0) / imageDivisor),
+              smallWidth: Number((file.imageMediaMetadata.width ?? 0) / imageDivisor),
               displayDirection: Number(file.imageMediaMetadata.height) > Number(file.imageMediaMetadata.width) ? ImageDisplayDirection.VERTICAL : ImageDisplayDirection.HORIZONTAL
             };
           }

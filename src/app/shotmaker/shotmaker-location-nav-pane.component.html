@@ -1,7 +1,7 @@
-<div class="flex-column">
+<div class="sticky-side-nav">
   <ul class="uk-nav uk-nav-default scene-list">
     @for (scene of scenes; track scene) {
-    <li routerLinkActive="uk-active" class="scene-list-item uk-text-truncate">
+    <li routerLinkActive="uk-active" class="scene-list-item uk-text-truncate" #sceneElement [attr.id]="'scene-' + scene.id">
       <a routerLink="/shotmaker/{{projectId}}/locations/{{view}}/{{scene.id}}">
         <div class="scene-list-row">
           <span class="scene-list-item-size-label uk-label uk-text-center uk-margin-small-right {{getLabelClass(scene)}}">{{scene.id}}</span>
