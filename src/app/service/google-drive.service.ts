@@ -38,6 +38,7 @@ export class GoogleDriveService {
               throw response;
             }
             this.browserStorageService.setGoogleAccessToken(response.access_token);
+            this.browserStorageService.setGoogleAccessTokenExpiration(Date.now() + (response.expires_in * 1000));
             this.authStatus$.next(true);
           },
         });
@@ -55,13 +56,18 @@ export class GoogleDriveService {
 
   private tickleAccessToken() {
     if (this.tokenClient) {
-      //this.tokenClient.requestAccessToken({ prompt: '' });
+      const expiresAt = this.browserStorageService.getGoogleAccessTokenExpiration();
+      if (Date.now() > expiresAt - 5 * 60 * 1000) {
+        console.log("Tickling access token");
+        this.tokenClient.requestAccessToken({ prompt: 'none' });
+      }
     }
   }
 
   public logout() {
     var accessToken = this.browserStorageService.getGoogleAccessToken();
     this.browserStorageService.clearGoogleAccessToken();
+    this.browserStorageService.clearGoogleAccessTokenExpiration();
     if (typeof google !== "undefined") {
       google.accounts.oauth2.revoke(accessToken, () => {
         this.authStatus$.next(false);

@@ -57,6 +57,26 @@ export class BrowserStorageService {
     this.removeItem(this.getGoogleAccessTokenKey());
   }
 
+  getGoogleAccessTokenExpirationKey(): string {
+    return "shotmaker.access-token.expiration";
+  }
+
+  getGoogleAccessTokenExpiration(): number {
+    let expiration = this.getItem(this.getGoogleAccessTokenExpirationKey());
+    if (expiration) {
+      return Number(expiration);
+    }
+    return 0;
+  }
+
+  setGoogleAccessTokenExpiration(expiration: number): void {
+    this.setItem(this.getGoogleAccessTokenExpirationKey(), String(expiration));
+  }
+
+  clearGoogleAccessTokenExpiration(): void {
+    this.removeItem(this.getGoogleAccessTokenExpirationKey());
+  }
+
   private getShotStatusKey(projectId: string, shotId: number): string {
     return "shotmaker.project-" + projectId + ".shot-" + shotId + ".status";
   }

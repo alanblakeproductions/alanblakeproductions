@@ -183,7 +183,7 @@ export class ShotmakerLocationsComponent implements OnInit {
             }
 
             for (let scene of Object.values(scenes)) {
-              scene.location.sceneIds = locationIdToSceneIds[scene.location.id];
+              scene.location.sceneIds = locationIdToSceneIds[scene.location.id].filter(sceneId => sceneId !== scene.id);
             }
 
             this.scenes$.next(Object.values(scenes));
@@ -278,7 +278,7 @@ export class ShotmakerLocationsComponent implements OnInit {
           let row = rows[i];
           let cells = row.trim().split("\t").map(val => val.trim());
           let status = cells[headerToIndex["Status"]];
-          if (status === "DEAD") {
+          if (status === "CUT" || status === "TITLE CARD") {
             continue;
           }
 
@@ -286,7 +286,7 @@ export class ShotmakerLocationsComponent implements OnInit {
           let setting = cells[headerToIndex["Setting"]];
           let description = cells[headerToIndex["Description"]];
           let timeOfDay = cells[headerToIndex["Time Of Day"]];
-          let notes = cells[headerToIndex["Notes"]].split("  ");
+          let notes = (cells[headerToIndex["Notes"]] ?? "").split("  ");
           let filmDay = cells[headerToIndex["Film Day"]];
           let locationId = Number(cells[headerToIndex["Location ID"]]);
 
