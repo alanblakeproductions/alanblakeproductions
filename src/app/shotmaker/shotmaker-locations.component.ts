@@ -30,6 +30,7 @@ export class ShotmakerLocationsComponent implements OnInit {
 
   @Input() project: ShotmakerProject = {} as ShotmakerProject;
 
+  sceneId: string = "";
   isLoggedIn: Boolean = false;
 
   sceneEntities$: Subject<SceneEntity[]> = new Subject();
@@ -42,7 +43,6 @@ export class ShotmakerLocationsComponent implements OnInit {
   locationOptionFolders$: Subject<GoogleDriveFile[]> = new Subject();
 
   selectedScene$: Subject<Scene> = new Subject();
-  selectedLocationOptionFolders$: Subject<Record<number, GoogleDriveFile>> = new Subject();
 
   constructor(
     private http: HttpClient,
@@ -57,6 +57,10 @@ export class ShotmakerLocationsComponent implements OnInit {
     if (!this.project.locations) {
       return;
     }
+
+    this.route.params.subscribe((params) => {
+      this.sceneId = params['shotId']
+    });
 
     this.googleService.getAuthStatus().subscribe((authStatus) => {
       this.onAuthStatusChange(authStatus);
@@ -131,6 +135,8 @@ export class ShotmakerLocationsComponent implements OnInit {
                   warnings.push("No address for this location option");
                 }
 
+                let folder = allLocationOptionFolders[entity.id];
+
                 return {
                   id: entity.id,
                   description: entity.description,
@@ -139,6 +145,10 @@ export class ShotmakerLocationsComponent implements OnInit {
                   approvalStatus: entity.approvalStatus as LocationOptionApprovalStatus ?? LocationOptionApprovalStatus.NOT_APPROVED,
                   contacts: entity.contacts,
                   warnings: warnings,
+                  folder: folder,
+                  folderUrl: `https://drive.google.com/drive/u/1/folders/${folder.id}`,
+                  horizontalImages: [],
+                  verticalImages: [],
                 }
               });
 
@@ -179,24 +189,16 @@ export class ShotmakerLocationsComponent implements OnInit {
             this.scenes$.next(Object.values(scenes));
 
             this.route.params.subscribe(params => {
-              if (!params['status']) {
+              if (!params['shotId']) {
                 return;
               }
 
-              let selectedSceneId = params['status'];
+              let selectedSceneId = params['shotId'];
               let selectedScene = scenes[selectedSceneId] ?? {} as Scene;
               if (!selectedScene) {
                 return;
               }
-
-              let selectedLocationOptions = Object.fromEntries(selectedScene.locationOptions
-                  .map((locationOption) => [locationOption.id, locationOption]));
-              let selectedLocationOptionFolders = Object.fromEntries(Object
-                  .entries(allLocationOptionFolders)
-                  .filter(([optionId]) => Object.hasOwn(selectedLocationOptions, optionId)));
-
               this.selectedScene$.next(selectedScene);
-              this.selectedLocationOptionFolders$.next(selectedLocationOptionFolders);
             });
           });
         });

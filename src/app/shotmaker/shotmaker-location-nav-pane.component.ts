@@ -2,9 +2,8 @@ import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterLink, RouterLinkActive } from '@angular/router';
 import { Scene, Location } from './../util/shotmaker-location-models';
-
+import { BrowserStorageService } from './../service/browser-storage.service';
 import { Observable, BehaviorSubject, Subject, of } from 'rxjs';
-import { MomentModule } from 'ngx-moment';
 
 @Component({
   selector: 'app-shotmaker-location-nav-pane',
@@ -13,7 +12,6 @@ import { MomentModule } from 'ngx-moment';
     CommonModule,
     RouterLink,
     RouterLinkActive,
-    MomentModule,
   ],
   templateUrl: './shotmaker-location-nav-pane.component.html',
   styleUrl: './shotmaker-location-nav-pane.component.less'
@@ -24,15 +22,18 @@ export class ShotmakerLocationNavPane implements OnInit {
   scenes: Scene[] = [];
 
   projectId: string = "";
+  view: string = "";
 
   constructor(
     private route: ActivatedRoute,
+    private browserStorageService: BrowserStorageService
   ) {
   }
 
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
-      this.projectId = params['projectId'] ?? "ballad-of-the-night-owl";
+      this.projectId = params['projectId'] ?? "";
+      this.view = params['status'] ?? "scenes";
     });
 
     this.scenes$.subscribe(scenes => {
@@ -45,7 +46,10 @@ export class ShotmakerLocationNavPane implements OnInit {
   }
 
   getLabel(scene: Scene): string {
-    return scene.id;
+    if (this.view === "scenes") {
+      return `${scene.setting}. ${scene.description}`;
+    }
+    return scene.location.name;
   }
 
   getLabelClass(scene: Scene): string {
@@ -65,4 +69,6 @@ export class ShotmakerLocationNavPane implements OnInit {
         return "uk-label-success";
     }
   }
+
+
 }

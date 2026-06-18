@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { ShotmakerProject } from './../util/models';
-import { Scene, Location, LocationEntity, LocationOption, LocationOptionEntity, LocationOptionDetail, LocationOptionImage, LocationOptionApprovalStatus } from './../util/shotmaker-location-models';
+import { Scene, Location, LocationEntity, LocationOption, LocationOptionEntity, LocationOptionImage, LocationOptionApprovalStatus } from './../util/shotmaker-location-models';
 import { GoogleDriveService } from './../service/google-drive.service';
 import { GoogleDriveFile, ImageDisplayDirection } from './../util/google-models';
 import { Observable, Subject, BehaviorSubject, concat, of, forkJoin } from 'rxjs';
@@ -27,10 +27,8 @@ export class ShotmakerLocationDetailPane implements OnInit {
 
   @Input() project: ShotmakerProject = {} as ShotmakerProject;
   @Input() scene$: Subject<Scene> = new Subject();
-  @Input() locationOptionFolders$: Subject<Record<number, GoogleDriveFile>> = new Subject();
 
   scene: Scene | undefined = undefined;
-  locationOptionDetails: Record<number, LocationOptionDetail> = {};
   loadingImages: boolean = true;
 
   constructor(
@@ -42,29 +40,11 @@ export class ShotmakerLocationDetailPane implements OnInit {
   ngOnInit(): void {
     this.scene$.subscribe(scene => {
       this.scene = scene;
+      this.loadingImages = true;
 
-      let locationOptions = Object.fromEntries(scene.locationOptions.map(option => [option.id, option]));
-      this.locationOptionFolders$.subscribe((locationOptionFolders: Record<number, GoogleDriveFile>) => {
-        this.locationOptionDetails = {};
-        this.loadingImages = true;
-
-        Object.entries(locationOptionFolders).forEach(([optionId, folder]) => {
-          let option = locationOptions[Number(optionId)];
-          if (option) {
-            this.locationOptionDetails[Number(optionId)] = {
-              option: option,
-              folder: folder,
-              folderUrl: `https://drive.google.com/drive/u/1/folders/${folder.id}`,
-              horizontalImages: [],
-              verticalImages: []
-            };
-          }
-        });
-
-        Object.entries(locationOptionFolders).forEach(([optionId, folder]) => {
-          this.loadImages(folder);
-        });
-      });
+      for (let locationOption of scene.locationOptions) {
+        this.loadImages(locationOption);
+      }
     });
   }
 
@@ -78,7 +58,8 @@ export class ShotmakerLocationDetailPane implements OnInit {
     }
   }
 
-  private loadImages(folder: GoogleDriveFile): void {
+  private loadImages(locationOption: LocationOption): void {
+    let folder = locationOption.folder;
     this.googleService.listFiles(folder.id)
       .subscribe({
         next: (files) => {
@@ -96,8 +77,8 @@ export class ShotmakerLocationDetailPane implements OnInit {
               next: (images: LocationOptionImage[]) => {
                 let verticalImages = images.filter(image => image.file.imageMetadata?.displayDirection === ImageDisplayDirection.VERTICAL);
                 let horizontalImages = images.filter(image => image.file.imageMetadata?.displayDirection !== ImageDisplayDirection.VERTICAL);
-                this.locationOptionDetails[Number(folder.name)].verticalImages = verticalImages;
-                this.locationOptionDetails[Number(folder.name)].horizontalImages = horizontalImages;
+                locationOption.verticalImages = verticalImages;
+                locationOption.horizontalImages = horizontalImages;
 
                 this.loadingImages = false;
               },
@@ -108,16 +89,16 @@ export class ShotmakerLocationDetailPane implements OnInit {
       });
   }
 
-  getOptionTitle(detail: LocationOptionDetail): string {
-    if (detail.option.description) {
-      return detail.option.description;
+  getOptionTitle(locationOption: LocationOption): string {
+    if (locationOption.description) {
+      return locationOption.description;
     }
 
-    if (detail.option.address) {
-      return detail.option.address;
+    if (locationOption.address) {
+      return locationOption.address;
     }
 
-    return `Option ${detail.option.id}`;
+    return `Option ${locationOption.id}`;
   }
 
   getApprovalStatusClass(option: LocationOption): string {

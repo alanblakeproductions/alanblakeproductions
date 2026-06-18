@@ -58,6 +58,10 @@ export interface LocationOption {
   approvalStatus: LocationOptionApprovalStatus,
   contacts: Contact[],
   warnings: string[],
+  folder: GoogleDriveFile,
+  folderUrl: string,
+  horizontalImages: LocationOptionImage[],
+  verticalImages: LocationOptionImage[],
 }
 
 export enum LocationOptionApprovalStatus {
@@ -71,14 +75,6 @@ export interface Contact {
   name: string,
   email: string,
   phone: string,
-}
-
-export interface LocationOptionDetail {
-  option: LocationOption,
-  folder: GoogleDriveFile,
-  folderUrl: string,
-  horizontalImages: LocationOptionImage[],
-  verticalImages: LocationOptionImage[],
 }
 
 export interface LocationOptionImage {

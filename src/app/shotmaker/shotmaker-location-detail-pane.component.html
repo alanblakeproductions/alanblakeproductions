@@ -64,22 +64,19 @@
       <div class="uk-container">
         <div class="uk-width-1-1">
           <ul class="uk-tab uk-child-width-expand" uk-tab uk-switcher="connect: .location-option">
-            @for (item of locationOptionDetails | keyvalue; track item.key) {
-            <li routerLinkActive="uk-active">
+            <li routerLinkActive="uk-active" *ngFor="let locationOption of scene?.locationOptions">
               <a href="#">
-                <span>{{getOptionTitle(item.value)}}</span>
+                <span>{{getOptionTitle(locationOption)}}</span>
               </a>
             </li>
-            }
           </ul>
         </div>
 
         <div class="uk-switcher location-option">
-          @for (item of locationOptionDetails | keyvalue; track item.key) {
-          <div>
+          <div *ngFor="let locationOption of scene?.locationOptions">
             <div class="uk-width-1-1">
 
-              <div class="uk-alert-danger" uk-alert *ngFor="let warning of item.value.option.warnings">
+              <div class="uk-alert-danger" uk-alert *ngFor="let warning of locationOption.warnings">
                 <span class="uk-margin-small-right" uk-icon="warning"></span> {{warning}}
               </div>
 
@@ -88,12 +85,12 @@
                   <tr>
                     <td class="uk-text-muted uk-width-small">ADDRESS</td>
                     <td>
-                      {{item.value.option.address}}
+                      {{locationOption.address}}
                     </td>
                   </tr>
                   <tr>
                     <td class="uk-text-muted uk-width-small">CONTACT</td>
-                    <td *ngFor="let contact of item.value.option.contacts">
+                    <td *ngFor="let contact of locationOption.contacts">
                       {{contact.name}}<br/>
                       {{contact.email}}<br/>
                       {{contact.phone}}
@@ -102,19 +99,19 @@
                   <tr>
                     <td class="uk-text-muted uk-width-small">NOTES</td>
                     <td>
-                      <span *ngFor="let note of item.value.option.notes">
+                      <span *ngFor="let note of locationOption.notes">
                         {{note}}<br/>
                       </span>
                     </td>
                   </tr>
                   <tr>
                     <td class="uk-text-muted uk-width-small">APPROVAL</td>
-                    <td><span class="uk-label {{getApprovalStatusClass(item.value.option)}}">{{item.value.option.approvalStatus}}</span></td>
+                    <td><span class="uk-label {{getApprovalStatusClass(locationOption)}}">{{locationOption.approvalStatus}}</span></td>
                   </tr>
                   <tr>
                     <td class="uk-text-muted uk-width-small">IMAGES</td>
                     <td>
-                      <a target="_blank" class="uk-icon-button" [href]="item.value.folderUrl"><span uk-icon="upload"></span></a>
+                      <a target="_blank" class="uk-icon-button" [href]="locationOption.folderUrl"><span uk-icon="upload"></span></a>
                     </td>
                   </tr>
                 </tbody>
@@ -126,7 +123,7 @@
             </div>
 
             <div class="uk-child-width-1-1@s" uk-grid="masonry: pack">
-              <div *ngFor="let image of item.value.horizontalImages">
+              <div *ngFor="let image of locationOption.horizontalImages">
                 <div class="uk-card uk-flex uk-flex-center uk-flex-middle" style="height: {{image.file.imageMetadata?.smallHeight}}px">
                   <img [src]="image.url" alt="" [height]="image.file.imageMetadata?.smallHeight" [width]="image.file.imageMetadata?.smallWidth" uk-cover>
                 </div>
@@ -134,7 +131,7 @@
             </div>
 
             <div class="uk-child-width-1-2@s" uk-grid="masonry: pack">
-              <div *ngFor="let image of item.value.verticalImages">
+              <div *ngFor="let image of locationOption.verticalImages">
                 <div class="uk-card uk-flex uk-flex-center uk-flex-middle" style="height: {{image.file.imageMetadata?.smallHeight}}px">
                   <img [src]="image.url" alt="" [height]="image.file.imageMetadata?.smallHeight" [width]="image.file.imageMetadata?.smallWidth" uk-cover>
                 </div>
@@ -161,7 +158,6 @@
               -->
             </div>
           </div>
-          }
         </div>
       </div>
     </div>

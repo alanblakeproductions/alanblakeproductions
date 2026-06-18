@@ -1,12 +1,11 @@
 <div class="flex-column">
-
   <ul class="uk-nav uk-nav-default scene-list">
     @for (scene of scenes; track scene) {
     <li routerLinkActive="uk-active" class="scene-list-item uk-text-truncate">
-      <a routerLink="/shotmaker/{{projectId}}/locations/{{scene.id}}">
+      <a routerLink="/shotmaker/{{projectId}}/locations/{{view}}/{{scene.id}}">
         <div class="scene-list-row">
-          <span class="scene-list-item-size-label uk-label uk-text-center uk-margin-small-right {{getLabelClass(scene)}}">{{getLabel(scene)}}</span>
-          <span class="scene-list-item-text">{{scene.setting}}. {{scene.description}}</span>
+          <span class="scene-list-item-size-label uk-label uk-text-center uk-margin-small-right {{getLabelClass(scene)}}">{{scene.id}}</span>
+          <span class="scene-list-item-text">{{getLabel(scene)}}</span>
           <span *ngIf="scene.warnings.length > 0 || scene.childWarnings.length > 0" class="scene-list-item-icon" uk-icon="warning"></span>
         </div>
       </a>
