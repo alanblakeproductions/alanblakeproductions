@@ -81,3 +81,10 @@ export interface LocationOptionImage {
   file: GoogleDriveFile,
   url: string,
 }
+
+export interface FilmDay {
+  date: string,
+  scenes: Scene[]
+  warnings: string[],
+  childWarnings: string[],
+}

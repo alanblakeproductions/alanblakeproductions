@@ -142,7 +142,7 @@ export class ShotmakerLocationsComponent implements OnInit {
                   description: entity.description,
                   address: entity.address,
                   notes: entity.notes,
-                  approvalStatus: entity.approvalStatus as LocationOptionApprovalStatus ?? LocationOptionApprovalStatus.NOT_APPROVED,
+                  approvalStatus: approvalStatus,
                   contacts: entity.contacts,
                   warnings: warnings,
                   folder: folder,

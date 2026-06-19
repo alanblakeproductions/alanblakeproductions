@@ -47,8 +47,6 @@ export class ShotmakerLocationNavPane implements OnInit, AfterViewInit {
         return aId - bId;
       });
     });
-
-
   }
 
   ngAfterViewInit(): void {
