@@ -11,9 +11,11 @@ import { ShotmakerProject, ShotmakerProjectLocations } from './../util/models';
 import { SceneEntity, Scene, LocationEntity, LocationOptionEntity, LocationOptionApprovalStatus, Location, LocationOption, FilmDay } from './../util/shotmaker-location-models';
 import { GoogleDriveFile } from './../util/google-models';
 import { BrowserStorageService } from './../service/browser-storage.service';
-import { Observable, BehaviorSubject, Subject, of, forkJoin } from 'rxjs';
 import { GoogleDriveService } from './../service/google-drive.service';
-import { distinctUntilChanged, map, switchMap } from 'rxjs/operators';
+import { distinctUntilChanged, map, shareReplay, switchMap } from 'rxjs/operators';
+import { Observable, BehaviorSubject, Subject, combineLatest, of, forkJoin } from 'rxjs';
+
+declare var UIkit: any;
 
 @Component({
   selector: 'app-shotmaker-locations',
@@ -79,177 +81,197 @@ export class ShotmakerLocationsComponent implements OnInit {
       this.onAuthStatusChange(true);
     }
 
-    this.sceneEntities$.subscribe(sceneEntities => {
-      this.locationEntities$.subscribe(locationEntities => {
-        this.locationOptionEntities$.subscribe(locationOptionEntities => {
-          this.locationOptionFolders$.subscribe(files => {
-            console.log(`Loaded ${sceneEntities.length} scenes`);
-            console.log(`Loaded ${locationEntities.length} locations`);
-            console.log(`Loaded ${locationOptionEntities.length} location options`);
-            console.log(`Loaded ${files.length} location option folders`);
+    const data$ = combineLatest([
+      this.sceneEntities$,
+      this.locationEntities$,
+      this.locationOptionEntities$,
+      this.locationOptionFolders$
+    ]).pipe(
+      map(([sceneEntities, locationEntities, locationOptionEntities, files]) => {
+        console.log(`Loaded ${sceneEntities.length} scenes`);
+        console.log(`Loaded ${locationEntities.length} locations`);
+        console.log(`Loaded ${locationOptionEntities.length} location options`);
+        console.log(`Loaded ${files.length} location option folders`);
 
-            let locationEntitiesById = Object.fromEntries(locationEntities.map(entity => [entity.id, entity]));
-            let locationOptionEntitiesByLocationId = locationOptionEntities.reduce((map, entity) => {
-              if (!map.has(entity.locationId)) {
-                map.set(entity.locationId, []);
-              }
-              map.get(entity.locationId)!.push(entity);
-              return map;
-            }, new Map<number, LocationOptionEntity[]>());
+        let locationEntitiesById = Object.fromEntries(locationEntities.map(entity => [entity.id, entity]));
+        let locationOptionEntitiesByLocationId = locationOptionEntities.reduce((map, entity) => {
+          if (!map.has(entity.locationId)) {
+            map.set(entity.locationId, []);
+          }
+          map.get(entity.locationId)!.push(entity);
+          return map;
+        }, new Map<number, LocationOptionEntity[]>());
 
-            let allLocationOptionFolders = Object.fromEntries(files
-                .map(file => [Number(file.name), file]));
-            let missingLocationOptionFolders = locationOptionEntities
-                .map(option => option.id)
-                .filter(optionId => !Object.hasOwn(allLocationOptionFolders, optionId));
-            if (missingLocationOptionFolders.length > 0) {
-              console.log("Missing location option folders", missingLocationOptionFolders);
-              const missingLocationOptionFolderObservables: Observable<GoogleDriveFile>[] = missingLocationOptionFolders.map(optionId => {
-                return this.googleService.createFolder(this.project.locations?.googleDriveFolderId ?? "", String(optionId));
-              });
-
-              forkJoin(missingLocationOptionFolderObservables)
-                .subscribe({
-                  next: (missingLocationOptionFolders: GoogleDriveFile[]) => {
-                    for (let missingLocationOptionFolder of missingLocationOptionFolders) {
-                      console.log(`Created missing folder ${missingLocationOptionFolder.name}`);
-                      allLocationOptionFolders[Number(missingLocationOptionFolder.name)] = missingLocationOptionFolder;
-                    }
-                  },
-                  error: (error) => this.handleError(error)
-                });
-            }
-
-            let scenes: Record<string, Scene> = {};
-            var locationIdToSceneIds: Record<number, string[]> = {};
-            for (let sceneEntity of sceneEntities) {
-              if (!Object.hasOwn(locationIdToSceneIds, sceneEntity.locationId)) {
-                locationIdToSceneIds[sceneEntity.locationId] = [];
-              }
-              locationIdToSceneIds[sceneEntity.locationId].push(sceneEntity.id);
-
-              let locationOptionEntities = locationOptionEntitiesByLocationId.get(sceneEntity.locationId) ?? [];
-              let locationOptions = locationOptionEntities.map((entity) => {
-                let approvalStatus = entity.approvalStatus as LocationOptionApprovalStatus ?? LocationOptionApprovalStatus.NOT_APPROVED;
-
-                let warnings: string[] = [];
-                if (!([LocationOptionApprovalStatus.APPROVED, LocationOptionApprovalStatus.NOT_APPLICABLE].includes(approvalStatus))) {
-                  warnings.push("This location option has not yet been approved");
-                }
-                else if (approvalStatus !== LocationOptionApprovalStatus.NOT_APPLICABLE && entity.contacts.length === 0) {
-                  warnings.push("No contact exists for this location option");
-                }
-                if (entity.address === undefined || entity.address === "") {
-                  warnings.push("No address for this location option");
-                }
-
-                let folder = allLocationOptionFolders[entity.id];
-
-                return {
-                  id: entity.id,
-                  description: entity.description,
-                  address: entity.address,
-                  addressCoordinates: undefined,
-                  addressPin: undefined,
-                  notes: entity.notes,
-                  approvalStatus: approvalStatus,
-                  contacts: entity.contacts,
-                  warnings: warnings,
-                  folder: folder,
-                  folderUrl: `https://drive.google.com/drive/u/1/folders/${folder.id}`,
-                  horizontalImages: [],
-                  verticalImages: [],
-                }
-              });
-
-              let locationWarnings: string[] = [];
-              if (locationOptions.length === 0) {
-                locationWarnings.push("No location options exist for this scene yet");
-              }
-              let locationEntity = locationEntitiesById[sceneEntity.locationId];
-              let location: Location = {
-                id: locationEntity.id,
-                name: locationEntity.name,
-                notes: locationEntity.notes,
-                sceneIds: [],
-                warnings: locationWarnings,
-              };
-
-              let sceneWarnings: string[] = [];
-
-              scenes[sceneEntity.id] = {
-                id: sceneEntity.id,
-                status: sceneEntity.status,
-                setting: sceneEntity.setting,
-                description: sceneEntity.description,
-                timeOfDay: sceneEntity.timeOfDay,
-                notes: sceneEntity.notes,
-                filmDay: sceneEntity.filmDay,
-                location: location,
-                locationOptions: locationOptions,
-                warnings: sceneWarnings,
-                childWarnings: [...locationOptions.map(option => option.warnings).flat(), ...location.warnings],
-              };
-            }
-
-            for (let scene of Object.values(scenes)) {
-              scene.location.sceneIds = locationIdToSceneIds[scene.location.id].filter(sceneId => sceneId !== scene.id);
-            }
-
-            let filmDays: Record<string, FilmDay> = {};
-            for (let scene of Object.values(scenes)) {
-              let filmDay = scene.filmDay;
-              if (!filmDay) {
-                filmDay = "Undecided";
-              }
-
-              if (!filmDays[filmDay]) {
-                filmDays[filmDay] = {
-                  date: filmDay,
-                  scenes: [],
-                  warnings: [],
-                  childWarnings: [],
-                };
-              }
-              filmDays[filmDay].scenes.push(scene);
-            }
-
-            this.scenes$.next(Object.values(scenes));
-            this.filmDays$.next(Object.values(filmDays));
-
-            this.route.params.subscribe(params => {
-              if (params['tab'] === 'locations') {
-                let selectedSceneId = params['shotId'];
-                if (!selectedSceneId) {
-                  return;
-                }
-
-                let selectedScene = scenes[selectedSceneId] ?? {} as Scene;
-                if (!selectedScene) {
-                  return;
-                }
-                this.selectedScene$.next(selectedScene);
-              }
-              else if (params['tab'] === 'film-days') {
-                let selectedFilmDayId = params['status'];
-                if (!selectedFilmDayId) {
-                  return;
-                }
-
-                let selectedFilmDay = filmDays[selectedFilmDayId] ?? {} as FilmDay;
-                if (!selectedFilmDay) {
-                  return;
-                }
-                this.selectedFilmDay$.next(selectedFilmDay);
-              }
-              else {
-                console.error(`Don't recognize tab ${params['tab']}`);
-              }
-            });
+        let allLocationOptionFolders = Object.fromEntries(files
+            .map(file => [Number(file.name), file]));
+        let missingLocationOptionFolders = locationOptionEntities
+            .map(option => option.id)
+            .filter(optionId => !Object.hasOwn(allLocationOptionFolders, optionId));
+        if (missingLocationOptionFolders.length > 0) {
+          console.log("Missing location option folders", missingLocationOptionFolders);
+          const missingLocationOptionFolderObservables: Observable<GoogleDriveFile>[] = missingLocationOptionFolders.map(optionId => {
+            return this.googleService.createFolder(this.project.locations?.googleDriveFolderId ?? "", String(optionId));
           });
-        });
-      });
-    });
+
+          forkJoin(missingLocationOptionFolderObservables)
+            .subscribe({
+              next: (missingLocationOptionFolders: GoogleDriveFile[]) => {
+                for (let missingLocationOptionFolder of missingLocationOptionFolders) {
+                  console.log(`Created missing folder ${missingLocationOptionFolder.name}`);
+                  allLocationOptionFolders[Number(missingLocationOptionFolder.name)] = missingLocationOptionFolder;
+                }
+              },
+              error: (error) => this.handleError(error)
+            });
+        }
+
+        let scenes: Record<string, Scene> = {};
+        var locationIdToScenes: Record<number, Scene[]> = {};
+        for (let sceneEntity of sceneEntities) {
+
+          let locationOptionEntities = locationOptionEntitiesByLocationId.get(sceneEntity.locationId) ?? [];
+          let locationOptions = locationOptionEntities.map((entity) => {
+            let approvalStatus = entity.approvalStatus as LocationOptionApprovalStatus ?? LocationOptionApprovalStatus.NOT_APPROVED;
+
+            let warnings: string[] = [];
+            if (!([LocationOptionApprovalStatus.APPROVED, LocationOptionApprovalStatus.NOT_APPLICABLE].includes(approvalStatus))) {
+              warnings.push("This location option has not yet been approved");
+            }
+            else if (approvalStatus !== LocationOptionApprovalStatus.NOT_APPLICABLE && entity.contacts.length === 0) {
+              warnings.push("No contact exists for this location option");
+            }
+            if (entity.address === undefined || entity.address === "") {
+              warnings.push("No address for this location option");
+            }
+
+            let folder = allLocationOptionFolders[entity.id];
+
+            return {
+              id: entity.id,
+              description: entity.description,
+              address: entity.address,
+              addressCoordinates: undefined,
+              addressPin: undefined,
+              notes: entity.notes,
+              approvalStatus: approvalStatus,
+              contacts: entity.contacts,
+              warnings: warnings,
+              folder: folder,
+              folderUrl: `https://drive.google.com/drive/u/1/folders/${folder.id}`,
+              horizontalImages: [],
+              verticalImages: [],
+            }
+          });
+
+          let locationWarnings: string[] = [];
+          if (locationOptions.length === 0) {
+            locationWarnings.push("No location options exist for this scene yet");
+          }
+          let locationEntity = locationEntitiesById[sceneEntity.locationId];
+          let location: Location = {
+            id: locationEntity.id,
+            name: locationEntity.name,
+            notes: locationEntity.notes,
+            sceneIds: [],
+            warnings: locationWarnings,
+            locationOptions: locationOptions,
+          };
+
+          let sceneWarnings: string[] = [];
+          let scene = {
+            id: sceneEntity.id,
+            status: sceneEntity.status,
+            setting: sceneEntity.setting,
+            description: sceneEntity.description,
+            timeOfDay: sceneEntity.timeOfDay,
+            notes: sceneEntity.notes,
+            filmDay: sceneEntity.filmDay,
+            location: location,
+            warnings: sceneWarnings,
+            childWarnings: [...locationOptions.map(option => option.warnings).flat(), ...location.warnings],
+          };
+          scenes[sceneEntity.id] = scene;
+
+          if (!Object.hasOwn(locationIdToScenes, sceneEntity.locationId)) {
+            locationIdToScenes[sceneEntity.locationId] = [];
+          }
+          locationIdToScenes[sceneEntity.locationId].push(scene);
+        }
+
+        for (let scene of Object.values(scenes)) {
+          scene.location.sceneIds = locationIdToScenes[scene.location.id].map(scene => scene.id).filter(sceneId => sceneId !== scene.id);
+        }
+
+        let filmDays: Record<string, FilmDay> = {};
+        for (let scenes of Object.values(locationIdToScenes)) {
+          for (let scene of scenes) {
+            let filmDay = scene.filmDay;
+            if (!filmDay) {
+              filmDay = "Undecided";
+            }
+
+            if (!filmDays[filmDay]) {
+              filmDays[filmDay] = {
+                date: filmDay,
+                scenes: [],
+                warnings: [],
+                childWarnings: [],
+
+              };
+            }
+            filmDays[filmDay].scenes.push(scene);
+            filmDays[filmDay].childWarnings.push(...scene.warnings);
+            filmDays[filmDay].childWarnings.push(...scene.childWarnings);
+          }
+        }
+
+        this.scenes$.next(Object.values(scenes));
+        this.filmDays$.next(Object.values(filmDays));
+
+        return {
+          'scenes': scenes,
+          'filmDays': filmDays
+        };
+      }),
+      shareReplay(1));
+
+    combineLatest([
+      this.route.params,
+      data$
+    ]).subscribe(
+      ([params, data]) => {
+        let scenes: Record<string, Scene> = data['scenes'];
+        let filmDays: Record<string, FilmDay> = data['filmDays'];
+
+        if (params['tab'] === 'locations') {
+          let selectedSceneId = params['shotId'];
+          if (!selectedSceneId) {
+            return;
+          }
+
+          let selectedScene = scenes[selectedSceneId];
+          if (!selectedScene) {
+            return;
+          }
+          this.selectedScene$.next(selectedScene);
+        }
+        else if (params['tab'] === 'film-days') {
+          let selectedFilmDayId = params['status'];
+          if (!selectedFilmDayId) {
+            return;
+          }
+
+          let selectedFilmDay = filmDays[selectedFilmDayId];
+          if (!selectedFilmDay) {
+            return;
+          }
+          this.selectedFilmDay$.next(selectedFilmDay);
+        }
+        else {
+          console.error(`Don't recognize tab ${params['tab']}`);
+        }
+      }
+    );
   }
 
   onAuthStatusChange(isLoggedIn: boolean): void {
@@ -267,24 +289,24 @@ export class ShotmakerLocationsComponent implements OnInit {
     this.fetchSceneEntities()
       .then(sceneEntities => {
         this.sceneEntities$.next(sceneEntities);
-
-        this.fetchLocationEntities()
-          .then(locationEntities => {
-            this.locationEntities$.next(locationEntities);
-
-            this.fetchLocationOptionEntities()
-              .then(locationOptionEntities => {
-                this.locationOptionEntities$.next(locationOptionEntities);
-
-                this.fetchLocationOptionFolders().subscribe({
-                  next: (locationOptionFolders) => {
-                    this.locationOptionFolders$.next(locationOptionFolders);
-                  },
-                  error: (error) => this.handleError(error)
-                });
-            }).catch(error => this.handleError(error));
-          }).catch(error => this.handleError(error));
       }).catch(error => this.handleError(error));
+
+    this.fetchLocationEntities()
+      .then(locationEntities => {
+        this.locationEntities$.next(locationEntities);
+      }).catch(error => this.handleError(error));
+
+    this.fetchLocationOptionEntities()
+      .then(locationOptionEntities => {
+        this.locationOptionEntities$.next(locationOptionEntities);
+      }).catch(error => this.handleError(error));
+
+    this.fetchLocationOptionFolders().subscribe({
+      next: (locationOptionFolders) => {
+        this.locationOptionFolders$.next(locationOptionFolders);
+      },
+      error: (error) => this.handleError(error)
+    });
   }
 
   private handleError(error: any): void {
@@ -295,6 +317,7 @@ export class ShotmakerLocationsComponent implements OnInit {
     }
     else {
       console.error("Encountered error", error);
+      UIkit.notification("<span uk-icon='icon: warning'></span> Encountered error");
     }
   }
 

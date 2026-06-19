@@ -37,7 +37,6 @@ export interface Scene {
   notes: string[],
   filmDay: string,
   location: Location,
-  locationOptions: LocationOption[],
   warnings: string[],
   childWarnings: string[],
 }
@@ -48,6 +47,7 @@ export interface Location {
   notes: string[],
   sceneIds: string[],
   warnings: string[],
+  locationOptions: LocationOption[],
 }
 
 export interface LocationOption {
@@ -55,7 +55,7 @@ export interface LocationOption {
   description: string,
   address: string,
   addressCoordinates: google.maps.LatLngLiteral | undefined,
-  addressPin: google.maps.marker.PinElement | undefined,
+  addressPin: google.maps.marker.PinElement | Node | undefined,
   notes: string[],
   approvalStatus: LocationOptionApprovalStatus,
   contacts: Contact[],
@@ -86,7 +86,7 @@ export interface LocationOptionImage {
 
 export interface FilmDay {
   date: string,
-  scenes: Scene[]
+  scenes: Scene[],
   warnings: string[],
   childWarnings: string[],
 }

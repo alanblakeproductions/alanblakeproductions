@@ -1,6 +1,7 @@
 import { Component, Input, OnInit, AfterViewInit, ViewChildren, QueryList, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterLink, RouterLinkActive } from '@angular/router';
+import { ShotmakerSceneNavItem } from './../component/shotmaker-scene-nav-item.component';
 import { Scene, Location } from './../util/shotmaker-location-models';
 import { BrowserStorageService } from './../service/browser-storage.service';
 import { Observable, BehaviorSubject, Subject, of } from 'rxjs';
@@ -13,6 +14,7 @@ import { first } from 'rxjs/operators';
     CommonModule,
     RouterLink,
     RouterLinkActive,
+    ShotmakerSceneNavItem,
   ],
   templateUrl: './shotmaker-location-nav-pane.component.html',
   styleUrl: './shotmaker-location-nav-pane.component.less'
@@ -66,23 +68,5 @@ export class ShotmakerLocationNavPane implements OnInit, AfterViewInit {
       return `${scene.setting}. ${scene.description}`;
     }
     return scene.location.name;
-  }
-
-  getLabelClass(scene: Scene): string {
-    switch (scene.timeOfDay) {
-      case "EARLY MORNING":
-      case "MORNING":
-      case "DAY":
-      case "AFTERNOON":
-        return "uk-label-danger";
-      case "EARLY EVENING":
-      case "EVENING":
-        return "uk-label-warning";
-      case "NIGHT":
-      case "LATE NIGHT":
-        return "";
-      default:
-        return "uk-label-success";
-    }
   }
 }

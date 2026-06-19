@@ -1,0 +1,16 @@
+  <div class="scene-item">
+    <span class="scene-item-size-label uk-label uk-text-center uk-margin-small-right {{getLabelClass(scene)}}">{{scene.id}}</span>
+    <span class="scene-item-text">{{sceneLabel}}</span>
+    <span *ngIf="sceneDescription" class="uk-margin-left uk-margin-right uk-text-meta uk-text-small">{{sceneDescription}}</span>
+    <span *ngIf="scene.warnings.length > 0"
+          class="scene-item-icon"
+          uk-icon="warning"
+          [attr.uk-tooltip]="'title: ' + scene.warnings">
+    </span>
+    <span *ngIf="scene.childWarnings.length > 0"
+          class="scene-item-icon"
+          uk-icon="warning"
+          [attr.uk-tooltip]="'title: ' + scene.childWarnings">
+    </span>
+  </div>
+

@@ -5,7 +5,11 @@
       <a routerLink="/shotmaker/{{projectId}}/film-days/{{filmDay.date}}">
         <div class="scene-list-row">
           <span class="scene-list-item-text">{{getLabel(filmDay)}}</span>
-          <span *ngIf="filmDay.warnings.length > 0 || filmDay.childWarnings.length > 0" class="scene-list-item-icon" uk-icon="warning"></span>
+          <span *ngIf="filmDay.warnings.length > 0 || filmDay.childWarnings.length > 0"
+                class="scene-list-item-icon"
+                uk-icon="warning"
+                [attr.uk-tooltip]="'title: There are several warnings for this film day'">
+          </span>
         </div>
       </a>
     </li>

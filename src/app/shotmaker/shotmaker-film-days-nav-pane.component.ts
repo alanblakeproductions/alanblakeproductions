@@ -58,7 +58,7 @@ export class ShotmakerFilmDaysNavPane implements OnInit, AfterViewInit {
   }
 
   getLabel(filmDay: FilmDay): string {
-    return filmDay.date;
+    return `${filmDay.date}`;
   }
 
   getLabelClass(filmDay: FilmDay): string {

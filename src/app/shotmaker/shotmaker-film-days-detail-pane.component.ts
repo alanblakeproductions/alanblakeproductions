@@ -4,7 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { GoogleMap, MapAdvancedMarker } from '@angular/google-maps';
 import { ActivatedRoute, Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { ShotmakerProject } from './../util/models';
-import { FilmDay, Location, LocationEntity, LocationOption, LocationOptionImage, LocationOptionApprovalStatus } from './../util/shotmaker-location-models';
+import { FilmDay, Location, LocationOption, LocationOptionImage, LocationOptionApprovalStatus, Scene } from './../util/shotmaker-location-models';
+import { ShotmakerSceneNavItem } from './../component/shotmaker-scene-nav-item.component';
 import { GoogleDriveService } from './../service/google-drive.service';
 import { GoogleDriveFile, ImageDisplayDirection } from './../util/google-models';
 import { Observable, Subject, BehaviorSubject, concat, of, forkJoin } from 'rxjs';
@@ -22,6 +23,7 @@ declare var UIkit: any;
     MapAdvancedMarker,
     RouterLink,
     RouterLinkActive,
+    ShotmakerSceneNavItem,
   ],
   templateUrl: './shotmaker-film-days-detail-pane.component.html',
   styleUrl: './shotmaker-film-days-detail-pane.component.less'
@@ -43,7 +45,13 @@ export class ShotmakerFilmDaysDetailPane implements OnInit {
   mapZoom: number = 12;
 
   filmDay: FilmDay | undefined = undefined;
-  loadingImages: boolean = true;
+  loadingLocations: boolean = true;
+
+  locationIdToLocation: Record<number, Location> = {};
+  locationIdToScenes: Record<number, Scene[]> = {};
+
+  selectedLocation: Location | undefined = undefined;
+  selectedLocationOption: LocationOption | undefined = undefined;
 
   constructor(
     private route: ActivatedRoute,
@@ -53,19 +61,27 @@ export class ShotmakerFilmDaysDetailPane implements OnInit {
 
   ngOnInit(): void {
     this.filmDay$.subscribe(filmDay => {
-      this.filmDay = filmDay;
-      this.loadingImages = true;
-
-      const sceneIdsToLocationOption: Record<string, LocationOption> = {};
-      for (let scene of filmDay.scenes) {
-        let sceneIdsKey = scene.location.sceneIds.join(", ")
-        for (let locationOption of scene.locationOptions) {
-          sceneIdsToLocationOption[sceneIdsKey] = locationOption;
-        }
+      if (!filmDay) {
+        return;
       }
 
-      for (let [sceneIds, locationOption] of Object.entries(sceneIdsToLocationOption) as [string, LocationOption][]) {
-        this.loadLocation(sceneIds, locationOption);
+      this.filmDay = filmDay;
+      this.loadingLocations = true;
+      this.locationIdToLocation = {};
+      this.locationIdToScenes = {};
+
+      for (let scene of filmDay.scenes) {
+        this.locationIdToLocation[scene.location.id] = scene.location;
+        if (!this.locationIdToScenes[scene.location.id]) {
+          this.locationIdToScenes[scene.location.id] = [];
+        }
+        this.locationIdToScenes[scene.location.id].push(scene);
+      }
+
+      for (const [index, location] of Object.values(this.locationIdToLocation).entries()) {
+        for (let locationOption of location.locationOptions) {
+          this.loadLocation(index, locationOption);
+        }
       }
     });
   }
@@ -80,9 +96,9 @@ export class ShotmakerFilmDaysDetailPane implements OnInit {
     }
   }
 
-  private loadLocation(sceneIds: string, locationOption: LocationOption): void {
+  private loadLocation(locationIndex: number, locationOption: LocationOption): void {
     if (!locationOption.address) {
-      console.error(`No address for location option ${locationOption.id}`);
+      //console.error(`No address for location option ${locationOption.id}`);
       return;
     }
 
@@ -94,9 +110,20 @@ export class ShotmakerFilmDaysDetailPane implements OnInit {
         }
         locationOption.addressCoordinates = coordinates;
         locationOption.addressPin = new google.maps.marker.PinElement({
-          glyphText: sceneIds,
-          scale: 2,
+          scale: 1,
+          glyphText: String(locationIndex + 1),
+          background: this.getApprovalStatusPinColor(locationOption),
+          borderColor: "white",
+          glyphColor: "white",
         });
+        /*
+        let node = document.createElement('div');
+        node.innerHTML = `
+          <div class="uk-card-body">
+            <h4>Test</h4>
+          </div>
+        `;
+        */
       }).catch(error => this.handleError(error));
   }
 
@@ -124,5 +151,46 @@ export class ShotmakerFilmDaysDetailPane implements OnInit {
       default:
         return "uk-label-warning";
     }
+  }
+
+  getApprovalStatusPinColor(option: LocationOption): string {
+    switch (option.approvalStatus) {
+      case LocationOptionApprovalStatus.NOT_APPLICABLE:
+      case LocationOptionApprovalStatus.APPROVED:
+        return "green";
+      case LocationOptionApprovalStatus.PENDING_APPROVAL:
+        return "yellow";
+      case LocationOptionApprovalStatus.NOT_APPROVED:
+        return "red";
+      default:
+        return "yellow";
+    }
+  }
+
+  getLabelClass(scene: Scene): string {
+    switch (scene.timeOfDay) {
+      case "EARLY MORNING":
+      case "MORNING":
+      case "DAY":
+      case "AFTERNOON":
+        return "uk-label-danger";
+      case "EARLY EVENING":
+      case "EVENING":
+        return "uk-label-warning";
+      case "NIGHT":
+      case "LATE NIGHT":
+        return "";
+      default:
+        return "uk-label-success";
+    }
+  }
+
+  getScenes(locationId: string): Scene[] {
+    return this.locationIdToScenes[Number(locationId)];
+  }
+
+  onLocationClick(event: any): void {
+    this.selectedLocation = event['location'];
+    this.selectedLocationOption = event['locationOption'];
   }
 }

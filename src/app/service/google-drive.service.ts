@@ -54,7 +54,7 @@ export class GoogleDriveService {
   public login() {
     if (this.tokenClient) {
       // Prompt user to select account and grant permissions
-      this.tokenClient.requestAccessToken({ prompt: 'consent' });
+      this.tokenClient.requestAccessToken({ prompt: '' });
     }
   }
 

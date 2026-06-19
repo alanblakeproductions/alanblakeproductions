@@ -42,7 +42,7 @@ export class ShotmakerLocationDetailPane implements OnInit {
       this.scene = scene;
       this.loadingImages = true;
 
-      for (let locationOption of scene.locationOptions) {
+      for (let locationOption of scene.location.locationOptions) {
         this.loadImages(locationOption);
       }
     });

@@ -1,7 +1,12 @@
-.scene-list-item {
+:host {
+  width: 100%;
+}
+
+.scene-item {
+  display: flex;
   font-size: 0.8rem;
   padding-left: 5px;
-  border-top: 0.1px solid #999;
+  //border-top: 0.1px solid #999;
   a {
     //pointer-events: none;
   }
@@ -10,13 +15,7 @@
   }
 }
 
-.scene-list-row {
-  display: flex;
-  align-items: center;
-  width: 100%;
-}
-
-.scene-list-item-text {
+.scene-item-text {
   flex: 1;
   min-width: 0;
   overflow: hidden;
@@ -25,12 +24,13 @@
   white-space: nowrap;
 }
 
-.scene-list-item-size-label {
+.scene-item-size-label {
   font-family: monospace;
   font-size: 0.7rem;
   width: 20px;
 }
 
-.scene-list-item-icon {
+.scene-item-icon {
   margin-left: auto;
+  margin-right: 5px;
 }

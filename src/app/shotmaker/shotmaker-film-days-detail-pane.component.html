@@ -6,31 +6,106 @@
   </div>
 
   <div *ngSwitchCase="false">
-    <div class="uk-section uk-section-muted">
+    <div class="uk-section uk-section-muted uk-section-small">
       <div class="uk-container">
         <div class="uk-align-left">
-          <h3 class="uk-header">{{filmDay?.date}}</h3>
+          <h3 class="uk-header">Film Day {{filmDay?.date}}</h3>
         </div>
+      </div>
+
+      <div class="uk-container">
+        <ul class="uk-list uk-list-divider uk-column-1-1 uk-column-1-1@m uk-nav uk-nav-default uk-nav-divider">
+          @for (entry of locationIdToLocation | keyvalue; track entry.key; let i = $index) {
+          <li class="scene-list-item uk-text-truncate uk-parent">
+            <div class="">
+              <span class="uk-icon" uk-icon="location"></span>
+              <span class="">{{i + 1}}. {{entry.value.name}}</span>
+            </div>
+
+            <ul class="uk-nav-sub uk-list">
+              @for (scene of getScenes(entry.key); track scene) {
+              <li>
+                <app-shotmaker-scene-nav-item
+                  [scene]="scene"
+                  sceneLabel="{{scene.setting}}. {{scene.description}} - {{scene.timeOfDay}}"
+                  sceneDescription="{{scene.notes}}">
+                </app-shotmaker-scene-nav-item>
+              </li>
+              }
+            </ul>
+          </li>
+          }
+        </ul>
 
         <div class="uk-alert-danger" uk-alert *ngFor="let warning of filmDay?.warnings">
           <span class="uk-margin-small-right" uk-icon="warning"></span> {{warning}}
         </div>
       </div>
+    </div>
 
+    <div class="uk-section uk-section-muted uk-section-small uk-padding-remove-vertical">
       <div class="uk-container">
+
+        @if (selectedLocation && selectedLocationOption) {
+        <div class="uk-card uk-card-default uk-card-small uk-card-body">
+          <div class="uk-card-body">
+            <h4 class="uk-card-title">
+              {{ selectedLocation.name }}
+              @if (selectedLocationOption.description) {
+                : {{ selectedLocationOption.description}}
+              }
+            </h4>
+            <table class="uk-table uk-table-small uk-table-divider">
+              <tbody>
+                <tr>
+                  <td class="uk-text-muted uk-width-small">ADDRESS</td>
+                  <td>
+                    {{selectedLocationOption.address}}
+                  </td>
+                </tr>
+                <tr>
+                  <td class="uk-text-muted uk-width-small">CONTACT</td>
+                  <td *ngFor="let contact of selectedLocationOption.contacts">
+                    {{contact.name}}<br/>
+                    {{contact.email}}<br/>
+                    {{contact.phone}}
+                  </td>
+                </tr>
+                <tr>
+                  <td class="uk-text-muted uk-width-small">NOTES</td>
+                  <td>
+                    <span *ngFor="let note of selectedLocationOption.notes">
+                      {{note}}<br/>
+                    </span>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="uk-text-muted uk-width-small">APPROVAL</td>
+                  <td><span class="uk-label {{getApprovalStatusClass(selectedLocationOption)}}">{{selectedLocationOption.approvalStatus}}</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="uk-card-media-bottom">
+
+          </div>
+        </div>
+        }
+
         <google-map
-          height="1200px"
-          width="1200px"
+          height="600px"
+          width="1000px"
           [center]="mapCenter"
           [options]="mapOptions"
           [zoom]="mapZoom">
-          @for (scene of filmDay?.scenes; track scene) {
-            @for (locationOption of scene.locationOptions; track locationOption) {
+          @for (entry of locationIdToLocation | keyvalue; track entry.key) {
+            @for (locationOption of entry.value.locationOptions; track locationOption) {
               @if (locationOption.addressCoordinates && locationOption.addressPin) {
                 <map-advanced-marker
                   [title]="getOptionTitle(locationOption)"
                   [position]="locationOption.addressCoordinates"
                   [content]="locationOption.addressPin"
+                  (mapClick)="onLocationClick({location: entry.value, locationOption: locationOption})"
                 />
               }
             }
