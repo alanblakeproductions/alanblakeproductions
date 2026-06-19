@@ -54,6 +54,8 @@ export interface LocationOption {
   id: number,
   description: string,
   address: string,
+  addressCoordinates: google.maps.LatLngLiteral | undefined,
+  addressPin: google.maps.marker.PinElement | undefined,
   notes: string[],
   approvalStatus: LocationOptionApprovalStatus,
   contacts: Contact[],

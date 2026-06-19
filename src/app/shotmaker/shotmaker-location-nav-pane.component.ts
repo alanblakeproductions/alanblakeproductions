@@ -53,11 +53,10 @@ export class ShotmakerLocationNavPane implements OnInit, AfterViewInit {
     this.selectedScene$.pipe(first()).subscribe((selectedScene) => {
       setTimeout(() => {
         const sceneElement = this.sceneElements.find(element => element.nativeElement.id === `scene-${selectedScene.id}`);
-        console.log(sceneElement);
-          sceneElement?.nativeElement.scrollIntoView({
-            behavior: 'smooth',
-            block: 'center',
-          });
+        sceneElement?.nativeElement.scrollIntoView({
+          behavior: 'smooth',
+          block: 'center',
+        });
       }, 500);
     });
   }
@@ -86,6 +85,4 @@ export class ShotmakerLocationNavPane implements OnInit, AfterViewInit {
         return "uk-label-success";
     }
   }
-
-
 }

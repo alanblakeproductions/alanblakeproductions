@@ -1,0 +1,42 @@
+<div [ngSwitch]="filmDay === undefined">
+  <div *ngSwitchCase="true" class="uk-section uk-section-large">
+    <div class="uk-container uk-text-center">
+      <p class="uk-text-meta">Pick a film day</p>
+    </div>
+  </div>
+
+  <div *ngSwitchCase="false">
+    <div class="uk-section uk-section-muted">
+      <div class="uk-container">
+        <div class="uk-align-left">
+          <h3 class="uk-header">{{filmDay?.date}}</h3>
+        </div>
+
+        <div class="uk-alert-danger" uk-alert *ngFor="let warning of filmDay?.warnings">
+          <span class="uk-margin-small-right" uk-icon="warning"></span> {{warning}}
+        </div>
+      </div>
+
+      <div class="uk-container">
+        <google-map
+          height="1200px"
+          width="1200px"
+          [center]="mapCenter"
+          [options]="mapOptions"
+          [zoom]="mapZoom">
+          @for (scene of filmDay?.scenes; track scene) {
+            @for (locationOption of scene.locationOptions; track locationOption) {
+              @if (locationOption.addressCoordinates && locationOption.addressPin) {
+                <map-advanced-marker
+                  [title]="getOptionTitle(locationOption)"
+                  [position]="locationOption.addressCoordinates"
+                  [content]="locationOption.addressPin"
+                />
+              }
+            }
+          }
+        </google-map>
+      </div>
+    </div>
+  </div>
+</div>

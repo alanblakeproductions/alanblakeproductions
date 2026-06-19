@@ -8,6 +8,7 @@
           <li *ngIf="project.shadows" routerLinkActive="uk-active"><a routerLink="/shotmaker/{{project.id}}/shadows"><span class="uk-icon uk-margin-xsmall-right" uk-icon="icon: future"></span> Shadows</a></li>
           <li *ngIf="project.video" routerLinkActive="uk-active"><a routerLink="/shotmaker/{{project.id}}/video"><span class="uk-icon uk-margin-xsmall-right" uk-icon="icon: play"></span> Video</a></li>
           <li *ngIf="project.locations" routerLinkActive="uk-active"><a routerLink="/shotmaker/{{project.id}}/locations"><span class="uk-icon uk-margin-xsmall-right" uk-icon="icon: location"></span> Locations</a></li>
+          <li *ngIf="project.locations" routerLinkActive="uk-active"><a routerLink="/shotmaker/{{project.id}}/film-days"><span class="uk-icon uk-margin-xsmall-right" uk-icon="icon: calendar"></span> Film Days</a></li>
         </ul>
       </div>
 
@@ -52,5 +53,8 @@
   </div>
 
   <!-- Locations -->
+  <app-shotmaker-locations *ngIf="project.locations" [project]="project"></app-shotmaker-locations>
+
+  <!-- Film Days -->
   <app-shotmaker-locations *ngIf="project.locations" [project]="project"></app-shotmaker-locations>
 </div>

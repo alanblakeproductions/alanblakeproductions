@@ -1,0 +1,14 @@
+<div class="sticky-side-nav">
+  <ul class="uk-nav uk-nav-default scene-list">
+    @for (filmDay of filmDays; track filmDay) {
+    <li routerLinkActive="uk-active" class="scene-list-item uk-text-truncate" #filmDayElement [attr.id]="'film-day-' + filmDay.date">
+      <a routerLink="/shotmaker/{{projectId}}/film-days/{{filmDay.date}}">
+        <div class="scene-list-row">
+          <span class="scene-list-item-text">{{getLabel(filmDay)}}</span>
+          <span *ngIf="filmDay.warnings.length > 0 || filmDay.childWarnings.length > 0" class="scene-list-item-icon" uk-icon="warning"></span>
+        </div>
+      </a>
+    </li>
+    }
+  </ul>
+</div>

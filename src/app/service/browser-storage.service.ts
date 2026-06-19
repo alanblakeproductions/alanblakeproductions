@@ -108,4 +108,23 @@ export class BrowserStorageService {
   clearShotOrder(projectId: string): void {
     this.clear(this.getShotOrderKeyRegex(projectId));
   }
+
+  private getLocationCoordinatesKey(address: string) {
+    return `shotmaker.address-${address}`;
+  }
+
+  getLocationCoordinates(address: string): google.maps.LatLngLiteral | undefined {
+    let value = this.getItem(this.getLocationCoordinatesKey(address));
+    if (value) {
+      return {
+        lat: Number(value.split(":")[0]),
+        lng: Number(value.split(":")[1])
+      }
+    }
+    return undefined;
+  }
+
+  setLocationCoordinates(address: string, locationCoordinates: google.maps.LatLngLiteral): void {
+    this.setItem(this.getLocationCoordinatesKey(address), `${locationCoordinates.lat}:${locationCoordinates.lng}`);
+  }
 }

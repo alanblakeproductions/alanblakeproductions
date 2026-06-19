@@ -4,9 +4,11 @@ import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute, Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { CdkDrag, CdkDragDrop, CdkDropList, CdkDropListGroup, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
 import { ShotmakerLocationDetailPane } from './shotmaker-location-detail-pane.component';
+import { ShotmakerFilmDaysDetailPane } from './shotmaker-film-days-detail-pane.component';
 import { ShotmakerLocationNavPane } from './shotmaker-location-nav-pane.component';
+import { ShotmakerFilmDaysNavPane } from './shotmaker-film-days-nav-pane.component';
 import { ShotmakerProject, ShotmakerProjectLocations } from './../util/models';
-import { SceneEntity, Scene, LocationEntity, LocationOptionEntity, LocationOptionApprovalStatus, Location, LocationOption } from './../util/shotmaker-location-models';
+import { SceneEntity, Scene, LocationEntity, LocationOptionEntity, LocationOptionApprovalStatus, Location, LocationOption, FilmDay } from './../util/shotmaker-location-models';
 import { GoogleDriveFile } from './../util/google-models';
 import { BrowserStorageService } from './../service/browser-storage.service';
 import { Observable, BehaviorSubject, Subject, of, forkJoin } from 'rxjs';
@@ -21,7 +23,9 @@ import { distinctUntilChanged, map, switchMap } from 'rxjs/operators';
     RouterLink,
     RouterLinkActive,
     ShotmakerLocationDetailPane,
+    ShotmakerFilmDaysDetailPane,
     ShotmakerLocationNavPane,
+    ShotmakerFilmDaysNavPane,
   ],
   templateUrl: './shotmaker-locations.component.html',
   styleUrl: './shotmaker-locations.component.less'
@@ -30,7 +34,8 @@ export class ShotmakerLocationsComponent implements OnInit {
 
   @Input() project: ShotmakerProject = {} as ShotmakerProject;
 
-  sceneId: string = "";
+  tab: string = "";
+  entityId: string = "";
   isLoggedIn: Boolean = false;
 
   sceneEntities$: Subject<SceneEntity[]> = new Subject();
@@ -38,11 +43,13 @@ export class ShotmakerLocationsComponent implements OnInit {
   locationOptionEntities$: Subject<LocationOptionEntity[]> = new Subject();
 
   scenes$: Subject<Scene[]> = new Subject();
+  filmDays$: Subject<FilmDay[]> = new Subject();
 
   locationOptions$: Subject<LocationOption[]> = new Subject();
   locationOptionFolders$: Subject<GoogleDriveFile[]> = new Subject();
 
   selectedScene$: Subject<Scene> = new Subject();
+  selectedFilmDay$: Subject<FilmDay> = new Subject();
 
   constructor(
     private http: HttpClient,
@@ -59,7 +66,8 @@ export class ShotmakerLocationsComponent implements OnInit {
     }
 
     this.route.params.subscribe((params) => {
-      this.sceneId = params['shotId']
+      this.tab = params['tab'];
+      this.entityId = params['shotId']
     });
 
     this.googleService.getAuthStatus().subscribe((authStatus) => {
@@ -141,6 +149,8 @@ export class ShotmakerLocationsComponent implements OnInit {
                   id: entity.id,
                   description: entity.description,
                   address: entity.address,
+                  addressCoordinates: undefined,
+                  addressPin: undefined,
                   notes: entity.notes,
                   approvalStatus: approvalStatus,
                   contacts: entity.contacts,
@@ -186,19 +196,55 @@ export class ShotmakerLocationsComponent implements OnInit {
               scene.location.sceneIds = locationIdToSceneIds[scene.location.id].filter(sceneId => sceneId !== scene.id);
             }
 
+            let filmDays: Record<string, FilmDay> = {};
+            for (let scene of Object.values(scenes)) {
+              let filmDay = scene.filmDay;
+              if (!filmDay) {
+                filmDay = "Undecided";
+              }
+
+              if (!filmDays[filmDay]) {
+                filmDays[filmDay] = {
+                  date: filmDay,
+                  scenes: [],
+                  warnings: [],
+                  childWarnings: [],
+                };
+              }
+              filmDays[filmDay].scenes.push(scene);
+            }
+
             this.scenes$.next(Object.values(scenes));
+            this.filmDays$.next(Object.values(filmDays));
 
             this.route.params.subscribe(params => {
-              if (!params['shotId']) {
-                return;
-              }
+              if (params['tab'] === 'locations') {
+                let selectedSceneId = params['shotId'];
+                if (!selectedSceneId) {
+                  return;
+                }
 
-              let selectedSceneId = params['shotId'];
-              let selectedScene = scenes[selectedSceneId] ?? {} as Scene;
-              if (!selectedScene) {
-                return;
+                let selectedScene = scenes[selectedSceneId] ?? {} as Scene;
+                if (!selectedScene) {
+                  return;
+                }
+                this.selectedScene$.next(selectedScene);
               }
-              this.selectedScene$.next(selectedScene);
+              else if (params['tab'] === 'film-days') {
+                let selectedFilmDayId = params['status'];
+                if (!selectedFilmDayId) {
+                  return;
+                }
+
+                let selectedFilmDay = filmDays[selectedFilmDayId] ?? {} as FilmDay;
+                if (!selectedFilmDay) {
+                  return;
+                }
+                this.selectedFilmDay$.next(selectedFilmDay);
+              }
+              else {
+                console.error(`Don't recognize tab ${params['tab']}`);
+              }
             });
           });
         });
