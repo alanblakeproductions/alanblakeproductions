@@ -48,7 +48,7 @@ export class ShotmakerShotlistComponent implements OnInit {
       return;
     }
     this.shots$.subscribe(shots => {
-      this.route.params.subscribe(params => {
+      this.route.queryParams.subscribe(params => {
         if (params['tab'] !== 'shotlist') {
           return;
         }
@@ -66,11 +66,26 @@ export class ShotmakerShotlistComponent implements OnInit {
             this.shot$.next(shot);
           }
           else if (shotsWithStatus.length > 0) {
-            this.router.navigate(['shotmaker', this.project.id, 'shotlist', status, shotsWithStatus[0].id]);
+            this.router.navigate(
+              ['shotmaker', this.project.id],
+              {
+                queryParams: {
+                  tab: 'shotlist',
+                  status: status,
+                  shotId: shotsWithStatus[0].id,
+                }
+              });
           }
         }
         else {
-          this.router.navigate(['shotmaker', this.project.id, 'shotlist', 'todo']);
+          this.router.navigate(
+            ['shotmaker', this.project.id],
+            {
+              queryParams: {
+                tab: 'shotlist',
+                status: 'todo'
+              }
+            });
         }
       });
     });

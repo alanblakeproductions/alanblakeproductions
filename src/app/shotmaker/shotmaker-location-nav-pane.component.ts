@@ -39,7 +39,10 @@ export class ShotmakerLocationNavPane implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
       this.projectId = params['projectId'] ?? "";
-      this.view = params['status'] ?? "scenes";
+    });
+
+    this.route.queryParams.subscribe((params) => {
+      this.view = params['view'] ?? "scenes";
     });
 
     this.scenes$.subscribe((scenes) => {

@@ -2,7 +2,7 @@
   <ul class="uk-nav uk-nav-default">
     @for (scene of scenes; track scene) {
     <li routerLinkActive="uk-active" class="scene-list-item uk-text-truncate" #sceneElement [attr.id]="'scene-' + scene.id">
-      <a routerLink="/shotmaker/{{projectId}}/locations/{{view}}/{{scene.id}}">
+      <a routerLink="/shotmaker/{{projectId}}" [queryParams]="{ view: view, sceneId: scene.id}" queryParamsHandling="merge">
         <app-shotmaker-scene-nav-item [scene]="scene" [sceneLabel]="getLabel(scene)"></app-shotmaker-scene-nav-item>
       </a>
     </li>

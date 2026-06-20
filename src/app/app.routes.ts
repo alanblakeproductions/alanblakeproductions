@@ -19,7 +19,4 @@ export const routes: Routes = [
   { path: 'sedgwick', component: SedgwickComponent },
   { path: 'shotmaker', component: ShotmakerComponent },
   { path: 'shotmaker/:projectId', component: ShotmakerProjectComponent },
-  { path: 'shotmaker/:projectId/:tab', component: ShotmakerProjectComponent },
-  { path: 'shotmaker/:projectId/:tab/:status', component: ShotmakerProjectComponent },
-  { path: 'shotmaker/:projectId/:tab/:status/:shotId', component: ShotmakerProjectComponent },
 ];

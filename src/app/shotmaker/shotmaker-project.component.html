@@ -3,12 +3,12 @@
     <div uk-navbar>
       <div class="uk-navbar-left">
         <ul class="uk-navbar-nav " uk-tab uk-switcher="connect: .project-tab">
-          <li class="uk-visible@s" routerLinkActive="uk-active"><a routerLink="/shotmaker/{{project.id}}/summary">{{project.summary.title}}</a></li>
-          <li *ngIf="project.shotlist" routerLinkActive="uk-active"><a routerLink="/shotmaker/{{project.id}}/shotlist"><span class="uk-icon uk-margin-xsmall-right" uk-icon="icon: camera"></span> Shotlist</a></li>
-          <li *ngIf="project.shadows" routerLinkActive="uk-active"><a routerLink="/shotmaker/{{project.id}}/shadows"><span class="uk-icon uk-margin-xsmall-right" uk-icon="icon: future"></span> Shadows</a></li>
-          <li *ngIf="project.video" routerLinkActive="uk-active"><a routerLink="/shotmaker/{{project.id}}/video"><span class="uk-icon uk-margin-xsmall-right" uk-icon="icon: play"></span> Video</a></li>
-          <li *ngIf="project.locations" routerLinkActive="uk-active"><a routerLink="/shotmaker/{{project.id}}/locations"><span class="uk-icon uk-margin-xsmall-right" uk-icon="icon: location"></span> Locations</a></li>
-          <li *ngIf="project.locations" routerLinkActive="uk-active"><a routerLink="/shotmaker/{{project.id}}/film-days"><span class="uk-icon uk-margin-xsmall-right" uk-icon="icon: calendar"></span> Film Days</a></li>
+          <li class="uk-visible@s" routerLinkActive="uk-active"><a routerLink="/shotmaker/{{project?.id}}" [queryParams]="{ tab: 'summary'}">{{project.summary.title}}</a></li>
+          <li *ngIf="project.shotlist" routerLinkActive="uk-active"><a routerLink="/shotmaker/{{project?.id}}" [queryParams]="{ tab: 'shotlist'}"><span class="uk-icon uk-margin-xsmall-right" uk-icon="icon: camera"></span> Shotlist</a></li>
+          <li *ngIf="project.shadows" routerLinkActive="uk-active"><a routerLink="/shotmaker/{{project?.id}}" [queryParams]="{ tab: 'shadows'}"><span class="uk-icon uk-margin-xsmall-right" uk-icon="icon: future"></span> Shadows</a></li>
+          <li *ngIf="project.video" routerLinkActive="uk-active"><a routerLink="/shotmaker/{{project?.id}}" [queryParams]="{ tab: 'video'}"><span class="uk-icon uk-margin-xsmall-right" uk-icon="icon: play"></span> Video</a></li>
+          <li *ngIf="project.locations" routerLinkActive="uk-active"><a routerLink="/shotmaker/{{project?.id}}" [queryParams]="{ tab: 'locations'}"><span class="uk-icon uk-margin-xsmall-right" uk-icon="icon: location"></span> Locations</a></li>
+          <li *ngIf="project.locations" routerLinkActive="uk-active"><a routerLink="/shotmaker/{{project?.id}}" [queryParams]="{ tab: 'film-days'}"><span class="uk-icon uk-margin-xsmall-right" uk-icon="icon: calendar"></span> Film Days</a></li>
         </ul>
       </div>
 

@@ -3,12 +3,12 @@
     <div class="uk-navbar-container">
       <ul class="uk-flex-center uk-margin-remove-bottom uk-tab" >
         <li routerLinkActive="uk-active">
-          <a routerLink="/shotmaker/{{project.id}}/locations/scenes/{{entityId}}">
+          <a routerLink="/shotmaker/{{project.id}}" [queryParams]="{ tab: 'locations', view: 'scenes', sceneId: entityId}">
             <span class="uk-icon" uk-icon="icon: list"></span> Scenes
           </a>
         </li>
         <li routerLinkActive="uk-active">
-          <a routerLink="/shotmaker/{{project.id}}/locations/locations/{{entityId}}">
+          <a routerLink="/shotmaker/{{project.id}}" [queryParams]="{ tab: 'locations', view: 'locations', sceneId: entityId}">
             <span class="uk-icon" uk-icon="icon: location"></span> Locations
           </a>
         </li>

@@ -41,6 +41,9 @@ export class ShotmakerShotNavPane implements OnInit {
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
       this.projectId = params['projectId'] ?? "colorblind";
+    });
+
+    this.route.queryParams.subscribe((params) => {
       this.status = params['status'] ?? "todo";
     });
 

@@ -47,7 +47,14 @@ export class ShotmakerShotDetailPane implements OnInit {
     if (this.shot) {
       this.browserStorageService.setShotStatus(this.projectId, this.shot.id, toStatus);
       //this.browserStorageService.setShotOrder(this.projectId, toStatus, this.shot.id, 0);
-      this.router.navigate(['shotmaker', this.projectId, 'shotlist', fromStatus]);
+      this.router.navigate(
+        ['shotmaker', this.projectId],
+        {
+          queryParams: {
+            tab: 'shotlist',
+            status: fromStatus
+          }
+        });
     }
   }
 }

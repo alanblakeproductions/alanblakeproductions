@@ -90,6 +90,7 @@ export class ShotmakerProjectComponent implements OnInit {
   };
 
   project: ShotmakerProject = {} as ShotmakerProject;
+  tab: string | undefined = "";
   isLoggedIn: boolean = false;
 
   constructor(
@@ -107,6 +108,10 @@ export class ShotmakerProjectComponent implements OnInit {
 
     this.route.params.pipe(map(params => params['projectId']), distinctUntilChanged()).subscribe(projectId => {
       this.project = this.SHOTMAKER_PROJECTS[projectId];
+    });
+
+    this.route.queryParams.subscribe(params => {
+      this.tab = params['tab'];
     });
 
     var googleAccessToken = this.browserStorageService.getGoogleAccessToken();

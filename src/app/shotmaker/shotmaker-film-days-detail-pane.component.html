@@ -23,7 +23,7 @@
             <ul class="uk-nav-sub uk-list uk-margin-small-top">
               @for (scene of getScenes(entry.key); track scene) {
               <li>
-                <a routerLink="/shotmaker/{{project.id}}/locations/locations/{{scene.id}}">
+                <a routerLink="/shotmaker/{{project.id}}" [queryParams]="{ tab: 'locations', view: 'locations', sceneId: scene.id }">
                   <app-shotmaker-scene-nav-item
                     [scene]="scene"
                     sceneLabel="{{scene.setting}}. {{scene.description}} - {{scene.timeOfDay}}"

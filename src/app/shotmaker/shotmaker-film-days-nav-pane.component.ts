@@ -26,6 +26,7 @@ export class ShotmakerFilmDaysNavPane implements OnInit, AfterViewInit {
   @ViewChildren("filmDayElement") filmDayElements!: QueryList<ElementRef<HTMLLIElement>>;
 
   projectId: string = "";
+  tab: string = "";
 
   constructor(
     private route: ActivatedRoute,
@@ -36,6 +37,10 @@ export class ShotmakerFilmDaysNavPane implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
       this.projectId = params['projectId'] ?? "";
+    });
+
+    this.route.queryParams.subscribe((params) => {
+      this.tab = params['tab'];
     });
 
     this.filmDays$.subscribe((filmDays) => {

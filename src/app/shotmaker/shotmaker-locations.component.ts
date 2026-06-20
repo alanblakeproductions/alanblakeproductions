@@ -236,35 +236,37 @@ export class ShotmakerLocationsComponent implements OnInit {
       shareReplay(1));
 
     combineLatest([
-      this.route.params,
+      this.route.queryParams,
       data$
     ]).subscribe(
       ([params, data]) => {
         this.tab = params['tab'];
-        this.entityId = params['shotId']
+        if (!this.tab) {
+          return;
+        }
 
         let scenes: Record<string, Scene> = data['scenes'];
         let filmDays: Record<string, FilmDay> = data['filmDays'];
 
-        if (params['tab'] === 'locations') {
-          let selectedSceneId = params['shotId'];
-          if (!selectedSceneId) {
+        if (this.tab === 'locations') {
+          this.entityId = params['sceneId'];
+          if (!this.entityId) {
             return;
           }
 
-          let selectedScene = scenes[selectedSceneId];
+          let selectedScene = scenes[this.entityId];
           if (!selectedScene) {
             return;
           }
           this.selectedScene$.next(selectedScene);
         }
-        else if (params['tab'] === 'film-days') {
-          let selectedFilmDayId = params['status'];
-          if (!selectedFilmDayId) {
+        else if (this.tab === 'film-days') {
+          this.entityId = params['filmDayId'];
+          if (!this.entityId) {
             return;
           }
 
-          let selectedFilmDay = filmDays[selectedFilmDayId];
+          let selectedFilmDay = filmDays[this.entityId];
           if (!selectedFilmDay) {
             return;
           }
