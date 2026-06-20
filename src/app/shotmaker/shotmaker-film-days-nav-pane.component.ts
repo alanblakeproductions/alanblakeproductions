@@ -19,8 +19,8 @@ import { first } from 'rxjs/operators';
 })
 export class ShotmakerFilmDaysNavPane implements OnInit, AfterViewInit {
 
-  @Input() filmDays$: Subject<FilmDay[]> = new Subject();
-  @Input() selectedFilmDay$: Subject<FilmDay> = new Subject();
+  @Input() filmDays$: BehaviorSubject<FilmDay[]> = new BehaviorSubject<FilmDay[]>([]);
+  @Input() selectedFilmDay$: BehaviorSubject<FilmDay | undefined> = new BehaviorSubject<FilmDay | undefined>(undefined);
   filmDays: FilmDay[] = [];
 
   @ViewChildren("filmDayElement") filmDayElements!: QueryList<ElementRef<HTMLLIElement>>;
@@ -47,6 +47,9 @@ export class ShotmakerFilmDaysNavPane implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     this.selectedFilmDay$.pipe(first()).subscribe((selectedFilmDay) => {
+      if (!selectedFilmDay) {
+        return;
+      }
       setTimeout(() => {
         const filmDayElement = this.filmDayElements.find(element => element.nativeElement.id === `film-day-${selectedFilmDay.date}`);
         filmDayElement?.nativeElement.scrollIntoView({

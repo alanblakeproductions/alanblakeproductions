@@ -26,7 +26,7 @@ declare var UIkit: any;
 export class ShotmakerLocationDetailPane implements OnInit {
 
   @Input() project: ShotmakerProject = {} as ShotmakerProject;
-  @Input() scene$: Subject<Scene> = new Subject();
+  @Input() scene$: BehaviorSubject<Scene | undefined> = new BehaviorSubject<Scene | undefined>(undefined);
 
   scene: Scene | undefined = undefined;
   loadingImages: boolean = true;
@@ -40,9 +40,13 @@ export class ShotmakerLocationDetailPane implements OnInit {
   ngOnInit(): void {
     this.scene$.subscribe(scene => {
       this.scene = scene;
+      if (!this.scene) {
+        return;
+      }
+
       this.loadingImages = true;
 
-      for (let locationOption of scene.location.locationOptions) {
+      for (let locationOption of this.scene.location.locationOptions) {
         this.loadImages(locationOption);
       }
     });

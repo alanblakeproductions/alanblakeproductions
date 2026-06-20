@@ -31,7 +31,7 @@ declare var UIkit: any;
 export class ShotmakerFilmDaysDetailPane implements OnInit {
 
   @Input() project: ShotmakerProject = {} as ShotmakerProject;
-  @Input() filmDay$: Subject<FilmDay> = new Subject();
+  @Input() filmDay$: BehaviorSubject<FilmDay | undefined> = new BehaviorSubject<FilmDay | undefined>(undefined);
 
   @ViewChild("map") map!: google.maps.Map;
 

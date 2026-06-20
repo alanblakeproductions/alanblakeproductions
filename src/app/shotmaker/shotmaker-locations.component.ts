@@ -43,15 +43,13 @@ export class ShotmakerLocationsComponent implements OnInit {
   sceneEntities$: Subject<SceneEntity[]> = new Subject();
   locationEntities$: Subject<LocationEntity[]> = new Subject();
   locationOptionEntities$: Subject<LocationOptionEntity[]> = new Subject();
-
-  scenes$: Subject<Scene[]> = new Subject();
-  filmDays$: Subject<FilmDay[]> = new Subject();
-
-  locationOptions$: Subject<LocationOption[]> = new Subject();
   locationOptionFolders$: Subject<GoogleDriveFile[]> = new Subject();
 
-  selectedScene$: Subject<Scene> = new Subject();
-  selectedFilmDay$: Subject<FilmDay> = new Subject();
+  scenes$: BehaviorSubject<Scene[]> = new BehaviorSubject<Scene[]>([]);
+  filmDays$: BehaviorSubject<FilmDay[]> = new BehaviorSubject<FilmDay[]>([]);
+
+  selectedScene$: BehaviorSubject<Scene | undefined> = new BehaviorSubject<Scene | undefined>(undefined);
+  selectedFilmDay$: BehaviorSubject<FilmDay | undefined> = new BehaviorSubject<FilmDay | undefined>(undefined);
 
   constructor(
     private http: HttpClient,
@@ -66,11 +64,6 @@ export class ShotmakerLocationsComponent implements OnInit {
     if (!this.project.locations) {
       return;
     }
-
-    this.route.params.subscribe((params) => {
-      this.tab = params['tab'];
-      this.entityId = params['shotId']
-    });
 
     this.googleService.getAuthStatus().subscribe((authStatus) => {
       this.onAuthStatusChange(authStatus);
@@ -128,7 +121,6 @@ export class ShotmakerLocationsComponent implements OnInit {
         let scenes: Record<string, Scene> = {};
         var locationIdToScenes: Record<number, Scene[]> = {};
         for (let sceneEntity of sceneEntities) {
-
           let locationOptionEntities = locationOptionEntitiesByLocationId.get(sceneEntity.locationId) ?? [];
           let locationOptions = locationOptionEntities.map((entity) => {
             let approvalStatus = entity.approvalStatus as LocationOptionApprovalStatus ?? LocationOptionApprovalStatus.NOT_APPROVED;
@@ -240,6 +232,9 @@ export class ShotmakerLocationsComponent implements OnInit {
       data$
     ]).subscribe(
       ([params, data]) => {
+        this.tab = params['tab'];
+        this.entityId = params['shotId']
+
         let scenes: Record<string, Scene> = data['scenes'];
         let filmDays: Record<string, FilmDay> = data['filmDays'];
 

@@ -21,8 +21,8 @@ import { first } from 'rxjs/operators';
 })
 export class ShotmakerLocationNavPane implements OnInit, AfterViewInit {
 
-  @Input() scenes$: Subject<Scene[]> = new Subject();
-  @Input() selectedScene$: Subject<Scene> = new Subject();
+  @Input() scenes$: BehaviorSubject<Scene[]> = new BehaviorSubject<Scene[]>([]);
+  @Input() selectedScene$: BehaviorSubject<Scene | undefined> = new BehaviorSubject<Scene | undefined>(undefined);
   scenes: Scene[] = [];
 
   @ViewChildren("sceneElement") sceneElements!: QueryList<ElementRef<HTMLLIElement>>;
@@ -53,6 +53,9 @@ export class ShotmakerLocationNavPane implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     this.selectedScene$.pipe(first()).subscribe((selectedScene) => {
+      if (!selectedScene) {
+        return;
+      }
       setTimeout(() => {
         const sceneElement = this.sceneElements.find(element => element.nativeElement.id === `scene-${selectedScene.id}`);
         sceneElement?.nativeElement.scrollIntoView({
