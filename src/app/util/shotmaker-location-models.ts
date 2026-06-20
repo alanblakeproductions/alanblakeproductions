@@ -16,6 +16,7 @@ export interface LocationEntity {
   id: number,
   name: string,
   notes: string[],
+  chosenLocationOptionId: number | undefined,
 }
 
 export interface LocationOptionEntity {
@@ -48,6 +49,7 @@ export interface Location {
   sceneIds: string[],
   warnings: string[],
   locationOptions: LocationOption[],
+  chosenLocationOption: LocationOption | undefined,
 }
 
 export interface LocationOption {
@@ -64,6 +66,7 @@ export interface LocationOption {
   folderUrl: string,
   horizontalImages: LocationOptionImage[],
   verticalImages: LocationOptionImage[],
+  isChosen: boolean,
 }
 
 export enum LocationOptionApprovalStatus {

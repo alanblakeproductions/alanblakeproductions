@@ -121,6 +121,7 @@ export class ShotmakerLocationsComponent implements OnInit {
         let scenes: Record<string, Scene> = {};
         var locationIdToScenes: Record<number, Scene[]> = {};
         for (let sceneEntity of sceneEntities) {
+          let locationEntity = locationEntitiesById[sceneEntity.locationId];
           let locationOptionEntities = locationOptionEntitiesByLocationId.get(sceneEntity.locationId) ?? [];
           let locationOptions = locationOptionEntities.map((entity) => {
             let approvalStatus = entity.approvalStatus as LocationOptionApprovalStatus ?? LocationOptionApprovalStatus.NOT_APPROVED;
@@ -152,14 +153,20 @@ export class ShotmakerLocationsComponent implements OnInit {
               folderUrl: `https://drive.google.com/drive/u/1/folders/${folder.id}`,
               horizontalImages: [],
               verticalImages: [],
+              isChosen: entity.id === locationEntity.chosenLocationOptionId,
             }
           });
 
+          let chosenLocationOption = locationOptions.find(option => option.isChosen);
+
           let locationWarnings: string[] = [];
-          if (locationOptions.length === 0) {
-            locationWarnings.push("No location options exist for this scene yet");
+          if (!chosenLocationOption) {
+            locationWarnings.push("No location has been chosen for this scene");
           }
-          let locationEntity = locationEntitiesById[sceneEntity.locationId];
+          else if (locationOptions.length === 0) {
+            locationWarnings.push("No location options exist for this scene");
+          }
+
           let location: Location = {
             id: locationEntity.id,
             name: locationEntity.name,
@@ -167,6 +174,7 @@ export class ShotmakerLocationsComponent implements OnInit {
             sceneIds: [],
             warnings: locationWarnings,
             locationOptions: locationOptions,
+            chosenLocationOption: chosenLocationOption,
           };
 
           let sceneWarnings: string[] = [];
@@ -390,11 +398,13 @@ export class ShotmakerLocationsComponent implements OnInit {
           let id = Number(cells[headerToIndex["Location ID"]]);
           let name = cells[headerToIndex["Name"]];
           let notes = (cells[headerToIndex["Notes"]] ?? "").split("  ");
+          let chosenLocationOptionId = cells[headerToIndex["Chosen Location Option ID"]];
 
           locations.push({
             id: id,
             name: name,
             notes: notes,
+            chosenLocationOptionId: chosenLocationOptionId ? Number(chosenLocationOptionId) : undefined,
           });
         }
 
@@ -425,6 +435,7 @@ export class ShotmakerLocationsComponent implements OnInit {
           let address = cells[headerToIndex["Address"]];
           let notes = (cells[headerToIndex["Notes"]] ?? "").split("  ");
           let approvalStatus = cells[headerToIndex["Approval Status"]];
+
           let contactNames = (cells[headerToIndex["Contact Name"]] ?? "").split(",");
           let contactEmails = (cells[headerToIndex["Contact Email"]] ?? "").split(",");
           let contactPhones = (cells[headerToIndex["Contact Phone"]] ?? "").split(",");
@@ -449,7 +460,7 @@ export class ShotmakerLocationsComponent implements OnInit {
             address: address,
             notes: notes,
             approvalStatus: approvalStatus,
-            contacts: contacts
+            contacts: contacts,
           });
         }
 

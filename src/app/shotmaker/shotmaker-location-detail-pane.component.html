@@ -66,6 +66,9 @@
           <ul class="uk-tab uk-child-width-expand" uk-tab uk-switcher="connect: .location-option">
             <li routerLinkActive="uk-active" *ngFor="let locationOption of scene?.location?.locationOptions">
               <a href="#">
+                @if (locationOption.isChosen) {
+                  <span uk-icon="icon: check"></span>
+                }
                 <span>{{getOptionTitle(locationOption)}}</span>
               </a>
             </li>

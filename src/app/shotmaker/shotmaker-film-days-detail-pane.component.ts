@@ -158,6 +158,9 @@ export class ShotmakerFilmDaysDetailPane implements OnInit {
     switch (option.approvalStatus) {
       case LocationOptionApprovalStatus.NOT_APPLICABLE:
       case LocationOptionApprovalStatus.APPROVED:
+        if (option.isChosen) {
+          return "limegreen";
+        }
         return "green";
       case LocationOptionApprovalStatus.PENDING_APPROVAL:
         return "yellow";
