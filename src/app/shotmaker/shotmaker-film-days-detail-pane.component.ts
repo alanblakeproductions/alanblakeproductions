@@ -50,6 +50,7 @@ export class ShotmakerFilmDaysDetailPane implements OnInit {
   locationIdToLocation: Record<number, Location> = {};
   locationIdToScenes: Record<number, Scene[]> = {};
 
+  selectedLocationIndex: number | undefined = undefined;
   selectedLocation: Location | undefined = undefined;
   selectedLocationOption: LocationOption | undefined = undefined;
 
@@ -190,6 +191,7 @@ export class ShotmakerFilmDaysDetailPane implements OnInit {
   }
 
   onLocationClick(event: any): void {
+    this.selectedLocationIndex = event['locationIndex'];
     this.selectedLocation = event['location'];
     this.selectedLocationOption = event['locationOption'];
   }

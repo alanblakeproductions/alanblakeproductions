@@ -14,15 +14,13 @@
       </div>
 
       <div class="uk-container">
-        <ul class="uk-list uk-list-divider uk-column-1-1 uk-column-1-1@m uk-nav uk-nav-default uk-nav-divider">
+        <ul class="uk-column-1-1 uk-column-1-1@m uk-nav uk-nav-default uk-nav-divider">
           @for (entry of locationIdToLocation | keyvalue; track entry.key; let i = $index) {
-          <li class="scene-list-item uk-text-truncate uk-parent">
-            <div class="">
-              <span class="uk-icon" uk-icon="location"></span>
-              <span class="">{{i + 1}}. {{entry.value.name}}</span>
-            </div>
+          <li class="uk-text-truncate uk-parent">
+            <span class="uk-margin-xsmall-right" uk-icon="icon: location"></span>
+            {{i + 1}}. {{entry.value.name}}
 
-            <ul class="uk-nav-sub uk-list">
+            <ul class="uk-nav-sub uk-list uk-margin-small-top">
               @for (scene of getScenes(entry.key); track scene) {
               <li>
                 <app-shotmaker-scene-nav-item
@@ -50,7 +48,7 @@
         <div class="uk-card uk-card-default uk-card-small uk-card-body">
           <div class="uk-card-body">
             <h4 class="uk-card-title">
-              {{ selectedLocation.name }}
+              {{selectedLocationIndex}}. {{ selectedLocation.name }}
               @if (selectedLocationOption.description) {
                 : {{ selectedLocationOption.description}}
               }
@@ -98,14 +96,14 @@
           [center]="mapCenter"
           [options]="mapOptions"
           [zoom]="mapZoom">
-          @for (entry of locationIdToLocation | keyvalue; track entry.key) {
+          @for (entry of locationIdToLocation | keyvalue; track entry.key; let i = $index) {
             @for (locationOption of entry.value.locationOptions; track locationOption) {
               @if (locationOption.addressCoordinates && locationOption.addressPin) {
                 <map-advanced-marker
                   [title]="getOptionTitle(locationOption)"
                   [position]="locationOption.addressCoordinates"
                   [content]="locationOption.addressPin"
-                  (mapClick)="onLocationClick({location: entry.value, locationOption: locationOption})"
+                  (mapClick)="onLocationClick({locationIndex: i + 1, location: entry.value, locationOption: locationOption})"
                 />
               }
             }
