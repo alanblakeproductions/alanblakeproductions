@@ -84,7 +84,13 @@ export class ShotmakerFilmDaysDetailPane implements OnInit {
         this.locationIdToScenes[scene.location.id].push(scene);
       }
 
-      this.locations = Object.values(this.locationIdToLocation);
+      let sceneIdToOrderIndex: Record<string, number> = Object.fromEntries(
+        filmDay.scenes.map((scene, index) => [scene.id, index]));
+      this.locations = Object.values(this.locationIdToLocation).sort((locationA, locationB) => {
+        let aScene1 = this.locationIdToScenes[locationA.id][0];
+        let bScene1 = this.locationIdToScenes[locationB.id][0];
+        return sceneIdToOrderIndex[aScene1.id] - sceneIdToOrderIndex[bScene1.id];
+      });
       for (const [index, location] of this.locations.entries()) {
         for (let locationOption of location.locationOptions) {
           this.loadLocation(index, locationOption);

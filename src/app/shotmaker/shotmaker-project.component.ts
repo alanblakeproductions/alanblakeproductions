@@ -44,7 +44,8 @@ export class ShotmakerProjectComponent implements OnInit {
         googleDriveFolderId: "1d20CsOIaQqeJh-GZnLLub08OJnrOh9ZO",
         googleDriveScenesUrl: "https://docs.google.com/spreadsheets/d/e/2PACX-1vS4b9qDkAnSYCoiOtpkEC9xKL6OvtDCfRmXe2a-GZqAM9NngFwrGe_aPVNlD8aWzh1oho2odaQ_szmE/pub?gid=1319809646&single=true&output=tsv",
         googleDriveLocationsUrl: "https://docs.google.com/spreadsheets/d/e/2PACX-1vS4b9qDkAnSYCoiOtpkEC9xKL6OvtDCfRmXe2a-GZqAM9NngFwrGe_aPVNlD8aWzh1oho2odaQ_szmE/pub?gid=825830746&single=true&output=tsv",
-        googleDriveLocationOptionsUrl: "https://docs.google.com/spreadsheets/d/e/2PACX-1vS4b9qDkAnSYCoiOtpkEC9xKL6OvtDCfRmXe2a-GZqAM9NngFwrGe_aPVNlD8aWzh1oho2odaQ_szmE/pub?gid=2118767106&single=true&output=tsv"
+        googleDriveLocationOptionsUrl: "https://docs.google.com/spreadsheets/d/e/2PACX-1vS4b9qDkAnSYCoiOtpkEC9xKL6OvtDCfRmXe2a-GZqAM9NngFwrGe_aPVNlD8aWzh1oho2odaQ_szmE/pub?gid=2118767106&single=true&output=tsv",
+        googleDriveFilmDaysUrl: "https://docs.google.com/spreadsheets/d/e/2PACX-1vS4b9qDkAnSYCoiOtpkEC9xKL6OvtDCfRmXe2a-GZqAM9NngFwrGe_aPVNlD8aWzh1oho2odaQ_szmE/pub?gid=1781072839&single=true&output=tsv",
       },
     },
     "colorblind": {

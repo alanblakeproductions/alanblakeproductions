@@ -95,6 +95,7 @@ export interface ShotmakerProjectLocations {
   googleDriveScenesUrl: string,
   googleDriveLocationsUrl: string,
   googleDriveLocationOptionsUrl: string,
+  googleDriveFilmDaysUrl: string,
 }
 
 export interface ShotmakerProject {

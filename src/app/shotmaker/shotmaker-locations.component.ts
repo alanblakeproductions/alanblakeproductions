@@ -8,7 +8,7 @@ import { ShotmakerFilmDaysDetailPane } from './shotmaker-film-days-detail-pane.c
 import { ShotmakerLocationNavPane } from './shotmaker-location-nav-pane.component';
 import { ShotmakerFilmDaysNavPane } from './shotmaker-film-days-nav-pane.component';
 import { ShotmakerProject, ShotmakerProjectLocations } from './../util/models';
-import { SceneEntity, Scene, LocationEntity, LocationOptionEntity, LocationOptionApprovalStatus, Location, LocationOption, FilmDay } from './../util/shotmaker-location-models';
+import { SceneEntity, Scene, LocationEntity, LocationOptionEntity, LocationOptionApprovalStatus, Location, LocationOption, FilmDay, FilmDayEntity } from './../util/shotmaker-location-models';
 import { GoogleDriveFile } from './../util/google-models';
 import { BrowserStorageService } from './../service/browser-storage.service';
 import { GoogleDriveService } from './../service/google-drive.service';
@@ -36,6 +36,8 @@ export class ShotmakerLocationsComponent implements OnInit {
 
   @Input() project: ShotmakerProject = {} as ShotmakerProject;
 
+  UNDECIDED_FILM_DAY: string = "Undecided";
+
   tab: string = "";
   entityId: string = "";
   isLoggedIn: Boolean = false;
@@ -43,6 +45,7 @@ export class ShotmakerLocationsComponent implements OnInit {
   sceneEntities$: Subject<SceneEntity[]> = new Subject();
   locationEntities$: Subject<LocationEntity[]> = new Subject();
   locationOptionEntities$: Subject<LocationOptionEntity[]> = new Subject();
+  filmDayEntities$: Subject<FilmDayEntity[]> = new Subject();
   locationOptionFolders$: Subject<GoogleDriveFile[]> = new Subject();
 
   scenes$: BehaviorSubject<Scene[]> = new BehaviorSubject<Scene[]>([]);
@@ -78,12 +81,14 @@ export class ShotmakerLocationsComponent implements OnInit {
       this.sceneEntities$,
       this.locationEntities$,
       this.locationOptionEntities$,
+      this.filmDayEntities$,
       this.locationOptionFolders$
     ]).pipe(
-      map(([sceneEntities, locationEntities, locationOptionEntities, files]) => {
+      map(([sceneEntities, locationEntities, locationOptionEntities, filmDayEntities, files]) => {
         console.log(`Loaded ${sceneEntities.length} scenes`);
         console.log(`Loaded ${locationEntities.length} locations`);
         console.log(`Loaded ${locationOptionEntities.length} location options`);
+        console.log(`Loaded ${filmDayEntities.length} film days`);
         console.log(`Loaded ${files.length} location option folders`);
 
         let locationEntitiesById = Object.fromEntries(locationEntities.map(entity => [entity.id, entity]));
@@ -117,6 +122,8 @@ export class ShotmakerLocationsComponent implements OnInit {
               error: (error) => this.handleError(error)
             });
         }
+
+        let sceneIdToFilmDay: Record<string, string> = Object.fromEntries(filmDayEntities.map(filmDayEntity => [filmDayEntity.sceneId, filmDayEntity.filmDay]));
 
         let scenes: Record<string, Scene> = {};
         var locationIdToScenes: Record<number, Scene[]> = {};
@@ -198,7 +205,7 @@ export class ShotmakerLocationsComponent implements OnInit {
             description: sceneEntity.description,
             timeOfDay: sceneEntity.timeOfDay,
             notes: sceneEntity.notes,
-            filmDay: sceneEntity.filmDay,
+            filmDay: sceneIdToFilmDay[sceneEntity.id] ?? this.UNDECIDED_FILM_DAY,
             location: location,
             warnings: sceneWarnings,
             childWarnings: sceneChildWarnings,
@@ -216,27 +223,30 @@ export class ShotmakerLocationsComponent implements OnInit {
         }
 
         let filmDays: Record<string, FilmDay> = {};
-        for (let scenes of Object.values(locationIdToScenes)) {
-          for (let scene of scenes) {
-            let filmDay = scene.filmDay;
-            if (!filmDay) {
-              filmDay = "Undecided";
-            }
-
-            if (!filmDays[filmDay]) {
-              filmDays[filmDay] = {
-                date: filmDay,
-                scenes: [],
-                warnings: [],
-                childWarnings: [],
-
-              };
-            }
-            filmDays[filmDay].scenes.push(scene);
-            filmDays[filmDay].childWarnings.push(...scene.warnings);
-            filmDays[filmDay].childWarnings.push(...scene.childWarnings);
+        for (let filmDayEntity of filmDayEntities) {
+          if (!filmDays[filmDayEntity.filmDay]) {
+            filmDays[filmDayEntity.filmDay] = {
+              date: filmDayEntity.filmDay,
+              scenes: [],
+              warnings: [],
+              childWarnings: [],
+            };
           }
+
+          let scene = scenes[filmDayEntity.sceneId];
+          filmDays[filmDayEntity.filmDay].scenes.push(scene);
+          filmDays[filmDayEntity.filmDay].childWarnings.push(...scene.warnings);
+          filmDays[filmDayEntity.filmDay].childWarnings.push(...scene.childWarnings);
         }
+
+        let undecidedScenes: Scene[] = Object.values(scenes).filter(scene => scene.filmDay === this.UNDECIDED_FILM_DAY);
+        filmDays[this.UNDECIDED_FILM_DAY] = {
+          date: this.UNDECIDED_FILM_DAY,
+          scenes: undecidedScenes,
+          warnings: [],
+          childWarnings: [...undecidedScenes.map(scene => scene.warnings).flat(), ...undecidedScenes.map(scene => scene.childWarnings).flat()],
+        };
+        console.log(undecidedScenes);
 
         this.scenes$.next(Object.values(scenes));
         this.filmDays$.next(Object.values(filmDays));
@@ -319,6 +329,11 @@ export class ShotmakerLocationsComponent implements OnInit {
         this.locationOptionEntities$.next(locationOptionEntities);
       }).catch(error => this.handleError(error));
 
+    this.fetchFilmDayEntities()
+      .then(filmDayEntities => {
+        this.filmDayEntities$.next(filmDayEntities);
+      }).catch(error => this.handleError(error));
+
     this.fetchLocationOptionFolders().subscribe({
       next: (locationOptionFolders) => {
         this.locationOptionFolders$.next(locationOptionFolders);
@@ -343,6 +358,7 @@ export class ShotmakerLocationsComponent implements OnInit {
     this.sceneEntities$.next([]);
     this.locationEntities$.next([]);
     this.locationOptionEntities$.next([]);
+    this.filmDayEntities$.next([]);
     this.locationOptionFolders$.next([]);
     this.scenes$.next([]);
   }
@@ -384,7 +400,6 @@ export class ShotmakerLocationsComponent implements OnInit {
             description: description,
             timeOfDay: timeOfDay,
             notes: notes,
-            filmDay: filmDay,
             locationId: locationId,
           });
         }
@@ -480,6 +495,36 @@ export class ShotmakerLocationsComponent implements OnInit {
         }
 
         return locationOptions;
+      });
+  }
+
+  private fetchFilmDayEntities(): Promise<FilmDayEntity[]> {
+    return fetch(
+      this.project.locations?.googleDriveFilmDaysUrl ?? ""
+    )
+      .then((response) => response.text())
+      .then((data) => {
+        let rows = data.trim().split("\n");
+        let headers = rows[0].split("\t");
+        let headerToIndex: Record<string, number> = {};
+        for (var i = 0; i < headers.length; i++) {
+          headerToIndex[headers[i].trim()] = i;
+        }
+
+        let filmDays: FilmDayEntity[] = [];
+        for (var i = 1; i < rows.length; i++) {
+          let row = rows[i];
+          let cells = row.trim().split("\t").map(val => val.trim());
+          let filmDay = cells[headerToIndex["Film Day"]];
+          let sceneId = cells[headerToIndex["Scene ID"]];
+
+          filmDays.push({
+            filmDay: filmDay,
+            sceneId: sceneId,
+          });
+        }
+
+        return filmDays;
       });
   }
 

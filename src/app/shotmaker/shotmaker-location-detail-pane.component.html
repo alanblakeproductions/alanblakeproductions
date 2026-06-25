@@ -23,7 +23,7 @@
           <tbody>
             <tr>
               <td class="uk-text-muted uk-width-small">FILM DAY</td>
-              <td>{{scene?.filmDay}}</td>
+              <td><a routerLink="/shotmaker/{{project.id}}" [queryParams]="{ tab: 'film-days', filmDayId: scene?.filmDay }">{{scene?.filmDay}}</a></td>
             </tr>
             <tr>
               <td class="uk-text-muted uk-width-small">NOTES</td>

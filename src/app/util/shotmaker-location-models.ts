@@ -8,7 +8,6 @@ export interface SceneEntity {
   description: string,
   timeOfDay: string,
   notes: string[],
-  filmDay: string,
   locationId: number
 }
 
@@ -27,6 +26,11 @@ export interface LocationOptionEntity {
   notes: string[],
   approvalStatus: string,
   contacts: Contact[],
+}
+
+export interface FilmDayEntity {
+  filmDay: string,
+  sceneId: string,
 }
 
 export interface Scene {
