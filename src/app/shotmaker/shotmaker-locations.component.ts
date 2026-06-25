@@ -155,6 +155,12 @@ export class ShotmakerLocationsComponent implements OnInit {
               verticalImages: [],
               isChosen: entity.id === locationEntity.chosenLocationOptionId,
             }
+          }).sort((a, b) => {
+            var comp = Number(b.isChosen) - Number(a.isChosen);
+            if (comp == 0) {
+              return a.description.localeCompare(b.description);
+            }
+            return comp;
           });
 
           let chosenLocationOption = locationOptions.find(option => option.isChosen);
@@ -178,6 +184,13 @@ export class ShotmakerLocationsComponent implements OnInit {
           };
 
           let sceneWarnings: string[] = [];
+          let sceneChildWarnings: string[] = [];
+          if (location.chosenLocationOption) {
+            sceneChildWarnings.push(...locationOptions.find(option => option.isChosen)?.warnings ?? []);
+          }
+          else {
+            sceneChildWarnings.push(...locationWarnings);
+          }
           let scene = {
             id: sceneEntity.id,
             status: sceneEntity.status,
@@ -188,7 +201,7 @@ export class ShotmakerLocationsComponent implements OnInit {
             filmDay: sceneEntity.filmDay,
             location: location,
             warnings: sceneWarnings,
-            childWarnings: [...locationOptions.map(option => option.warnings).flat(), ...location.warnings],
+            childWarnings: sceneChildWarnings,
           };
           scenes[sceneEntity.id] = scene;
 

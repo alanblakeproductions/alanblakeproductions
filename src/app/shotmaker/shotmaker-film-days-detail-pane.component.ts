@@ -47,6 +47,7 @@ export class ShotmakerFilmDaysDetailPane implements OnInit {
   filmDay: FilmDay | undefined = undefined;
   loadingLocations: boolean = true;
 
+  locations: Location[] = [];
   locationIdToLocation: Record<number, Location> = {};
   locationIdToScenes: Record<number, Scene[]> = {};
 
@@ -62,12 +63,16 @@ export class ShotmakerFilmDaysDetailPane implements OnInit {
 
   ngOnInit(): void {
     this.filmDay$.subscribe(filmDay => {
+      this.selectedLocationIndex = undefined;
+      this.selectedLocation = undefined;
+      this.selectedLocationOption = undefined;
       if (!filmDay) {
         return;
       }
 
       this.filmDay = filmDay;
       this.loadingLocations = true;
+      this.locations = [];
       this.locationIdToLocation = {};
       this.locationIdToScenes = {};
 
@@ -79,7 +84,8 @@ export class ShotmakerFilmDaysDetailPane implements OnInit {
         this.locationIdToScenes[scene.location.id].push(scene);
       }
 
-      for (const [index, location] of Object.values(this.locationIdToLocation).entries()) {
+      this.locations = Object.values(this.locationIdToLocation);
+      for (const [index, location] of this.locations.entries()) {
         for (let locationOption of location.locationOptions) {
           this.loadLocation(index, locationOption);
         }
@@ -191,8 +197,8 @@ export class ShotmakerFilmDaysDetailPane implements OnInit {
     }
   }
 
-  getScenes(locationId: string): Scene[] {
-    return this.locationIdToScenes[Number(locationId)];
+  getScenes(locationId: number): Scene[] {
+    return this.locationIdToScenes[locationId];
   }
 
   onLocationClick(event: any): void {

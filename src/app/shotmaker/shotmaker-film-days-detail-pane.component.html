@@ -16,13 +16,13 @@
 
       <div class="uk-container">
         <ul class="uk-nav uk-default uk-nav-divider">
-          @for (entry of locationIdToLocation | keyvalue; track entry.key; let i = $index) {
+          @for (location of locations; track location; let i = $index) {
           <li class="uk-text-truncate1 uk-parent">
             <span class="uk-margin-xsmall-right" uk-icon="icon: location"></span>
-            {{i + 1}}. {{entry.value.name}}
+            {{i + 1}}. {{location.name}}
 
             <ul class="uk-nav uk-nav-sub uk-list uk-margin-small-top">
-              @for (scene of getScenes(entry.key); track scene) {
+              @for (scene of getScenes(location.id); track scene) {
               <li class="uk-text-truncate1">
                 <a class="uk-link-muted" routerLink="/shotmaker/{{project.id}}" [queryParams]="{ tab: 'locations', view: 'locations', sceneId: scene.id }">
                   <app-shotmaker-scene-nav-item
@@ -97,14 +97,14 @@
           [center]="mapCenter"
           [options]="mapOptions"
           [zoom]="mapZoom">
-          @for (entry of locationIdToLocation | keyvalue; track entry.key; let i = $index) {
-            @for (locationOption of entry.value.locationOptions; track locationOption) {
+          @for (location of locations; track location; let i = $index) {
+            @for (locationOption of location.locationOptions; track locationOption) {
               @if (locationOption.addressCoordinates && locationOption.addressPin) {
                 <map-advanced-marker
                   [title]="getOptionTitle(locationOption)"
                   [position]="locationOption.addressCoordinates"
                   [content]="locationOption.addressPin"
-                  (mapClick)="onLocationClick({locationIndex: i + 1, location: entry.value, locationOption: locationOption})"
+                  (mapClick)="onLocationClick({locationIndex: i + 1, location: location, locationOption: locationOption})"
                 >
                 </map-advanced-marker>
               }
