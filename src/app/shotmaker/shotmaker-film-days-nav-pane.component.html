@@ -1,16 +1,9 @@
 <div class="sticky-side-nav">
-  <ul class="uk-nav uk-nav-default scene-list">
+  <ul class="uk-nav uk-nav-default">
     @for (filmDay of filmDays; track filmDay) {
     <li routerLinkActive="uk-active" class="scene-list-item uk-text-truncate" #filmDayElement [attr.id]="'film-day-' + filmDay.date">
-      <a routerLink="/shotmaker/{{projectId}}" [queryParams]="{ tab: 'film-days', filmDayId: filmDay.date}">
-        <div class="scene-list-row">
-          <span class="scene-list-item-text">{{getLabel(filmDay)}}</span>
-          <span *ngIf="filmDay.warnings.length > 0 || filmDay.childWarnings.length > 0"
-                class="scene-list-item-icon"
-                uk-icon="warning"
-                [attr.uk-tooltip]="'title: There are several warnings for this film day'">
-          </span>
-        </div>
+      <a routerLink="/shotmaker/{{project.id}}" [queryParams]="{ tab: 'film-days', filmDayId: filmDay.date}">
+        <app-shotmaker-film-day-nav-item [filmDay]="filmDay"></app-shotmaker-film-day-nav-item>
       </a>
     </li>
     }

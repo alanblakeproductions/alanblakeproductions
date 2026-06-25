@@ -1,9 +1,12 @@
 import { Component, Input, OnInit, AfterViewInit, ViewChildren, QueryList, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterLink, RouterLinkActive } from '@angular/router';
+import { ShotmakerFilmDaysDetailPane } from './shotmaker-film-days-detail-pane.component';
 import { Scene, Location, FilmDay } from './../util/shotmaker-location-models';
+import { ShotmakerFilmDayNavItem } from './../component/shotmaker-film-day-nav-item.component';
+import { ShotmakerProject } from './../util/models';
 import { BrowserStorageService } from './../service/browser-storage.service';
-import { Observable, BehaviorSubject, Subject, of } from 'rxjs';
+import { Observable, BehaviorSubject, Subject, combineLatest, of } from 'rxjs';
 import { first } from 'rxjs/operators';
 
 @Component({
@@ -13,19 +16,22 @@ import { first } from 'rxjs/operators';
     CommonModule,
     RouterLink,
     RouterLinkActive,
+    ShotmakerFilmDaysDetailPane,
+    ShotmakerFilmDayNavItem,
   ],
   templateUrl: './shotmaker-film-days-nav-pane.component.html',
   styleUrl: './shotmaker-film-days-nav-pane.component.less'
 })
 export class ShotmakerFilmDaysNavPane implements OnInit, AfterViewInit {
 
+  @Input() project: ShotmakerProject = {} as ShotmakerProject;
   @Input() filmDays$: BehaviorSubject<FilmDay[]> = new BehaviorSubject<FilmDay[]>([]);
   @Input() selectedFilmDay$: BehaviorSubject<FilmDay | undefined> = new BehaviorSubject<FilmDay | undefined>(undefined);
   filmDays: FilmDay[] = [];
+  selectedFilmDay: FilmDay | undefined = undefined;
 
   @ViewChildren("filmDayElement") filmDayElements!: QueryList<ElementRef<HTMLLIElement>>;
 
-  projectId: string = "";
   tab: string = "";
 
   constructor(
@@ -35,19 +41,19 @@ export class ShotmakerFilmDaysNavPane implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    this.route.params.subscribe((params) => {
-      this.projectId = params['projectId'] ?? "";
-    });
-
-    this.route.queryParams.subscribe((params) => {
-      this.tab = params['tab'];
-    });
-
-    this.filmDays$.subscribe((filmDays) => {
-      this.filmDays = filmDays.sort((a, b) => {
-        return a.date.localeCompare(b.date);
+    combineLatest([
+      this.route.params,
+      this.route.queryParams,
+      this.filmDays$,
+      this.selectedFilmDay$
+    ]).subscribe(
+      ([params, queryParams, filmDays, selectedFilmDay]) => {
+        this.tab = queryParams['tab'];
+        this.filmDays = filmDays.sort((a, b) => {
+          return a.date.localeCompare(b.date);
+        });
+        this.selectedFilmDay = selectedFilmDay;
       });
-    });
   }
 
   ngAfterViewInit(): void {
@@ -67,9 +73,5 @@ export class ShotmakerFilmDaysNavPane implements OnInit, AfterViewInit {
 
   getLabel(filmDay: FilmDay): string {
     return `${filmDay.date}`;
-  }
-
-  getLabelClass(filmDay: FilmDay): string {
-    return "";
   }
 }

@@ -1,5 +1,7 @@
 <div *ngIf="isLoggedIn && tab === 'locations'" class="uk-grid uk-grid-collapse" uk-grid>
-  <div class="uk-width-1-1 uk-width-1-5@m shotmaker-shotlist-nav">
+
+  <!-- Large screens -->
+  <div class="uk-width-1-4@m uk-width-1-5@l shotmaker-shotlist-nav">
     <div class="uk-navbar-container">
       <ul class="uk-flex-center uk-margin-remove-bottom uk-tab" >
         <li routerLinkActive="uk-active">
@@ -15,28 +17,34 @@
       </ul>
     </div>
 
-    <app-shotmaker-location-nav-pane [scenes$]="scenes$" [selectedScene$]="selectedScene$"></app-shotmaker-location-nav-pane>
+    <app-shotmaker-location-nav-pane
+      [project]="project"
+      [scenes$]="scenes$"
+      [selectedScene$]="selectedScene$">
+    </app-shotmaker-location-nav-pane>
   </div>
 
-  <div class="uk-width-1-1 uk-width-4-5@m">
-    <app-shotmaker-location-detail-pane
-      [project]="project"
-      [scene$]="selectedScene$">
-    </app-shotmaker-location-detail-pane>
-  </div>
+  <app-shotmaker-location-detail-pane
+    class="uk-width-3-4@m uk-width-4-5@l"
+    [project]="project"
+    [scene$]="selectedScene$">
+  </app-shotmaker-location-detail-pane>
 </div>
 
 <div *ngIf="isLoggedIn && tab === 'film-days'" class="uk-grid uk-grid-collapse" uk-grid>
-  <div class="uk-width-1-1 uk-width-1-5@m shotmaker-shotlist-nav">
-    <app-shotmaker-film-days-nav-pane [filmDays$]="filmDays$" [selectedFilmDay$]="selectedFilmDay$"></app-shotmaker-film-days-nav-pane>
+  <div class="uk-width-1-4@m uk-width-1-5@l shotmaker-shotlist-nav">
+    <app-shotmaker-film-days-nav-pane
+      [project]="project"
+      [filmDays$]="filmDays$"
+      [selectedFilmDay$]="selectedFilmDay$">
+    </app-shotmaker-film-days-nav-pane>
   </div>
 
-  <div class="uk-width-1-1 uk-width-4-5@m">
-    <app-shotmaker-film-days-detail-pane
-      [project]="project"
-      [filmDay$]="selectedFilmDay$">
-    </app-shotmaker-film-days-detail-pane>
-  </div>
+  <app-shotmaker-film-days-detail-pane
+    class="uk-width-3-4@m uk-width-4-5@l"
+    [project]="project"
+    [filmDay$]="selectedFilmDay$">
+  </app-shotmaker-film-days-detail-pane>
 </div>
 
 <div *ngIf="!isLoggedIn" class="uk-grid uk-grid-collapse" uk-grid>

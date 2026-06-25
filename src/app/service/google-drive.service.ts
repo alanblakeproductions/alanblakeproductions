@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { GoogleMap } from '@angular/google-maps';
-import { Observable, Subject } from 'rxjs';
+import { Observable, Subject, of} from 'rxjs';
 import { BrowserStorageService } from './browser-storage.service';
 import { GoogleDriveFile, ImageMetadata, ImageDisplayDirection } from './../util/google-models';
 import { LocationOptionImage } from './../util/shotmaker-location-models';
@@ -20,6 +20,7 @@ export class GoogleDriveService {
 
   private tokenClient: any;
   private geocoder: google.maps.GeocodingLibrary;
+  private imageCache = new Map<string, LocationOptionImage>();
   private authStatus$ = new Subject<boolean>();
 
   constructor(private http: HttpClient,
@@ -129,6 +130,11 @@ export class GoogleDriveService {
   }
 
   public loadImage(file: GoogleDriveFile): Observable<LocationOptionImage> {
+    const cached = this.imageCache.get(file.id);
+    if (cached) {
+      return of(cached);
+    }
+
     this.tickleAccessToken();
     const myHeaders = new HttpHeaders({
       Authorization: `Bearer ${this.browserStorageService.getGoogleAccessToken()}`,
@@ -143,10 +149,14 @@ export class GoogleDriveService {
         responseType: 'blob' as const
       })
       .pipe(map(blob => {
-        return {
+        const image = {
           file: file,
           url: URL.createObjectURL(blob)
-        }
+        };
+
+        this.imageCache.set(file.id, image);
+
+        return image;
       }));
   }
 

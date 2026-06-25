@@ -109,13 +109,15 @@ export class ShotmakerFilmDaysDetailPane implements OnInit {
           console.log("Unable to set coordinates", locationOption.address, coordinates, typeof(coordinates));
           return;
         }
+
+        const approvalStatusColors = this.getApprovalStatusPinColor(locationOption);
         locationOption.addressCoordinates = coordinates;
         locationOption.addressPin = new google.maps.marker.PinElement({
           scale: 1,
           glyphText: String(locationIndex + 1),
-          background: this.getApprovalStatusPinColor(locationOption),
-          borderColor: "white",
-          glyphColor: "white",
+          background: approvalStatusColors[0],
+          borderColor: approvalStatusColors[1],
+          glyphColor: approvalStatusColors[1],
         });
         /*
         let node = document.createElement('div');
@@ -154,20 +156,20 @@ export class ShotmakerFilmDaysDetailPane implements OnInit {
     }
   }
 
-  getApprovalStatusPinColor(option: LocationOption): string {
+  getApprovalStatusPinColor(option: LocationOption): string[] {
     switch (option.approvalStatus) {
       case LocationOptionApprovalStatus.NOT_APPLICABLE:
       case LocationOptionApprovalStatus.APPROVED:
         if (option.isChosen) {
-          return "limegreen";
+          return ["limegreen", "white"];
         }
-        return "green";
+        return ["green", "white"];
       case LocationOptionApprovalStatus.PENDING_APPROVAL:
-        return "yellow";
+        return ["yellow", "black"];
       case LocationOptionApprovalStatus.NOT_APPROVED:
-        return "red";
+        return ["red", "white"];
       default:
-        return "yellow";
+        return ["purple", "white"];
     }
   }
 

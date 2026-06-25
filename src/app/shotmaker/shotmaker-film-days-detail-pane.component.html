@@ -6,6 +6,7 @@
   </div>
 
   <div *ngSwitchCase="false">
+    <div class="uk-width-1-1">
     <div class="uk-section uk-section-muted uk-section-small">
       <div class="uk-container">
         <div class="uk-align-left">
@@ -14,20 +15,21 @@
       </div>
 
       <div class="uk-container">
-        <ul class="uk-column-1-1 uk-column-1-1@m uk-nav uk-nav-default uk-nav-divider">
+        <ul class="uk-nav uk-default uk-nav-divider">
           @for (entry of locationIdToLocation | keyvalue; track entry.key; let i = $index) {
-          <li class="uk-text-truncate uk-parent">
+          <li class="uk-text-truncate1 uk-parent">
             <span class="uk-margin-xsmall-right" uk-icon="icon: location"></span>
             {{i + 1}}. {{entry.value.name}}
 
-            <ul class="uk-nav-sub uk-list uk-margin-small-top">
+            <ul class="uk-nav uk-nav-sub uk-list uk-margin-small-top">
               @for (scene of getScenes(entry.key); track scene) {
-              <li>
-                <a routerLink="/shotmaker/{{project.id}}" [queryParams]="{ tab: 'locations', view: 'locations', sceneId: scene.id }">
+              <li class="uk-text-truncate1">
+                <a class="uk-link-muted" routerLink="/shotmaker/{{project.id}}" [queryParams]="{ tab: 'locations', view: 'locations', sceneId: scene.id }">
                   <app-shotmaker-scene-nav-item
                     [scene]="scene"
                     sceneLabel="{{scene.setting}}. {{scene.description}} - {{scene.timeOfDay}}"
                     sceneDescription="{{scene.notes}}">
+
                   </app-shotmaker-scene-nav-item>
                 </a>
               </li>
@@ -86,15 +88,12 @@
               </tbody>
             </table>
           </div>
-          <div class="uk-card-media-bottom">
-
-          </div>
         </div>
         }
 
         <google-map
           height="600px"
-          width="1000px"
+          width="100%"
           [center]="mapCenter"
           [options]="mapOptions"
           [zoom]="mapZoom">
@@ -106,7 +105,8 @@
                   [position]="locationOption.addressCoordinates"
                   [content]="locationOption.addressPin"
                   (mapClick)="onLocationClick({locationIndex: i + 1, location: entry.value, locationOption: locationOption})"
-                />
+                >
+                </map-advanced-marker>
               }
             }
           }
@@ -114,4 +114,5 @@
       </div>
     </div>
   </div>
+    </div>
 </div>

@@ -6,12 +6,14 @@
   </div>
 
   <div *ngSwitchCase="false">
-    <div class="uk-section uk-section-muted">
+    <div class="uk-section uk-section-muted uk-section-small">
       <div class="uk-container">
         <div class="uk-align-left">
           <h3 class="uk-header">{{scene?.setting}}. {{scene?.description}} - {{scene?.timeOfDay}}</h3>
         </div>
+      </div>
 
+      <div class="uk-container">
         <div class="uk-alert-danger" uk-alert *ngFor="let warning of scene?.warnings">
           <span class="uk-margin-small-right" uk-icon="warning"></span> {{warning}}
         </div>
@@ -60,7 +62,7 @@
       </div>
     </div>
 
-    <div class="uk-section uk-section-default uk-padding-small">
+    <div class="uk-section uk-section-default uk-padding-small uk-padding-remove-vertical">
       <div class="uk-container">
         <div class="uk-width-1-1">
           <ul class="uk-tab uk-child-width-expand" uk-tab uk-switcher="connect: .location-option">

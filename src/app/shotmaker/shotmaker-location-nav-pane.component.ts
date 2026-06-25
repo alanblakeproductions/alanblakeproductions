@@ -1,10 +1,12 @@
 import { Component, Input, OnInit, AfterViewInit, ViewChildren, QueryList, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterLink, RouterLinkActive } from '@angular/router';
+import { ShotmakerLocationDetailPane } from './shotmaker-location-detail-pane.component';
 import { ShotmakerSceneNavItem } from './../component/shotmaker-scene-nav-item.component';
 import { Scene, Location } from './../util/shotmaker-location-models';
+import { ShotmakerProject } from './../util/models';
 import { BrowserStorageService } from './../service/browser-storage.service';
-import { Observable, BehaviorSubject, Subject, of } from 'rxjs';
+import { Observable, BehaviorSubject, Subject, of, combineLatest } from 'rxjs';
 import { first } from 'rxjs/operators';
 
 @Component({
@@ -14,6 +16,7 @@ import { first } from 'rxjs/operators';
     CommonModule,
     RouterLink,
     RouterLinkActive,
+    ShotmakerLocationDetailPane,
     ShotmakerSceneNavItem,
   ],
   templateUrl: './shotmaker-location-nav-pane.component.html',
@@ -21,13 +24,14 @@ import { first } from 'rxjs/operators';
 })
 export class ShotmakerLocationNavPane implements OnInit, AfterViewInit {
 
+  @Input() project: ShotmakerProject = {} as ShotmakerProject;
   @Input() scenes$: BehaviorSubject<Scene[]> = new BehaviorSubject<Scene[]>([]);
   @Input() selectedScene$: BehaviorSubject<Scene | undefined> = new BehaviorSubject<Scene | undefined>(undefined);
   scenes: Scene[] = [];
+  selectedScene: Scene | undefined = undefined;
 
   @ViewChildren("sceneElement") sceneElements!: QueryList<ElementRef<HTMLLIElement>>;
 
-  projectId: string = "";
   view: string = "";
 
   constructor(
@@ -37,21 +41,25 @@ export class ShotmakerLocationNavPane implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    this.route.params.subscribe((params) => {
-      this.projectId = params['projectId'] ?? "";
-    });
-
-    this.route.queryParams.subscribe((params) => {
-      this.view = params['view'] ?? "scenes";
-    });
-
-    this.scenes$.subscribe((scenes) => {
-      this.scenes = scenes.sort((a, b) => {
-        let aId = Number(a.id.match(/\d+/g));
-        let bId = Number(b.id.match(/\d+/g));
-        return aId - bId;
+    combineLatest([
+      this.route.params,
+      this.route.queryParams,
+      this.scenes$,
+      this.selectedScene$
+    ]).subscribe(
+      ([params, queryParams, scenes, selectedScene]) => {
+        this.view = queryParams['view'] ?? "scenes";
+        this.scenes = scenes.sort((a, b) => {
+          let aId = Number(a.id.match(/(^\d+)/g));
+          let bId = Number(b.id.match(/(^\d+)/g));
+          let compare = aId - bId;
+          if (compare == 0) {
+            return a.id.localeCompare(b.id);
+          }
+          return compare;
+        });
+        this.selectedScene = selectedScene;
       });
-    });
   }
 
   ngAfterViewInit(): void {
