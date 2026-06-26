@@ -7,6 +7,24 @@ body {
   grid-template-rows: auto auto 1fr;
 }
 
+@media print {
+  /* Hides an element completely during print */
+  .do-not-print {
+    display: none !important;
+  }
+
+  /* Forces a page break before a specific element */
+  .page-break {
+    page-break-before: always;
+  }
+
+  .print-together {
+    display: block;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+}
+
 .flex-row {
   flex: 2;
   display: flex;

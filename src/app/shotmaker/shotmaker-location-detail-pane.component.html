@@ -9,7 +9,9 @@
     <div class="uk-section uk-section-muted uk-section-small">
       <div class="uk-container">
         <div class="uk-align-left">
-          <h3 class="uk-header">{{scene?.setting}}. {{scene?.description}} - {{scene?.timeOfDay}}</h3>
+          <h3 class="uk-header">
+            Scene {{scene?.id}}: {{scene?.setting}}. {{scene?.description}} - {{scene?.timeOfDay}}
+          </h3>
         </div>
       </div>
 
@@ -128,15 +130,15 @@
             </div>
 
             <div class="uk-child-width-1-1@s" uk-grid="masonry: pack">
-              <div *ngFor="let image of locationOption.horizontalImages">
+              <div *ngFor="let image of locationOption.horizontalImages" class="page-break">
                 <div class="uk-card uk-flex uk-flex-center uk-flex-middle" style="height: {{image.file.imageMetadata?.smallHeight}}px">
                   <img [src]="image.url" alt="" [height]="image.file.imageMetadata?.smallHeight" [width]="image.file.imageMetadata?.smallWidth" uk-cover>
                 </div>
               </div>
             </div>
 
-            <div class="uk-child-width-1-2@s" uk-grid="masonry: pack">
-              <div *ngFor="let image of locationOption.verticalImages">
+            <div class="uk-child-width-1-2@m" uk-grid="masonry: pack">
+              <div *ngFor="let image of locationOption.verticalImages" class="page-break">
                 <div class="uk-card uk-flex uk-flex-center uk-flex-middle" style="height: {{image.file.imageMetadata?.smallHeight}}px">
                   <img [src]="image.url" alt="" [height]="image.file.imageMetadata?.smallHeight" [width]="image.file.imageMetadata?.smallWidth" uk-cover>
                 </div>
