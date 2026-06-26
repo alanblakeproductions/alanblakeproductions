@@ -46,6 +46,7 @@ export class ShotmakerFilmDaysDetailPane implements OnInit {
 
   filmDay: FilmDay | undefined = undefined;
   loadingLocations: boolean = true;
+  loadingImages: boolean = true;
 
   locations: Location[] = [];
   locationIdToLocation: Record<number, Location> = {};
@@ -142,6 +143,8 @@ export class ShotmakerFilmDaysDetailPane implements OnInit {
       }).catch(error => this.handleError(error));
   }
 
+
+
   getOptionTitle(locationOption: LocationOption): string {
     if (locationOption.description) {
       return locationOption.description;
@@ -211,5 +214,41 @@ export class ShotmakerFilmDaysDetailPane implements OnInit {
     this.selectedLocationIndex = event['locationIndex'];
     this.selectedLocation = event['location'];
     this.selectedLocationOption = event['locationOption'];
+    if (this.selectedLocationOption) {
+      this.loadImages(this.selectedLocationOption);
+    }
+  }
+
+  private loadImages(locationOption: LocationOption): void {
+    this.loadingImages = true;
+    let folder = locationOption.folder;
+    this.googleService.listFiles(folder.id)
+      .subscribe({
+        next: (files) => {
+          console.log("Found files", files);
+          if (files.length === 0) {
+            this.loadingImages = false;
+            return;
+          }
+
+          const imageObservables: Observable<LocationOptionImage>[] = files.map(file => {
+            return this.googleService.loadImage(file);
+          });
+
+          forkJoin(imageObservables)
+            .subscribe({
+              next: (images: LocationOptionImage[]) => {
+                let verticalImages = images.filter(image => image.file.imageMetadata?.displayDirection === ImageDisplayDirection.VERTICAL);
+                let horizontalImages = images.filter(image => image.file.imageMetadata?.displayDirection !== ImageDisplayDirection.VERTICAL);
+                locationOption.verticalImages = verticalImages;
+                locationOption.horizontalImages = horizontalImages;
+
+                this.loadingImages = false;
+              },
+              error: (error) => this.handleError(error)
+            });
+        },
+        error: (error) => this.handleError(error)
+      });
   }
 }

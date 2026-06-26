@@ -19,15 +19,16 @@ export class GoogleDriveService {
   private readonly SCOPES = 'https://www.googleapis.com/auth/drive https://www.googleapis.com/auth/drive.metadata.readonly';
 
   private tokenClient: any;
-  private geocoder: google.maps.GeocodingLibrary;
+  private geocoderLibrary: Promise<google.maps.GeocodingLibrary>;
+  private markerLibrary: Promise<google.maps.MarkerLibrary>;
   private imageCache = new Map<string, LocationOptionImage>();
   private authStatus$ = new Subject<boolean>();
 
   constructor(private http: HttpClient,
               private browserStorageService: BrowserStorageService) {
     this.initTokenClient();
-    this.geocoder = google.maps.importLibrary('geocoding');
-    google.maps.importLibrary('marker');
+    this.markerLibrary = google.maps.importLibrary('marker') as Promise<google.maps.MarkerLibrary>;
+    this.geocoderLibrary = google.maps.importLibrary('geocoding') as Promise<google.maps.GeocodingLibrary>;
   }
 
   // Initialize the OAuth client
@@ -192,32 +193,35 @@ export class GoogleDriveService {
       return Promise.resolve(cachedLocationCoordinates);
     }
 
-    this.tickleAccessToken();
-    const geocoder = new google.maps.Geocoder();
-    return new Promise((resolve, reject) => {
-      geocoder.geocode({ address: address }, (results: any, status: any) => {
-        // Check if the request was successful and if results exist
-        if (status === google.maps.GeocoderStatus.OK && results && results[0]) {
-          const location = results[0].geometry.location;
-          const locationCoordinates = {
-            lat: location.lat(),
-            lng: location.lng()
-          };
-          console.log("Found ", address, locationCoordinates);
+    return Promise.all([this.geocoderLibrary, this.markerLibrary])
+      .then(([geocodeLib, markerLib]) => {
+        this.tickleAccessToken();
+        const geocoder = new google.maps.Geocoder();
+        return new Promise((resolve, reject) => {
+          geocoder.geocode({ address: address }, (results: any, status: any) => {
+            // Check if the request was successful and if results exist
+            if (status === google.maps.GeocoderStatus.OK && results && results[0]) {
+              const location = results[0].geometry.location;
+              const locationCoordinates = {
+                lat: location.lat(),
+                lng: location.lng()
+              };
+              console.log("Found ", address, locationCoordinates);
 
-          // Extract lat and lng using the native methods
-          this.browserStorageService.setLocationCoordinates(address, locationCoordinates);
+              // Extract lat and lng using the native methods
+              this.browserStorageService.setLocationCoordinates(address, locationCoordinates);
 
-          resolve(locationCoordinates);
-        } else {
-          this.browserStorageService.setLocationCoordinates(address, {
-            lat: NaN,
-            lng: NaN,
+              resolve(locationCoordinates);
+            } else {
+              this.browserStorageService.setLocationCoordinates(address, {
+                lat: NaN,
+                lng: NaN,
+              });
+
+              reject(new Error(`Geocoding failed for ${address}. Status: ${status}`));
+            }
           });
-
-          reject(new Error(`Geocoding failed for ${address}. Status: ${status}`));
-        }
+        });
       });
-    });
   }
 }
