@@ -97,6 +97,18 @@
         },
         "deploy": {
           "builder": "angular-cli-ghpages:deploy"
+        },
+        "e2e": {
+          "builder": "@puppeteer/ng-schematics:puppeteer",
+          "options": {
+            "devServerTarget": "alanblakeproductions:serve",
+            "testRunner": "node"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "alanblakeproductions:serve:production"
+            }
+          }
         }
       }
     }

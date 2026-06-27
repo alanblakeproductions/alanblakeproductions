@@ -143,8 +143,6 @@ export class ShotmakerFilmDaysDetailPane implements OnInit {
       }).catch(error => this.handleError(error));
   }
 
-
-
   getOptionTitle(locationOption: LocationOption): string {
     if (locationOption.description) {
       return locationOption.description;
