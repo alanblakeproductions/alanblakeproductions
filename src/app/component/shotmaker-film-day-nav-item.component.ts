@@ -18,8 +18,4 @@ import { first } from 'rxjs/operators';
 export class ShotmakerFilmDayNavItem {
 
   @Input() filmDay: FilmDay = {} as FilmDay;
-
-  getLabelClass(filmDay: FilmDay): string {
-    return "";
-  }
 }

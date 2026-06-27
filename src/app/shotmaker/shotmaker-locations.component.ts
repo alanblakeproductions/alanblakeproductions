@@ -1,5 +1,5 @@
 import { Component, HostListener, Input, OnInit, AfterViewInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, formatDate } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute, Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { CdkDrag, CdkDragDrop, CdkDropList, CdkDropListGroup, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
@@ -198,6 +198,7 @@ export class ShotmakerLocationsComponent implements OnInit {
           else {
             sceneChildWarnings.push(...locationWarnings);
           }
+          let filmDay = sceneIdToFilmDay[sceneEntity.id] ?? this.UNDECIDED_FILM_DAY;
           let scene = {
             id: sceneEntity.id,
             status: sceneEntity.status,
@@ -205,7 +206,8 @@ export class ShotmakerLocationsComponent implements OnInit {
             description: sceneEntity.description,
             timeOfDay: sceneEntity.timeOfDay,
             notes: sceneEntity.notes,
-            filmDay: sceneIdToFilmDay[sceneEntity.id] ?? this.UNDECIDED_FILM_DAY,
+            filmDay: filmDay,
+            filmDayString: this.getFilmDayString(filmDay),
             location: location,
             warnings: sceneWarnings,
             childWarnings: sceneChildWarnings,
@@ -227,6 +229,7 @@ export class ShotmakerLocationsComponent implements OnInit {
           if (!filmDays[filmDayEntity.filmDay]) {
             filmDays[filmDayEntity.filmDay] = {
               date: filmDayEntity.filmDay,
+              dateString: this.getFilmDayString(filmDayEntity.filmDay),
               scenes: [],
               warnings: [],
               childWarnings: [],
@@ -242,6 +245,7 @@ export class ShotmakerLocationsComponent implements OnInit {
         let undecidedScenes: Scene[] = Object.values(scenes).filter(scene => scene.filmDay === this.UNDECIDED_FILM_DAY);
         filmDays[this.UNDECIDED_FILM_DAY] = {
           date: this.UNDECIDED_FILM_DAY,
+          dateString: this.UNDECIDED_FILM_DAY,
           scenes: undecidedScenes,
           warnings: [],
           childWarnings: [...undecidedScenes.map(scene => scene.warnings).flat(), ...undecidedScenes.map(scene => scene.childWarnings).flat()],
@@ -530,5 +534,12 @@ export class ShotmakerLocationsComponent implements OnInit {
 
   private fetchLocationOptionFolders(): Observable<GoogleDriveFile[]> {
     return this.googleService.listFiles(this.project.locations?.googleDriveFolderId ?? "");
+  }
+
+  private getFilmDayString(date: string) {
+    if (date === this.UNDECIDED_FILM_DAY) {
+      return date;
+    }
+    return formatDate(date, 'MM-dd-yyyy (EE)', 'en-US');
   }
 }

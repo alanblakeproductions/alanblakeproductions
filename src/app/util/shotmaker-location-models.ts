@@ -41,6 +41,7 @@ export interface Scene {
   timeOfDay: string,
   notes: string[],
   filmDay: string,
+  filmDayString: string,
   location: Location,
   warnings: string[],
   childWarnings: string[],
@@ -93,6 +94,7 @@ export interface LocationOptionImage {
 
 export interface FilmDay {
   date: string,
+  dateString: string,
   scenes: Scene[],
   warnings: string[],
   childWarnings: string[],
