@@ -540,6 +540,6 @@ export class ShotmakerLocationsComponent implements OnInit {
     if (date === this.UNDECIDED_FILM_DAY) {
       return date;
     }
-    return formatDate(date, 'MM-dd-yyyy (EE)', 'en-US');
+    return formatDate(date, 'MM-dd-yyyy EE', 'en-US');
   }
 }
