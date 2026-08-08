@@ -1,111 +1,28 @@
-<!--
-<div class="uk-section uk-margin-top">
-  <div class="uk-container">
-    <form class="uk-form-stacked">
-      <div class="uk-width-1-2@s uk-width-2-5@m">
-        <ul class="uk-nav uk-nav-default">
-          <li class="uk-nav-header">Project Types</li>
-
-          <li class="uk-parent">
-            <label><input class="uk-checkbox" type="checkbox" name="musical"> Screen</label>
-
-            <ul class="uk-nav-sub">
-              <li><label><input class="uk-checkbox" type="checkbox" name="musical"> Feature</label></li>
-              <li><label><input class="uk-checkbox" type="checkbox" name="play"> TV</label></li>
-            </ul>
-          </li>
-
-          <li class="uk-parent">
-            <label><input class="uk-checkbox" type="checkbox" name="musical"> Stage</label>
-
-            <ul class="uk-nav-sub">
-              <li><label><input class="uk-checkbox" type="checkbox" name="musical"> Musical</label></li>
-              <li><label><input class="uk-checkbox" type="checkbox" name="play"> Play</label></li>
-            </ul>
-          </li>
-        </ul>
-
-        <ul class="uk-nav uk-nav-default">
-          <li class="uk-nav-header">Roles</li>
-
-          <li><label><input class="uk-checkbox" type="checkbox" name="musical"> Cinematographer</label></li>
-          <li><label><input class="uk-checkbox" type="checkbox" name="musical"> Co-Director</label></li>
-          <li><label><input class="uk-checkbox" type="checkbox" name="musical"> Producer</label></li>
-          <li><label><input class="uk-checkbox" type="checkbox" name="musical"> Writer</label></li>
-        </ul>
-      </div>
-    </form>
-  </div>
-</div>
--->
-
-<!--
-<div class="uk-section uk-padding-small">
-  <div class="uk-container uk-padding-small">
-    <form class="uk-grid" uk-grid>
-      <div class="uk-width-3-4">
-        <select class="uk-select" aria-label="Order by">
-          <option>Title</option>
-          <option>Year</option>
-        </select>
-      </div>
-      <div class="uk-width-1-4">
-        <div class="uk-button uk-button-default">
-          <span uk-icon="icon: chevron-down"></span>
-        </div>
-      </div>
-    </form>
-  </div>
-</div>
--->
-
 <div class="uk-section uk-section-xsmall">
   <div class="uk-container">
     <h1 class="uk-heading">Portfolio</h1>
-    <!--
-    <p class="uk-text">
-      Take a look at my portfolio. I've been lucky to work on projects like...
-    </p>
-    <ul class="uk-list uk-list-bullet">
-      <li><span class="uk-text-italic">Love Me (K)not</span>, an independently-produced rom-com web series</li>
-      <li><span class="uk-text-italic">Comet</span>, a sci-fi drama being staged during summer 2024</li>
-      <li><span class="uk-text-italic">I-80: An Interstate Crime Story</span>, a 60-minute dark comedy TV series</li>
-    </ul>
-    -->
   </div>
 </div>
 
 <div class="uk-section uk-section-xsmall">
-  <div class="uk-container uk-padding-remove-left uk-padding-remove-right">
+  <div class="uk-container">
     <div class="uk-grid uk-grid-small uk-child-width-1-2@s" uk-grid>
       <div *ngFor="let project of matchingProjects" attr.uk-toggle="target: #{{getId(project)}}">
-        <div class="uk-inline">
-          <canvas width="1600" height="800"></canvas>
-          <img src="{{project.image}}" uk-cover />
-          <!--
-          <div class="uk-card-badge uk-label">{{project.title}}</div>
-          -->
-
-          <!--
-          <div class="uk-overlay uk-overlay-primary uk-position-bottom" style="height: 80px">
-            <h5 class="uk-heading uk-text-muted uk-text-left" style="display: inline">{{project.title}}</h5>
-
-            <div style="right: 0; display: inline; float: right; z-index: 2; position: relative; vertical-align: center; top: -15px">
-              <span *ngFor="let highlight of project.highlights">
-                <img *ngIf="highlight.laurel" class="uk-comment-avatar" [src]="highlight.laurel" width="70" height="70" alt="">
-              </span>
-            </div>
+        <div class="uk-card project">
+          <div class="uk-inline">
+            <span class="uk-label {{getImageLabelClass(project)}} project-image-label">{{project.genre}} {{project.type}}</span>
+            <canvas width="1920" height="1080"></canvas>
+            <img src="{{project.image}}" uk-cover />
           </div>
-          -->
-        </div>
-        <div class="project-image-caption">
-          <h5 class="uk-heading uk-text-muted uk-text-left" style="display: inline">{{project.title}}</h5>
+          <div class="project-image-caption">
+            <h5 class="uk-heading uk-text-left" style="display: inline">{{project.title}}</h5>
 
-          <div class="project-image-caption-laurels">
-              <span *ngFor="let laurel of getUniqueLaurels(project) | keyvalue">
-                <img *ngIf="laurel.key" class="uk-comment-avatar" [src]="laurel.key">
-                <span *ngIf="laurel.value > 1" class="uk-badge">{{laurel.value}}</span>
-              </span>
+            <div class="project-image-caption-laurels uk-visible@m">
+                <span *ngFor="let laurel of getUniqueLaurels(project) | keyvalue">
+                  <img *ngIf="laurel.key" class="uk-comment-avatar" [src]="laurel.key">
+                  <span *ngIf="laurel.value > 1" class="uk-badge">{{laurel.value}}</span>
+                </span>
+            </div>
           </div>
         </div>
       </div>
@@ -119,7 +36,8 @@
     <a class="uk-slidenav-large uk-position-center-right uk-position-small uk-hidden-hover" href="#{{getNextId(i)}}" uk-slidenav-next uk-toggle></a>
 
     <button class="uk-modal-close-full uk-close-large" type="button" uk-close></button>
-    <div class="uk-grid-collapse uk-child-width-1-2@s uk-flex-middle" uk-grid>
+
+    <div class="uk-grid-collapse uk-child-width-1-2@m uk-flex-middle" uk-grid>
       <div class="uk-background-cover" style="background-image: url({{project.image}});" uk-height-viewport>
         <div class="uk-position-bottom uk-margin-left">
           <p class="uk-light">{{project.image_attribution}}</p>

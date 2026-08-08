@@ -36,13 +36,32 @@ export class ProjectsComponent {
 
   constructor() {
     this.matchingProjects.push({
+      title: "Wrestle Indie Park",
+      description: "Residents, volunteers, and wrestlers celebrate the 10th anniversary of a community event in the Logan Square neighborhood in Chicago.",
+      type: "Short",
+      genre: "Documentary",
+      startYear: 2026,
+      endYear: 2026,
+      image: "assets/images/jr-lindsey-ring.png",
+      image_attribution: undefined,
+      coverfly: undefined,
+      youtube: undefined,
+      website: undefined,
+      roles: [
+        "Editor",
+      ],
+      highlights: [
+      ],
+    });
+
+    this.matchingProjects.push({
       title: "Colorblind",
       description: "Two adult daughters buy their father colorblind corrective lenses for his birthday, provoking an unexpected reaction.",
       type: "Short",
       genre: "Comedy",
       startYear: 2025,
       endYear: 2026,
-      image: "assets/images/colorblind-mom.png",
+      image: "assets/images/colorblind-girls.png",
       image_attribution: undefined,
       coverfly: undefined,
       youtube: undefined,
@@ -58,7 +77,7 @@ export class ProjectsComponent {
 
     this.matchingProjects.push({
       title: "The Scorekeeper",
-      description: "A woman struggles to evade a stalking entity.",
+      description: "On the eve of a first date, a young woman is stalked by a supernatural AV cart-hauling interloper intent on forcing her to reckon with a traumatic past.",
       type: "Short",
       genre: "Horror",
       startYear: 2025,
@@ -72,6 +91,18 @@ export class ProjectsComponent {
         "Editor",
       ],
       highlights: [
+        {
+          title: "XL Film Festival",
+          description: "Official Selection",
+          image: "assets/images/2026_xl_film_festival_official_selection.png",
+          laurel: "assets/images/laurel_official_selection_white_transparent.png",
+        },
+        {
+          title: "Black Harvest Film Festival",
+          description: "Official Selection",
+          image: "assets/images/2026_black_harvest_film_festival_official_selection.png",
+          laurel: "assets/images/laurel_official_selection_white_transparent.png",
+        },
       ],
     });
 
@@ -102,6 +133,18 @@ export class ProjectsComponent {
           title: "Patrick Lives On Film Showcase & Fundraiser",
           description: "Official Selection",
           image: "assets/images/patrick_lives_on_film_showcase_and_fundraiser_official_selection.png",
+          laurel: "assets/images/laurel_official_selection_white_transparent.png",
+        },
+        {
+          title: "MOM Film Fest",
+          description: "Official Selection",
+          image: "assets/images/2026_mom_film_fest_official_selection.png",
+          laurel: "assets/images/laurel_official_selection_white_transparent.png",
+        },
+        {
+          title: "Women's International Film Festival",
+          description: "Official Selection",
+          image: "assets/images/2026_womens_international_film_festival_official_selection.png",
           laurel: "assets/images/laurel_official_selection_white_transparent.png",
         },
       ],
@@ -392,6 +435,23 @@ export class ProjectsComponent {
             }
             return acc;
           }, {} as Record<string, number>);
+  }
+
+  getImageLabelClass(project: Project): string {
+    switch (project.type) {
+      case "Short":
+      case "Feature":
+        return "uk-label-black";
+      case "Episodic short series":
+      case "Series":
+      case "Web series":
+        return "";
+      case "Stage musical":
+        return "uk-label-warning";
+      default:
+        console.log(project.type);
+        return "";
+    }
   }
 
   onKeyPress($event: any, index: number) {
