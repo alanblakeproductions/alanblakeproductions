@@ -64,7 +64,7 @@ export class ProjectsComponent {
       image: "assets/images/colorblind-girls.png",
       image_attribution: undefined,
       coverfly: undefined,
-      youtube: undefined,
+      youtube: "https://www.youtube.com/watch?v=2ymAXPA-4GE",
       website: undefined,
       roles: [
         "Writer",
@@ -116,7 +116,7 @@ export class ProjectsComponent {
       image: "assets/images/deepa_open_1.png",
       image_attribution: undefined,
       coverfly: undefined,
-      youtube: undefined,
+      youtube: "https://www.youtube.com/watch?v=f5jqfmfFexM",
       website: undefined,
       roles: [
         "Cinematographer",
@@ -180,7 +180,7 @@ export class ProjectsComponent {
       image: "assets/images/immortal_colorgrade.png",
       image_attribution: undefined,
       coverfly: undefined,
-      youtube: undefined,
+      youtube: "https://youtu.be/4qOK4SSH0Gw",
       website: undefined,
       roles: [
         "Writer",
