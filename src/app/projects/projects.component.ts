@@ -1,5 +1,6 @@
 import { Component, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule, FormBuilder, FormGroup, FormArray, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { Address, Highlight, Person, Project, Showtime } from './../util/models'
 
@@ -8,6 +9,8 @@ import { Address, Highlight, Person, Project, Showtime } from './../util/models'
   standalone: true,
   imports: [
     CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
     RouterLink,
   ],
   templateUrl: './projects.component.html',
@@ -15,31 +18,97 @@ import { Address, Highlight, Person, Project, Showtime } from './../util/models'
 })
 export class ProjectsComponent {
 
+  form!: FormGroup;
+
+  allProjects: Project[] = []
+  allRoles: string[] = []
+  allTypes: string[] = []
+  allGenres: string[] = []
+
+  numSelectedRoles: number = 0;
+  numSelectedTypes: number = 0;
+  numSelectedGenres: number = 0;
+
   matchingProjects: Project[] = []
 
-/*
-  @HostListener("window:keydown", ["$event"])
-  keyEvent(event: KeyboardEvent) {
-    if (event.keyCode == 39) {
-      // right
-      console.log("right")
-    }
-    else if (event.keyCode == 37) {
-      // left
-      console.log("left")
-    }
+  constructor(private formBuilder: FormBuilder) {
+    this.initAllProjects();
+    this.initAllRoles();
+    this.initAllTypes();
+    this.initAllGenres();
   }
 
-  */
+  ngOnInit(): void {
+    this.form = this.formBuilder.group({
+      roles: this.formBuilder.array(
+        this.allRoles.map(() => new FormControl(false))
+      ),
+      types: this.formBuilder.array(
+        this.allTypes.map(() => new FormControl(false))
+      ),
+      genres: this.formBuilder.array(
+        this.allGenres.map(() => new FormControl(false))
+      ),
+    });
 
+    this.form.valueChanges.subscribe(value => {
+      const selectedRoles: Set<string> = new Set();
+      for (const [index, selected] of value.roles.entries()) {
+        if (selected) {
+          selectedRoles.add(this.allRoles[index]);
+        }
+      }
 
+      const selectedTypes: Set<string> = new Set();
+      for (const [index, selected] of value.types.entries()) {
+        if (selected) {
+          selectedTypes.add(this.allTypes[index]);
+        }
+      }
 
-  constructor() {
-    this.matchingProjects.push({
+      const selectedGenres: Set<string> = new Set();
+      for (const [index, selected] of value.genres.entries()) {
+        if (selected) {
+          selectedGenres.add(this.allGenres[index]);
+        }
+      }
+
+      this.numSelectedRoles = selectedRoles.size;
+      this.numSelectedTypes = selectedTypes.size;
+      this.numSelectedGenres = selectedGenres.size;
+
+      this.matchingProjects = this.allProjects.filter(project => {
+        let matchesSelectedRoles: boolean = true;
+        let matchesSelectedTypes: boolean = true;
+        let matchesSelectedGenres: boolean = true;
+
+        if (selectedRoles.size > 0) {
+          matchesSelectedRoles = project.roles.some(role => selectedRoles.has(role));
+        }
+        if (selectedTypes.size > 0) {
+          matchesSelectedTypes = selectedTypes.has(project.type);
+        }
+        if (selectedGenres.size > 0) {
+          matchesSelectedGenres = project.genres.some(genre => selectedGenres.has(genre));
+        }
+
+        return matchesSelectedRoles && matchesSelectedTypes && matchesSelectedGenres;
+      });
+    });
+
+    this.matchingProjects = this.allProjects;
+  }
+
+  get rolesFormArray(): FormArray {
+    return this.form.get('roles') as FormArray;
+  }
+
+  private initAllProjects(): void {
+    this.allProjects.push({
       title: "Wrestle Indie Park",
       description: "Residents, volunteers, and wrestlers celebrate the 10th anniversary of a community event in the Logan Square neighborhood in Chicago.",
       type: "Short",
-      genre: "Documentary",
+      genres: ["Documentary"],
       startYear: 2026,
       endYear: 2026,
       image: "assets/images/jr-lindsey-ring.png",
@@ -54,12 +123,12 @@ export class ProjectsComponent {
       ],
     });
 
-    this.matchingProjects.push({
+    this.allProjects.push({
       title: "Colorblind",
       description: "Two adult daughters buy their father colorblind corrective lenses for his birthday, provoking an unexpected reaction.",
       type: "Short",
-      genre: "Comedy",
-      startYear: 2025,
+      genres: ["Comedy"],
+      startYear: 2026,
       endYear: 2026,
       image: "assets/images/colorblind-girls.png",
       image_attribution: undefined,
@@ -75,12 +144,12 @@ export class ProjectsComponent {
       ],
     });
 
-    this.matchingProjects.push({
+    this.allProjects.push({
       title: "The Scorekeeper",
       description: "On the eve of a first date, a young woman is stalked by a supernatural AV cart-hauling interloper intent on forcing her to reckon with a traumatic past.",
       type: "Short",
-      genre: "Horror",
-      startYear: 2025,
+      genres: ["Horror"],
+      startYear: 2026,
       endYear: 2026,
       image: "assets/images/scorekeeper_pinkies_1.png",
       image_attribution: undefined,
@@ -106,11 +175,11 @@ export class ProjectsComponent {
       ],
     });
 
-    this.matchingProjects.push({
+    this.allProjects.push({
       title: "Deepa",
       description: "A middle-aged South Asian wife and mother is jolted into digging around for deeper meaning in the stable container that is her family life.",
       type: "Short",
-      genre: "Drama",
+      genres: ["Drama"],
       startYear: 2025,
       endYear: 2025,
       image: "assets/images/deepa_open_1.png",
@@ -150,12 +219,12 @@ export class ProjectsComponent {
       ],
     });
 
-    this.matchingProjects.push({
+    this.allProjects.push({
       title: "Sedgwick",
       description: "A malevalent ghoul walks the streets of Chicago, embedding itself in the city inhabitants' lives. "
         + "For some, it inspires fear; for others, its predictable and violent nature presents opportunity.",
-      type: "Episodic short series",
-      genre: "Horror",
+      type: "Short series",
+      genres: ["Horror"],
       startYear: 2024,
       endYear: undefined,
       image: "assets/images/sedgwick/sedgwick_header.jpg",
@@ -170,12 +239,12 @@ export class ProjectsComponent {
       ],
     })
 
-    this.matchingProjects.push({
+    this.allProjects.push({
       title: "Immortal",
       description: "Dreading aging and death, a man takes severe measures to guarantee his immortality.",
       type: "Short",
-      genre: "Horror",
-      startYear: 2024,
+      genres: ["Horror"],
+      startYear: 2025,
       endYear: 2025,
       image: "assets/images/immortal_colorgrade.png",
       image_attribution: undefined,
@@ -228,12 +297,12 @@ export class ProjectsComponent {
       ],
     })
 
-    this.matchingProjects.push({
+    this.allProjects.push({
       title: "Love Me (K)not",
       description: "Distraught by dating woes, Chicago 30-somethings Jesse and Alice reluctantly enter the realm of "
         + "online dating with the often misguided help of friends and acquaintances.",
       type: "Web series",
-      genre: "Rom-com",
+      genres: ["Rom-com"],
       startYear: 2023,
       endYear: undefined,
       image: "assets/images/love_me_knot_kelly_bar.png",
@@ -287,12 +356,15 @@ export class ProjectsComponent {
       ],
     })
 
-    this.matchingProjects.push({
+    this.allProjects.push({
       title: "Comet",
       description: "15 years after a comet threatens extinction on Earth, one of the astronomers who discovered it "
       + "recounts the story to her niece.",
       type: "Feature",
-      genre: "Drama",
+      genres: [
+        "Sci-fi",
+        "Drama",
+      ],
       startYear: 2024,
       endYear: 2024,
       image: "assets/images/comet_1.jpg",
@@ -325,13 +397,13 @@ export class ProjectsComponent {
       ],
     })
 
-    this.matchingProjects.push({
+    this.allProjects.push({
       title: "I-80: An Interstate Crime Story",
       description: "A bumbling brother and sister seek petty revenge against a freight shipping magnate, drawing the "
       + "attention of a traveling gun-for-hire seeking to escape her world of violence. When she seizes an opportunity "
       + "to do so, a series of misunderstandings bring mayhem to a quiet Iowa city.",
       type: "Series",
-      genre: "Crime",
+      genres: ["Crime"],
       startYear: 2023,
       endYear: 2023,
       image: "assets/images/i_80.png",
@@ -364,12 +436,15 @@ export class ProjectsComponent {
       ],
     })
 
-    this.matchingProjects.push({
+    this.allProjects.push({
       title: "Diner",
       description: "On a single night, a tentative man is wrangled into taking a role in blackmail negotiations "
         + "between a duo of inept criminals and a flighty small-time politician.",
       type: "Feature",
-      genre: "Crime comedy",
+      genres: [
+        "Crime",
+        "Comedy",
+      ],
       startYear: 2024,
       endYear: 2024,
       image: "assets/images/diner.png",
@@ -384,12 +459,12 @@ export class ProjectsComponent {
       ],
     })
 
-    this.matchingProjects.push({
+    this.allProjects.push({
       title: "The Shearing",
       description: "A revisionist retelling of the Silence of the Lambs in musical form.",
       type: "Stage musical",
-      genre: "Horror",
-      startYear: 2020,
+      genres: ["Horror"],
+      startYear: 2022,
       endYear: 2022,
       image: "assets/images/shearing.png",
       image_attribution: "Image by pikisuperstar on Freepik",
@@ -401,7 +476,22 @@ export class ProjectsComponent {
       ],
       highlights: [
       ],
-    })
+    });
+  }
+
+  private initAllRoles(): void {
+    let roles = new Set(this.allProjects.flatMap(project => project.roles).sort());
+    this.allRoles = [...roles];
+  }
+
+  private initAllTypes(): void {
+    let types = new Set(this.allProjects.map(project => project.type).sort());
+    this.allTypes = [...types];
+  }
+
+  private initAllGenres(): void {
+    let genres = new Set(this.allProjects.flatMap(project => project.genres).sort());
+    this.allGenres = [...genres];
   }
 
   returnZero() {
@@ -413,17 +503,17 @@ export class ProjectsComponent {
   }
 
   getNextId(index: number) {
-    if (index == this.matchingProjects.length - 1) {
-      return this.getId(this.matchingProjects[0]);
+    if (index == this.allProjects.length - 1) {
+      return this.getId(this.allProjects[0]);
     }
-    return this.getId(this.matchingProjects[index + 1])
+    return this.getId(this.allProjects[index + 1])
   }
 
   getPreviousId(index: number) {
     if (index == 0) {
-      return this.getId(this.matchingProjects[this.matchingProjects.length - 1]);
+      return this.getId(this.allProjects[this.allProjects.length - 1]);
     }
-    return this.getId(this.matchingProjects[index - 1])
+    return this.getId(this.allProjects[index - 1])
   }
 
   getUniqueLaurels(project: Project) {
@@ -454,7 +544,7 @@ export class ProjectsComponent {
     }
   }
 
-  onKeyPress($event: any, index: number) {
-    console.log($event.keyCode)
+  clearForm(): void {
+    this.form.reset();
   }
 }

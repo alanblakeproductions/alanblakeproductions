@@ -19,7 +19,7 @@ export interface Person {
 export interface Project {
   title: string,
   type: string,
-  genre: string,
+  genres: string[],
   description: string,
   startYear: number,
   endYear: number | undefined,

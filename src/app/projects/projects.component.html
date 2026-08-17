@@ -5,12 +5,92 @@
 </div>
 
 <div class="uk-section uk-section-xsmall">
+  <div class="uk-container uk-container">
+    <form [formGroup]="form">
+      <button class="uk-button uk-button-default" type="button">
+        Role
+        <span class="uk-badge" *ngIf="numSelectedRoles > 0">{{numSelectedRoles}}</span>
+      </button>
+      <div class="uk-width-medium" uk-dropdown>
+        <div class="uk-drop-grid" uk-grid>
+          <div formArrayName="roles">
+            <fieldset class="uk-fieldset">
+              @for (role of allRoles; track role; let i = $index) {
+              <div class="uk-grid-small uk-child-width-auto">
+                <label>
+                  <input
+                    class="uk-checkbox"
+                    type="checkbox"
+                    [formControlName]="i"> {{role}}
+                </label>
+              </div>
+              }
+            </fieldset>
+          </div>
+        </div>
+      </div>
+
+      <button class="uk-button uk-button-default" type="button">
+        Type
+        <span class="uk-badge" *ngIf="numSelectedTypes > 0">{{numSelectedTypes}}</span>
+      </button>
+      <div class="uk-width-medium" uk-dropdown>
+        <div class="uk-drop-grid" uk-grid>
+          <div formArrayName="types">
+            <fieldset class="uk-fieldset">
+              @for (type of allTypes; track type; let i = $index) {
+              <div class="uk-grid-small uk-child-width-auto">
+                <label>
+                  <input
+                    class="uk-checkbox"
+                    type="checkbox"
+                    [formControlName]="i"> {{type}}
+                </label>
+              </div>
+              }
+            </fieldset>
+          </div>
+        </div>
+      </div>
+
+      <button class="uk-button uk-button-default" type="button">
+        Genre
+        <span class="uk-badge" *ngIf="numSelectedGenres > 0">{{numSelectedGenres}}</span>
+      </button>
+      <div class="uk-width-medium" uk-dropdown>
+        <div class="uk-drop-grid" uk-grid>
+          <div formArrayName="genres">
+            <fieldset class="uk-fieldset">
+              @for (genre of allGenres; track genre; let i = $index) {
+              <div class="uk-grid-small uk-child-width-auto">
+                <label>
+                  <input
+                    class="uk-checkbox"
+                    type="checkbox"
+                    [formControlName]="i"> {{genre}}
+                </label>
+              </div>
+              }
+            </fieldset>
+          </div>
+        </div>
+      </div>
+
+      <button class="uk-button uk-button-text uk-margin-left" type="button" uk-icon="close"
+              *ngIf="(numSelectedRoles + numSelectedTypes + numSelectedGenres) > 0"
+              (click)="clearForm()">
+      </button>
+    </form>
+  </div>
+</div>
+
+<div class="uk-section uk-section-xsmall">
   <div class="uk-container uk-container-expand">
     <div class="uk-grid uk-grid-small uk-child-width-1-2@s uk-child-width-1-3@m" uk-grid>
       <div *ngFor="let project of matchingProjects" attr.uk-toggle="target: #{{getId(project)}}">
         <div class="uk-card project">
           <div class="uk-inline">
-            <span class="uk-label {{getImageLabelClass(project)}} project-image-label">{{project.genre}} {{project.type}}</span>
+            <span class="uk-label {{getImageLabelClass(project)}} project-image-label">{{project.genres.join(" ")}} {{project.type}}</span>
             <canvas width="1920" height="1080"></canvas>
             <img src="{{project.image}}" uk-cover />
           </div>
@@ -47,7 +127,7 @@
         <h1 class="uk-heading uk-margin-remove-bottom">{{project.title}}</h1>
 
         <p class="uk-text-uppercase uk-text-muted uk-margin-remove-top">
-          {{project.genre}} {{project.type}},
+          {{project.genres.join(" ")}} {{project.type}},
 
           <span *ngIf="project.endYear; then endedProject else ongoingProject"></span>
           <ng-template #ongoingProject>{{project.startYear}} &mdash;</ng-template>
