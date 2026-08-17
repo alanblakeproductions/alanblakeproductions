@@ -5,8 +5,8 @@
 </div>
 
 <div class="uk-section uk-section-xsmall">
-  <div class="uk-container">
-    <div class="uk-grid uk-grid-small uk-child-width-1-2@s" uk-grid>
+  <div class="uk-container uk-container-expand">
+    <div class="uk-grid uk-grid-small uk-child-width-1-2@s uk-child-width-1-3@m" uk-grid>
       <div *ngFor="let project of matchingProjects" attr.uk-toggle="target: #{{getId(project)}}">
         <div class="uk-card project">
           <div class="uk-inline">
