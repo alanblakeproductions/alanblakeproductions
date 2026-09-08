@@ -71,8 +71,8 @@
   </div>
 
   <!-- Locations -->
-  <app-shotmaker-locations *ngIf="project.locations" [project]="project"></app-shotmaker-locations>
+  <app-shotmaker-locations *ngIf="project.locations && project.locations.enabled" [project]="project"></app-shotmaker-locations>
 
   <!-- Film Days -->
-  <app-shotmaker-locations *ngIf="project.locations" [project]="project"></app-shotmaker-locations>
+  <app-shotmaker-locations *ngIf="project.locations && project.locations.enabled" [project]="project"></app-shotmaker-locations>
 </div>

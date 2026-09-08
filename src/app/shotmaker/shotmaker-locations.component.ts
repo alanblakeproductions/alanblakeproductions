@@ -12,6 +12,7 @@ import { SceneEntity, Scene, LocationEntity, LocationOptionEntity, LocationOptio
 import { GoogleDriveFile } from './../util/google-models';
 import { BrowserStorageService } from './../service/browser-storage.service';
 import { GoogleDriveService } from './../service/google-drive.service';
+import { ShotmakerService } from './../service/shotmaker.service';
 import { distinctUntilChanged, map, shareReplay, switchMap } from 'rxjs/operators';
 import { Observable, BehaviorSubject, Subject, combineLatest, of, forkJoin } from 'rxjs';
 
@@ -60,6 +61,7 @@ export class ShotmakerLocationsComponent implements OnInit {
     private router: Router,
     private browserStorageService: BrowserStorageService,
     private googleService: GoogleDriveService,
+    private shotmakerService: ShotmakerService
   ) {
   }
 
@@ -318,7 +320,7 @@ export class ShotmakerLocationsComponent implements OnInit {
   }
 
   loadData(): void {
-    this.fetchSceneEntities()
+    this.shotmakerService.fetchSceneEntities(this.project.locations?.googleDriveScenesUrl ?? "")
       .then(sceneEntities => {
         this.sceneEntities$.next(sceneEntities);
       }).catch(error => this.handleError(error));
@@ -365,51 +367,6 @@ export class ShotmakerLocationsComponent implements OnInit {
     this.filmDayEntities$.next([]);
     this.locationOptionFolders$.next([]);
     this.scenes$.next([]);
-  }
-
-  private fetchSceneEntities(): Promise<SceneEntity[]> {
-    return fetch(
-      this.project.locations?.googleDriveScenesUrl ?? ""
-    )
-      .then((response) => response.text())
-      .then((data) => {
-        let rows = data.trim().split("\n");
-        let headers = rows[0].split("\t");
-        let headerToIndex: Record<string, number> = {};
-        for (var i = 0; i < headers.length; i++) {
-          headerToIndex[headers[i].trim()] = i;
-        }
-
-        let scenes: SceneEntity[] = [];
-        for (var i = 1; i < rows.length; i++) {
-          let row = rows[i];
-          let cells = row.trim().split("\t").map(val => val.trim());
-          let status = cells[headerToIndex["Status"]];
-          if (status === "CUT" || status === "TITLE CARD") {
-            continue;
-          }
-
-          let id = cells[headerToIndex["Scene ID"]];
-          let setting = cells[headerToIndex["Setting"]];
-          let description = cells[headerToIndex["Description"]];
-          let timeOfDay = cells[headerToIndex["Time Of Day"]];
-          let notes = (cells[headerToIndex["Notes"]] ?? "").split("  ");
-          let filmDay = cells[headerToIndex["Film Day"]];
-          let locationId = Number(cells[headerToIndex["Location ID"]]);
-
-          scenes.push({
-            id: id,
-            status: status,
-            setting: setting,
-            description: description,
-            timeOfDay: timeOfDay,
-            notes: notes,
-            locationId: locationId,
-          });
-        }
-
-        return scenes;
-      });
   }
 
   private fetchLocationEntities(): Promise<LocationEntity[]> {

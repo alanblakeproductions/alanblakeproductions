@@ -1,3 +1,5 @@
+import { SceneEntity } from './shotmaker-location-models';
+
 export interface Address {
   name: string,
   line1: string,
@@ -56,7 +58,8 @@ export interface ShotmakerProjectSummary {
 
 export interface Shot {
   id: number,
-  scene: string,
+  sceneId: string,
+  scene: SceneEntity | undefined,
   setup: string,
   shotId: string,
   subject: string,
@@ -69,7 +72,7 @@ export interface Shot {
   pages: string,
   priority: string,
   mic: string,
-  imageLink: string,
+  imageLink: Promise<string>,
   shootTime: number,
 }
 
@@ -91,6 +94,7 @@ export interface ShotmakerProjectVideo {
 }
 
 export interface ShotmakerProjectLocations {
+  enabled: boolean,
   googleDriveFolderId: string,
   googleDriveScenesUrl: string,
   googleDriveLocationsUrl: string,

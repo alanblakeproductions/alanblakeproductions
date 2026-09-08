@@ -41,6 +41,7 @@ export class ShotmakerProjectComponent implements OnInit {
       shadows: undefined,
       video: undefined,
       locations: {
+        enabled: true,
         googleDriveFolderId: "1d20CsOIaQqeJh-GZnLLub08OJnrOh9ZO",
         googleDriveScenesUrl: "https://docs.google.com/spreadsheets/d/e/2PACX-1vS4b9qDkAnSYCoiOtpkEC9xKL6OvtDCfRmXe2a-GZqAM9NngFwrGe_aPVNlD8aWzh1oho2odaQ_szmE/pub?gid=1319809646&single=true&output=tsv",
         googleDriveLocationsUrl: "https://docs.google.com/spreadsheets/d/e/2PACX-1vS4b9qDkAnSYCoiOtpkEC9xKL6OvtDCfRmXe2a-GZqAM9NngFwrGe_aPVNlD8aWzh1oho2odaQ_szmE/pub?gid=825830746&single=true&output=tsv",
@@ -87,7 +88,26 @@ export class ShotmakerProjectComponent implements OnInit {
        shadows: undefined,
        video: undefined,
        locations: undefined,
-    }
+    },
+    "nest": {
+      id: "nest",
+      summary: {
+        title: "Nest",
+      },
+      shotlist: {
+        file: "https://docs.google.com/spreadsheets/d/e/2PACX-1vTPG08asnmC-gheu8iiyrZki8KgGopsjRwo0UuOIl9ZjNtU1LPL9kZCbmpbCnFmnbk_XeQl916NeOAz/pub?gid=204330880&single=true&output=tsv",
+      },
+      shadows: undefined,
+      video: undefined,
+      locations: {
+        enabled: false,
+        googleDriveFolderId: "disabled",
+        googleDriveScenesUrl: "https://docs.google.com/spreadsheets/d/e/2PACX-1vTPG08asnmC-gheu8iiyrZki8KgGopsjRwo0UuOIl9ZjNtU1LPL9kZCbmpbCnFmnbk_XeQl916NeOAz/pub?gid=1085775759&single=true&output=tsv",
+        googleDriveLocationsUrl: "https://docs.google.com/spreadsheets/d/e/2PACX-1vTPG08asnmC-gheu8iiyrZki8KgGopsjRwo0UuOIl9ZjNtU1LPL9kZCbmpbCnFmnbk_XeQl916NeOAz/pub?gid=1313844278&single=true&output=tsv",
+        googleDriveLocationOptionsUrl: "https://docs.google.com/spreadsheets/d/e/2PACX-1vTPG08asnmC-gheu8iiyrZki8KgGopsjRwo0UuOIl9ZjNtU1LPL9kZCbmpbCnFmnbk_XeQl916NeOAz/pub?gid=743009682&single=true&output=tsv",
+        googleDriveFilmDaysUrl: "https://docs.google.com/spreadsheets/d/e/2PACX-1vTPG08asnmC-gheu8iiyrZki8KgGopsjRwo0UuOIl9ZjNtU1LPL9kZCbmpbCnFmnbk_XeQl916NeOAz/pub?gid=406112766&single=true&output=tsv",
+      },
+    },
   };
 
   project: ShotmakerProject = {} as ShotmakerProject;

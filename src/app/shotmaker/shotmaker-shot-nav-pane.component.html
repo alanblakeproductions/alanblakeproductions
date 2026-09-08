@@ -1,16 +1,18 @@
-<div class="flex-column" cdkScrollable>
+<div class="sticky-side-nav" cdkScrollable>
   <div class="uk-section uk-section-muted shot-list-summary uk-text-center uk-text-uppercase uk-text-meta">
     {{shotsShootTimeHours}} hr, {{shotsShootTimeMinutes}} min {{status}}
   </div>
-  <ul class="uk-nav uk-nav-default shot-list"
-      cdkDropList
-      [cdkDropListData]="shots"
-      (cdkDropListDropped)="dropShot($event)">
+  <ul class="uk-nav uk-nav-default"
+    cdkDropList
+    [cdkDropListData]="shots"
+    (cdkDropListDropped)="dropShot($event)">
     @for (shot of shots; track shot) {
-    <li routerLinkActive="uk-active" class="shot-list-item uk-text-truncate" cdkDrag cdkDragLockAxis="y" [cdkDragStartDelay]="250">
+    <li routerLinkActive="uk-active" class="shot-list-item uk-text-truncate" #shotElement [attr.id]="'shot-' + shot.id"
+        cdkDrag cdkDragLockAxis="y" [cdkDragStartDelay]="250">
       <a routerLink="/shotmaker/{{projectId}}" [queryParams]="{ tab: 'shotlist', status: status, shotId: shot.id }">
-        <span class="shot-list-item-size-label uk-label {{getShotLabelClass(shot)}}">{{getShotLabel(shot)}}</span>
-        <span>{{shot.scene}}-{{shot.setup}}{{shot.shotId}}</span>
+        <span *ngIf="shot.scene" class="shot-list-item-size-label uk-label {{getShotSettingClass(shot)}}">{{getShotSettingLabel(shot)}}</span>
+        <span class="shot-list-item-size-label uk-label {{getShotSizeClass(shot)}}">{{getShotSizeLabel(shot)}}</span>
+        <span>{{shot.sceneId}}-{{shot.setup}}{{shot.shotId}}</span>
         <div style="text-transform: none">{{shot.subject}}</div>
       </a>
     </li>

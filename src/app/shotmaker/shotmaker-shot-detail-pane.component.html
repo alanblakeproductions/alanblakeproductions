@@ -5,61 +5,85 @@
     </div>
   </div>
 
-  <div *ngSwitchCase="false" class="uk-section uk-padding-small uk-section-muted">
-    <div class="uk-container">
-      <div class="uk-align-right">
-        <span class="uk-text-meta uk-margin-small-right">EST. SHOOT TIME: {{shot?.shootTime}} MIN</span>
-        <span *ngIf="shot?.priority" class="uk-badge uk-padding-small">{{shot?.priority}} PRIORITY</span>
+  <div *ngSwitchCase="false">
+    <div class="uk-section uk-padding-small uk-section-muted">
+      <div class="uk-container">
+        <div class="uk-align-right">
+          <span class="uk-text-meta uk-margin-small-right">EST. SHOOT TIME: {{shot?.shootTime}} MIN</span>
+          <span *ngIf="shot?.priority" class="uk-badge uk-padding-small">{{shot?.priority}} PRIORITY</span>
+        </div>
+
+        <div class="uk-button-group">
+          <button *ngIf="status == 'done'" class="uk-button uk-button-small uk-button-default" (click)="moveTo('done', 'todo')">
+            Move to Todo
+          </button>
+          <button *ngIf="status == 'todo'" class="uk-button uk-button-small uk-button-danger" (click)="moveTo('todo', 'done')">
+            Move to Done
+          </button>
+        </div>
+
+        <table class="uk-table uk-table-small uk-table-divider uk-margin-small-bottom">
+          <thead>
+          <tr>
+            <th class="uk-table-shrink">Subject</th>
+            <th class="uk-table-shrink">Notes</th>
+            <th class="uk-table-shrink">Page(s)</th>
+            <th class="uk-table-shrink">Sound</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>{{shot?.subject}}</td>
+            <td>{{shot?.notes}}</td>
+            <td [innerHTML]="shot?.pages"></td>
+            <td [innerHTML]="shot?.mic"></td>
+          </tr>
+          </tbody>
+        </table>
+
+        <table class="uk-table uk-table-small uk-table-divider uk-margin-small-top">
+          <thead>
+          <tr>
+            <th class="uk-table-shrink uk-visible@m">Camera</th>
+            <th class="uk-table-shrink">Lens</th>
+            <th class="uk-table-shrink uk-visible@m">Angle</th>
+            <th class="uk-table-shrink">Movement</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td class="uk-visible@m">{{shot?.camera}}</td>
+            <td>{{shot?.lens}}</td>
+            <td class="uk-visible@m">{{shot?.angle}}</td>
+            <td>{{shot?.movement}}</td>
+          </tr>
+          </tbody>
+        </table>
       </div>
+    </div>
 
-      <div class="uk-button-group">
-        <button *ngIf="status == 'done'" class="uk-button uk-button-small uk-button-default" (click)="moveTo('done', 'todo')">
-          Move to Todo
-        </button>
-        <button *ngIf="status == 'todo'" class="uk-button uk-button-small uk-button-danger" (click)="moveTo('todo', 'done')">
-          Move to Done
-        </button>
+    <div class="uk-section uk-padding-remove-vertical">
+      <div class="uk-container" *ngIf="shot?.imageLink | async as imageLink; else loading">
+
+        <div *ngIf="imageLink !== 'MISSING'; else missingImage">
+          <div *ngIf="imageLink.endsWith('.mp4'); else imageFile">
+            <video src="{{imageLink}}" width="1920" height="1080" playsinline loop muted uk-video="autoplay: inview"></video>
+          </div>
+          <ng-template #imageFile>
+            <img src="{{imageLink}}"/>
+          </ng-template>
+        </div>
+        <ng-template #missingImage>
+          <div class="uk-flex-center" uk-grid>
+            <p class="uk-padding-large">No image</p>
+          </div>
+        </ng-template>
       </div>
-
-      <table class="uk-table uk-table-small uk-table-divider uk-margin-small-bottom">
-        <thead>
-        <tr>
-          <th class="uk-table-shrink">Subject</th>
-          <th class="uk-table-shrink">Notes</th>
-          <th class="uk-table-shrink">Page(s)</th>
-          <th class="uk-table-shrink">Sound</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-          <td>{{shot?.subject}}</td>
-          <td>{{shot?.notes}}</td>
-          <td [innerHTML]="shot?.pages"></td>
-          <td [innerHTML]="shot?.mic"></td>
-        </tr>
-        </tbody>
-      </table>
-
-      <table class="uk-table uk-table-small uk-table-divider uk-margin-small-top">
-        <thead>
-        <tr>
-          <th class="uk-table-shrink uk-visible@m">Camera</th>
-          <th class="uk-table-shrink">Lens</th>
-          <th class="uk-table-shrink uk-visible@m">Angle</th>
-          <th class="uk-table-shrink">Movement</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-          <td class="uk-visible@m">{{shot?.camera}}</td>
-          <td>{{shot?.lens}}</td>
-          <td class="uk-visible@m">{{shot?.angle}}</td>
-          <td>{{shot?.movement}}</td>
-        </tr>
-        </tbody>
-      </table>
+      <ng-template #loading>
+        <div class="uk-flex-center" uk-grid>
+          <div uk-spinner="ratio: 3"></div>
+        </div>
+      </ng-template>
     </div>
   </div>
-
-  <img src="{{shot?.imageLink}}"/>
 </div>

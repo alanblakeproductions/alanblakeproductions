@@ -1,6 +1,7 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, AfterViewInit, ViewChildren, QueryList, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterLink, RouterLinkActive } from '@angular/router';
+import { ShotmakerSceneNavItem } from './../component/shotmaker-scene-nav-item.component';
 import { CdkDrag, CdkDragDrop, CdkDropList, CdkDropListGroup, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
 import { Shot } from './../util/models';
 import { BrowserStorageService } from './../service/browser-storage.service';
@@ -18,6 +19,7 @@ import { MomentModule } from 'ngx-moment';
     CdkDropListGroup,
     CdkDrag,
     MomentModule,
+    ShotmakerSceneNavItem,
   ],
   templateUrl: './shotmaker-shot-nav-pane.component.html',
   styleUrl: './shotmaker-shot-nav-pane.component.less'
@@ -31,6 +33,8 @@ export class ShotmakerShotNavPane implements OnInit {
   status: string = "";
   shotsShootTimeHours: number = 0;
   shotsShootTimeMinutes: number = 0;
+
+  @ViewChildren("shotElement") shotElements!: QueryList<ElementRef<HTMLLIElement>>;
 
   constructor(
     private route: ActivatedRoute,
@@ -59,7 +63,19 @@ export class ShotmakerShotNavPane implements OnInit {
     });
   }
 
-  getShotLabel(shot: Shot): string {
+  getShotSettingLabel(shot: Shot): string {
+    if (shot.scene) {
+      switch (shot.scene.setting) {
+        case "INT/EXT":
+          return "I/E";
+        default:
+          return shot.scene.setting;
+      }
+    }
+    return "";
+  }
+
+  getShotSizeLabel(shot: Shot): string {
     if (shot.shotSize) {
       let spaceIndex = shot.shotSize.indexOf(" ");
       if (spaceIndex > -1) {
@@ -69,7 +85,21 @@ export class ShotmakerShotNavPane implements OnInit {
     return shot.shotSize;
   }
 
-  getShotLabelClass(shot: Shot): string {
+  getShotSettingClass(shot: Shot): string {
+    if (shot.scene) {
+      switch (shot.scene.setting) {
+        case "EXT":
+          return "uk-label-black";
+        case "INT":
+          return "uk-label-light-gray";
+        default:
+          return "uk-label-gray";
+      }
+    }
+    return "";
+  }
+
+  getShotSizeClass(shot: Shot): string {
     switch (shot.shotSize) {
       case "LS":
       case "LS (OTS)":
