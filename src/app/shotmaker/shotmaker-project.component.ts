@@ -49,6 +49,25 @@ export class ShotmakerProjectComponent implements OnInit {
         googleDriveFilmDaysUrl: "https://docs.google.com/spreadsheets/d/e/2PACX-1vS4b9qDkAnSYCoiOtpkEC9xKL6OvtDCfRmXe2a-GZqAM9NngFwrGe_aPVNlD8aWzh1oho2odaQ_szmE/pub?gid=1781072839&single=true&output=tsv",
       },
     },
+    "calves": {
+      id: "calves",
+      summary: {
+        title: "Calves",
+      },
+      shotlist: {
+        file: "https://docs.google.com/spreadsheets/d/e/2PACX-1vTI-5bS3GM7InzhWAUMbpkwwKNcirrXwpWvIyh1ZcOTFC8tCB3XjsmPS6336Vvf82UNebAaWkJgNT6X/pub?gid=204330880&single=true&output=tsv"
+      },
+      shadows: undefined,
+      video: undefined,
+      locations: {
+        enabled: false,
+        googleDriveFolderId: "disabled",
+        googleDriveScenesUrl: "https://docs.google.com/spreadsheets/d/e/2PACX-1vTI-5bS3GM7InzhWAUMbpkwwKNcirrXwpWvIyh1ZcOTFC8tCB3XjsmPS6336Vvf82UNebAaWkJgNT6X/pub?gid=1085775759&single=true&output=tsv",
+        googleDriveLocationsUrl: "https://docs.google.com/spreadsheets/d/e/2PACX-1vTI-5bS3GM7InzhWAUMbpkwwKNcirrXwpWvIyh1ZcOTFC8tCB3XjsmPS6336Vvf82UNebAaWkJgNT6X/pub?gid=1313844278&single=true&output=tsv",
+        googleDriveLocationOptionsUrl: "https://docs.google.com/spreadsheets/d/e/2PACX-1vTI-5bS3GM7InzhWAUMbpkwwKNcirrXwpWvIyh1ZcOTFC8tCB3XjsmPS6336Vvf82UNebAaWkJgNT6X/pub?gid=743009682&single=true&output=tsv",
+        googleDriveFilmDaysUrl: "https://docs.google.com/spreadsheets/d/e/2PACX-1vTI-5bS3GM7InzhWAUMbpkwwKNcirrXwpWvIyh1ZcOTFC8tCB3XjsmPS6336Vvf82UNebAaWkJgNT6X/pub?gid=406112766&single=true&output=tsv",
+      },
+    },
     "colorblind": {
       id: "colorblind",
       summary: {

@@ -13,7 +13,13 @@
         <span *ngIf="shot.scene" class="shot-list-item-size-label uk-label {{getShotSettingClass(shot)}}">{{getShotSettingLabel(shot)}}</span>
         <span class="shot-list-item-size-label uk-label {{getShotSizeClass(shot)}}">{{getShotSizeLabel(shot)}}</span>
         <span>{{shot.sceneId}}-{{shot.setup}}{{shot.shotId}}</span>
-        <div style="text-transform: none">{{shot.subject}}</div>
+        <span class="shot-list-item-text">{{shot.subject}}</span>
+        <span
+          class="shot-list-item-icon"
+          uk-icon="icon: video-camera; ratio: 1.5"
+          [attr.uk-tooltip]="'title: ' + shot.camera">
+        </span>
+        <span class="shot-list-item-icon-text">{{getCameraLabel(shot)}}</span>
       </a>
     </li>
     }

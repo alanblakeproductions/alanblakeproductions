@@ -18,6 +18,7 @@ export class ShotmakerComponent {
 
   projectIds: String[] = [
     "ballad-of-the-night-owl",
+    "calves",
     "colorblind",
     "love-me-knot-ep-5",
     "love-me-knot-ep-6",

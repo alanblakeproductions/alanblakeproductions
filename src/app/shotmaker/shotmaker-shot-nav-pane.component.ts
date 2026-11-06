@@ -33,6 +33,7 @@ export class ShotmakerShotNavPane implements OnInit {
   status: string = "";
   shotsShootTimeHours: number = 0;
   shotsShootTimeMinutes: number = 0;
+  cameras: string[] = [];
 
   @ViewChildren("shotElement") shotElements!: QueryList<ElementRef<HTMLLIElement>>;
 
@@ -52,6 +53,8 @@ export class ShotmakerShotNavPane implements OnInit {
     });
 
     this.shots$.subscribe(shots => {
+      let cameras = new Set(shots.map(shot => shot.camera));
+      this.cameras = [...cameras].sort();
       this.shots = shots.sort((a, b) => {
         let aOrder = this.browserStorageService.getShotOrder(this.projectId, this.status, a.id);
         let bOrder = this.browserStorageService.getShotOrder(this.projectId, this.status, b.id);
@@ -113,6 +116,11 @@ export class ShotmakerShotNavPane implements OnInit {
       default:
         return "";
     }
+  }
+
+  getCameraLabel(shot: Shot): string {
+    let cameraIndex = this.cameras.indexOf(shot.camera);
+    return String.fromCharCode(97 + cameraIndex);
   }
 
   dropShot(event: CdkDragDrop<Shot[]>) {
