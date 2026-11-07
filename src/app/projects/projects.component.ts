@@ -172,6 +172,12 @@ export class ProjectsComponent {
           image: "assets/images/2026_black_harvest_film_festival_official_selection.png",
           laurel: "assets/images/laurel_official_selection_white_transparent.png",
         },
+        {
+          title: "Gary International Black Film Festival",
+          description: "Best Regional Narrative Short",
+          image: "assets/images/2026_gary_international_black_film_festival_best_regional_narrative_short.png",
+          laurel: "assets/images/laurel_winner_white_transparent.png",
+        },
       ],
     });
 
