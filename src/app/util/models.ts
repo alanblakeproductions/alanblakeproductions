@@ -65,6 +65,7 @@ export interface Shot {
   subject: string,
   shotSize: string,
   camera: string,
+  cameraId: string,
   angle: string,
   movement: string,
   lens: string,

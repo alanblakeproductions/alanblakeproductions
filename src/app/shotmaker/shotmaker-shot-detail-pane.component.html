@@ -52,7 +52,10 @@
           </thead>
           <tbody>
           <tr>
-            <td class="uk-visible@m">{{shot?.camera}}</td>
+            <td class="uk-visible@m">
+              <span class="uk-badge camera camera-{{shot?.cameraId}}">{{shot?.cameraId}}</span>
+              {{shot?.camera}}
+            </td>
             <td>{{shot?.lens}}</td>
             <td class="uk-visible@m">{{shot?.angle}}</td>
             <td>{{shot?.movement}}</td>

@@ -14,7 +14,7 @@
         <span class="shot-list-item-size-label uk-label {{getShotSizeClass(shot)}}">{{getShotSizeLabel(shot)}}</span>
         <span>{{shot.sceneId}}-{{shot.setup}}{{shot.shotId}}</span>
         <span class="shot-list-item-text">{{shot.subject}}</span>
-        <span class="uk-badge shot-list-item-camera {{getCameraLabelClass(shot)}}">{{getCameraLabel(shot)}}</span>
+        <span class="uk-badge shot-list-item-camera camera-{{shot.cameraId}}">{{shot.cameraId}}</span>
         <!--
         <span class="shot-list-item-lens">{{shot.lensFocalLength}}</span>
         -->

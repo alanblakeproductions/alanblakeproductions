@@ -65,8 +65,11 @@ export class ShotmakerShotlistComponent implements OnInit {
         }
 
         let sceneIdToSceneEntity = new Map<string, SceneEntity>(sceneEntities.map(scene => [scene.id, scene] as const));
+        let camerasSet = new Set(shots.map(shot => shot.camera));
+        let camerasList = [...camerasSet].sort();
         for (let shot of shots) {
           shot.scene = sceneIdToSceneEntity.get(shot.sceneId);
+          shot.cameraId = String.fromCharCode(97 + camerasList.indexOf(shot.camera));
         }
 
         if (queryParams['status']) {

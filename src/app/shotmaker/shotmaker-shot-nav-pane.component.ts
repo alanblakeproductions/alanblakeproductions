@@ -53,8 +53,6 @@ export class ShotmakerShotNavPane implements OnInit {
     });
 
     this.shots$.subscribe(shots => {
-      let cameras = new Set(shots.map(shot => shot.camera));
-      this.cameras = [...cameras].sort();
       this.shots = shots.sort((a, b) => {
         let aOrder = this.browserStorageService.getShotOrder(this.projectId, this.status, a.id);
         let bOrder = this.browserStorageService.getShotOrder(this.projectId, this.status, b.id);
@@ -116,15 +114,6 @@ export class ShotmakerShotNavPane implements OnInit {
       default:
         return "";
     }
-  }
-
-  getCameraLabelClass(shot: Shot): string {
-    return "shot-list-item-camera-" + this.cameras.indexOf(shot.camera);
-  }
-
-  getCameraLabel(shot: Shot): string {
-    let cameraIndex = this.cameras.indexOf(shot.camera);
-    return String.fromCharCode(65 + cameraIndex);
   }
 
   dropShot(event: CdkDragDrop<Shot[]>) {
