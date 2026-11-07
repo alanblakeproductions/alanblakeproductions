@@ -126,7 +126,7 @@ export class ShotmakerShotlistComponent implements OnInit {
     const shotlistCsvFileContents$ = this.fetchShotlistCsv(shotlistCsvFilePath);
 
     return shotlistCsvFileContents$.then(csvFileContents => {
-      console.log("Loading ", shotlistCsvFilePath);
+      console.log("Loading shotlist", shotlistCsvFilePath);
       let rows = csvFileContents.trim().split("\n");
       let headers = rows[0].trim().split("\t");
       let headerToIndex: Record<string, number> = {};
@@ -152,6 +152,7 @@ export class ShotmakerShotlistComponent implements OnInit {
         let sceneId = cells[headerToIndex["SCENE #"]];
         let setup = cells[headerToIndex["SETUP #"]];
         let shotId = cells[headerToIndex["SHOT #"]];
+        let lens = cells[headerToIndex["LENS"]];
 
         let projectShot = {
           id: id,
@@ -164,7 +165,8 @@ export class ShotmakerShotlistComponent implements OnInit {
           camera: cells[headerToIndex["CAMERA"]],
           angle: cells[headerToIndex["ANGLE"]],
           movement: cells[headerToIndex["MOVEMENT"]],
-          lens: cells[headerToIndex["LENS"]],
+          lens: lens,
+          lensFocalLength: this.getLensFocalLength(lens),
           notes: cells[headerToIndex["NOTES"]],
           pages: cells[headerToIndex["PAGE(S)"]].replaceAll("\n", "<br/>").replaceAll('"', ""),
           priority: cells[headerToIndex["PRIORITY"]],
@@ -176,6 +178,16 @@ export class ShotmakerShotlistComponent implements OnInit {
       }
       return shots;
     });
+  }
+
+  private getLensFocalLength(lens: string): string {
+    return "";
+    /*
+    let mmIndex = lens.toLowerCase().indexOf("mm")
+    let beforeMmIndex = lens.slice(0, mmIndex).trim();
+    let focalLength = beforeMmIndex.split(" ").at(-1) ?? "--";
+    return focalLength;
+    */
   }
 
   private async getImage(pathWithNoExtension: string): Promise<string> {

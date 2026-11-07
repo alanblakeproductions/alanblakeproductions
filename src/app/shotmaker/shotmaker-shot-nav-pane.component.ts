@@ -118,9 +118,13 @@ export class ShotmakerShotNavPane implements OnInit {
     }
   }
 
+  getCameraLabelClass(shot: Shot): string {
+    return "shot-list-item-camera-" + this.cameras.indexOf(shot.camera);
+  }
+
   getCameraLabel(shot: Shot): string {
     let cameraIndex = this.cameras.indexOf(shot.camera);
-    return String.fromCharCode(97 + cameraIndex);
+    return String.fromCharCode(65 + cameraIndex);
   }
 
   dropShot(event: CdkDragDrop<Shot[]>) {

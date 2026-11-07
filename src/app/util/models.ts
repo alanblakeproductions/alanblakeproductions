@@ -68,6 +68,7 @@ export interface Shot {
   angle: string,
   movement: string,
   lens: string,
+  lensFocalLength: string,
   notes: string,
   pages: string,
   priority: string,
