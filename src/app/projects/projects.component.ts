@@ -141,6 +141,12 @@ export class ProjectsComponent {
         "Editor",
       ],
       highlights: [
+        {
+          title: "Iron Mule Short Comedy Film Festival",
+          description: "Official Selection",
+          image: "assets/images/2026_iron_mule_short_comedy_film_festival_official_selection.png",
+          laurel: "assets/images/laurel_official_selection_white_transparent.png",
+        },
       ],
     });
 
