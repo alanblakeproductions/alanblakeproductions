@@ -23,6 +23,7 @@ export class ShotmakerComponent {
     "love-me-knot-ep-5",
     "love-me-knot-ep-6",
     "movies-like-this",
+    "mugged",
     "nest",
     "window-sadness",
   ];

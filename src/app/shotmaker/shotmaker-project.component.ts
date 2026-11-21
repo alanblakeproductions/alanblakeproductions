@@ -132,6 +132,26 @@ export class ShotmakerProjectComponent implements OnInit {
         googleDriveFilmDaysUrl: "https://docs.google.com/spreadsheets/d/e/2PACX-1vTNgUVWmIIew3uABDoLjrlD_kcrpp66FIJFI276xdH67L0g1Luy9bKf8poMfIhUJj-XoAWK4glpOOP-/pub?gid=406112766&single=true&output=tsv",
       },
     },
+     "mugged": {
+       id: "mugged",
+       summary: {
+         title: "Mugged",
+       },
+       shotlist: {
+         file: "https://docs.google.com/spreadsheets/d/e/2PACX-1vQZqGCJ9aRUOzod-3Rl3_2inzmgWFq9eL3oEjxEHAtGBjotwhFBxQ4NC-z9JvYDTm0THySMJeb-IiZd/pub?gid=204330880&single=true&output=tsv",
+         blocking: true,
+       },
+       shadows: undefined,
+       video: undefined,
+       locations: {
+         enabled: false,
+         googleDriveFolderId: "disabled",
+         googleDriveScenesUrl: "https://docs.google.com/spreadsheets/d/e/2PACX-1vQZqGCJ9aRUOzod-3Rl3_2inzmgWFq9eL3oEjxEHAtGBjotwhFBxQ4NC-z9JvYDTm0THySMJeb-IiZd/pub?gid=1085775759&single=true&output=tsv",
+         googleDriveLocationsUrl: "https://docs.google.com/spreadsheets/d/e/2PACX-1vQZqGCJ9aRUOzod-3Rl3_2inzmgWFq9eL3oEjxEHAtGBjotwhFBxQ4NC-z9JvYDTm0THySMJeb-IiZd/pub?gid=1313844278&single=true&output=tsv",
+         googleDriveLocationOptionsUrl: "https://docs.google.com/spreadsheets/d/e/2PACX-1vQZqGCJ9aRUOzod-3Rl3_2inzmgWFq9eL3oEjxEHAtGBjotwhFBxQ4NC-z9JvYDTm0THySMJeb-IiZd/pub?gid=743009682&single=true&output=tsv",
+         googleDriveFilmDaysUrl: "https://docs.google.com/spreadsheets/d/e/2PACX-1vQZqGCJ9aRUOzod-3Rl3_2inzmgWFq9eL3oEjxEHAtGBjotwhFBxQ4NC-z9JvYDTm0THySMJeb-IiZd/pub?gid=406112766&single=true&output=tsv",
+       },
+     },
     "nest": {
       id: "nest",
       summary: {
