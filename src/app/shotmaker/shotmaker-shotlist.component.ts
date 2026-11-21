@@ -175,8 +175,15 @@ export class ShotmakerShotlistComponent implements OnInit {
           priority: cells[headerToIndex["PRIORITY"]],
           mic: cells[headerToIndex["MIC"]],
           imageLink: this.getImage("assets/" + this.project.id + "/shots/" + this.project.id + "-scene-" + sceneId + "-" + setup + shotId),
+
           shootTime: Number(cells[headerToIndex["SHOOT TIME (MIN)"]]),
         } as Shot;
+
+        if (this.project?.shotlist?.blocking) {
+          let blockingImageLink = this.getImage("assets/" + this.project.id + "/shots/" + this.project.id + "-scene-" + sceneId + "-" + setup + shotId + "-blocking");
+          projectShot.blockingImageLink = blockingImageLink;
+        }
+
         shots.push(projectShot);
       }
       return shots;

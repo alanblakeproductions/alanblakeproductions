@@ -127,4 +127,16 @@ export class BrowserStorageService {
   setLocationCoordinates(address: string, locationCoordinates: google.maps.LatLngLiteral): void {
     this.setItem(this.getLocationCoordinatesKey(address), `${locationCoordinates.lat}:${locationCoordinates.lng}`);
   }
+
+  private getShotlistImagePreferenceKey(): string {
+    return `shotmaker.image.preference`;
+  }
+
+  getShotlistImagePreference(): string {
+    return this.getItem(this.getShotlistImagePreferenceKey()) ?? "camera";
+  }
+
+  setShotlistImagePreference(preference: string): void {
+    this.setItem(this.getShotlistImagePreferenceKey(), preference);
+  }
 }

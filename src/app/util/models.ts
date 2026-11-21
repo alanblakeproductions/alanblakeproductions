@@ -75,6 +75,7 @@ export interface Shot {
   priority: string,
   mic: string,
   imageLink: Promise<string>,
+  blockingImageLink: Promise<string>,
   shootTime: number,
 }
 
@@ -85,6 +86,7 @@ export interface Shadow {
 
 export interface ShotmakerProjectShotlist {
   file: string,
+  blocking: boolean,
 }
 
 export interface ShotmakerProjectShadows {

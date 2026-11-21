@@ -66,27 +66,39 @@
     </div>
 
     <div class="uk-section uk-padding-remove-vertical">
-      <div class="uk-container" *ngIf="shot?.imageLink | async as imageLink; else loading">
-
-        <div *ngIf="imageLink !== 'MISSING'; else missingImage">
-          <div *ngIf="imageLink.endsWith('.mp4'); else imageFile">
-            <video src="{{imageLink}}" width="1920" height="1080" playsinline loop muted uk-video="autoplay: inview"></video>
-          </div>
-          <ng-template #imageFile>
-            <img src="{{imageLink}}"/>
-          </ng-template>
-        </div>
-        <ng-template #missingImage>
-          <div class="uk-flex-center" uk-grid>
-            <p class="uk-padding-large">No image</p>
-          </div>
-        </ng-template>
+      <div uk-grid class="uk-grid-collapse">
+        <div class="uk-width-1-1 uk-width-expand@m" style="border-right: 1px solid gray">
+          @if (
+            (imagePreference === 'camera' && (shot?.imageLink | async)) ||
+            (imagePreference === 'blocking' && (shot?.blockingImageLink | async));
+          as imageLink
+          ) {
+            <div *ngIf="imageLink !== 'MISSING'; else missingImage">
+              <div *ngIf="imageLink.endsWith('.mp4'); else imageFile">
+                <video src="{{imageLink}}" width="1920" height="1080" playsinline loop muted uk-video="autoplay: inview"></video>
+              </div>
+              <ng-template #imageFile>
+                <img src="{{imageLink}}"/>
+              </ng-template>
+            </div>
+            <ng-template #missingImage>
+              <div class="uk-flex-center" uk-grid>
+                <p class="uk-padding-large">No image</p>
+              </div>
+            </ng-template>
+          } @else {
+            <div class="uk-flex-center" uk-grid>
+              <div uk-spinner="ratio: 3"></div>
+            </div>
+          }
       </div>
-      <ng-template #loading>
-        <div class="uk-flex-center" uk-grid>
-          <div uk-spinner="ratio: 3"></div>
+
+      <div class="uk-width-1-1 uk-width-small@m">
+        <div>
+          <button [class.uk-button-secondary]="imagePreference === 'camera'" class="uk-button uk-button-default uk-width-1-1" (click)="setImagePreference('camera')"><span uk-icon="icon: camera; ratio: 1.5"></span></button>
+          <button [class.uk-button-secondary]="imagePreference === 'blocking'" class="uk-button uk-button-default uk-width-1-1" (click)="setImagePreference('blocking')"><span uk-icon="icon: grid; ratio: 1.5"></span></button>
         </div>
-      </ng-template>
+      </div>
     </div>
   </div>
 </div>

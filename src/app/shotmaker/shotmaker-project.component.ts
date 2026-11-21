@@ -55,7 +55,8 @@ export class ShotmakerProjectComponent implements OnInit {
         title: "Calves",
       },
       shotlist: {
-        file: "https://docs.google.com/spreadsheets/d/e/2PACX-1vTI-5bS3GM7InzhWAUMbpkwwKNcirrXwpWvIyh1ZcOTFC8tCB3XjsmPS6336Vvf82UNebAaWkJgNT6X/pub?gid=204330880&single=true&output=tsv"
+        file: "https://docs.google.com/spreadsheets/d/e/2PACX-1vTI-5bS3GM7InzhWAUMbpkwwKNcirrXwpWvIyh1ZcOTFC8tCB3XjsmPS6336Vvf82UNebAaWkJgNT6X/pub?gid=204330880&single=true&output=tsv",
+        blocking: false,
       },
       shadows: undefined,
       video: undefined,
@@ -75,6 +76,7 @@ export class ShotmakerProjectComponent implements OnInit {
       },
       shotlist: {
         file: "assets/shotmaker/colorblind.shotlist.csv",
+        blocking: false,
       },
       shadows: {
         file: "assets/shotmaker/colorblind.shadows.csv",
@@ -91,6 +93,7 @@ export class ShotmakerProjectComponent implements OnInit {
        },
        shotlist: {
          file: "assets/shotmaker/love-me-knot-ep-5.shotlist.csv",
+         blocking: false,
        },
        shadows: undefined,
        video: undefined,
@@ -103,6 +106,7 @@ export class ShotmakerProjectComponent implements OnInit {
        },
        shotlist: {
          file: "assets/shotmaker/love-me-knot-ep-6.shotlist.csv",
+         blocking: false,
        },
        shadows: undefined,
        video: undefined,
@@ -115,6 +119,7 @@ export class ShotmakerProjectComponent implements OnInit {
       },
       shotlist: {
         file: "https://docs.google.com/spreadsheets/d/e/2PACX-1vTNgUVWmIIew3uABDoLjrlD_kcrpp66FIJFI276xdH67L0g1Luy9bKf8poMfIhUJj-XoAWK4glpOOP-/pub?gid=204330880&single=true&output=tsv",
+        blocking: true,
       },
       shadows: undefined,
       video: undefined,
@@ -134,6 +139,7 @@ export class ShotmakerProjectComponent implements OnInit {
       },
       shotlist: {
         file: "https://docs.google.com/spreadsheets/d/e/2PACX-1vTPG08asnmC-gheu8iiyrZki8KgGopsjRwo0UuOIl9ZjNtU1LPL9kZCbmpbCnFmnbk_XeQl916NeOAz/pub?gid=204330880&single=true&output=tsv",
+        blocking: false,
       },
       shadows: undefined,
       video: undefined,
@@ -153,6 +159,7 @@ export class ShotmakerProjectComponent implements OnInit {
       },
       shotlist: {
         file: "https://docs.google.com/spreadsheets/d/e/2PACX-1vTINXtsDGxORjxeHGmTMf2lrCCwnM10KhM7_XhW-iR0JfkJ65uolDq-D4G_Bs7OT_FdVlGbcw-yVUp1/pub?gid=204330880&single=true&output=tsv",
+        blocking: false,
       },
       shadows: undefined,
       video: undefined,

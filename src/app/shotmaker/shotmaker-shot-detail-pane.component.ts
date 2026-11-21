@@ -23,6 +23,7 @@ export class ShotmakerShotDetailPane implements OnInit {
   @Input() shot$: Subject<Shot> = new Subject();
   shot: Shot | undefined = undefined;
 
+  imagePreference: string = "camera";
   projectId: string = "";
   status: string = "";
 
@@ -33,6 +34,7 @@ export class ShotmakerShotDetailPane implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.imagePreference = this.browserStorageService.getShotlistImagePreference();
     this.projectId = this.route.snapshot.paramMap.get('projectId') ?? "";
 
     this.shot$.subscribe(shot => {
@@ -56,5 +58,10 @@ export class ShotmakerShotDetailPane implements OnInit {
           }
         });
     }
+  }
+
+  setImagePreference(imagePreference: string): void {
+    this.imagePreference = imagePreference;
+    this.browserStorageService.setShotlistImagePreference(imagePreference);
   }
 }
