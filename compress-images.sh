@@ -1,6 +1,6 @@
 #!/bin/sh
 
-for file in src/assets/colorblind/*/*.png; do
+for file in src/assets/movies-like-this/*/*.JPG; do
   echo "$(du -h $file)"
   test $(identify -format "%[fx:(w>1600)?1:0]" $file) -eq 1 && \
     magick $file -resize "80%" $file

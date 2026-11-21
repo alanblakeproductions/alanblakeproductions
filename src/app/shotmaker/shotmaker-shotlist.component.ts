@@ -194,7 +194,7 @@ export class ShotmakerShotlistComponent implements OnInit {
   }
 
   private async getImage(pathWithNoExtension: string): Promise<string> {
-    const extensions: string[] = ['png', 'gif', 'mp4'];
+    const extensions: string[] = ['png', 'JPG', 'gif', 'mp4'];
     const result = await firstValueFrom(
       from(extensions).pipe(
         concatMap(extension => {
